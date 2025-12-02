@@ -2,6 +2,9 @@
  "app": {
   "title": "Daily Management Dashboard"
  },
+ "profile": {
+  "noUser": "No se encontró ningún usuario"
+ },
  "menu": {
   "dashboard": "Inicio",
   "tasks": "Tareas diarias",

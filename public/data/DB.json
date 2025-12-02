@@ -612,7 +612,7 @@
       "name": "WIGOS-118382 - Salones - Reporte de efectivo de sala - con WigosCollect - los datos de reposiciones y retiros de kiosco se están \"multiplicando\" en el dato de \"Tickets pendientes de reponer\" por cada operación de este tipo realizada con la app",
       "description": "Salones \n - Reporte de efectivo de sala con WigosCollect \n  - los datos de reposiciones y retiros de kiosco se están \"multiplicando\" en el dato de \"Tickets pendientes de reponer\" por cada operación de este tipo realizada con la app",
       "branch": "feature/sln2/wigos-118382_salones_reporte_de_efectivo_de_sala_con_wigoscollect_los_datos_de_reposiciones_y_retiros_de_kiosco_se_estan_multiplicando",
-      "completed": false,
+      "completed": true,
       "createdAt": "2025-11-21T13:51:09.093Z",
       "date": "2025-11-24",
       "hours": 1,

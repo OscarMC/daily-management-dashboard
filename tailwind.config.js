@@ -2,14 +2,16 @@
 export default {
  content: [
   "./index.html",
-  "./src/**/*.{js,ts,jsx,tsx}",
+  "./src/**/*.{js,ts,jsx,tsx}"
  ],
  safelist: [
-  'bg-green-500', 'bg-blue-500', 'bg-yellow-500',
-  'bg-red-500', 'bg-gray-500',
-  'animate-fade-slide-in'
+  "bg-green-500",
+  "bg-blue-500",
+  "bg-yellow-500",
+  "bg-red-500",
+  "bg-gray-500",
+  "animate-fade-slide-in"
  ],
-
  darkMode: "class",
  theme: {
   extend: {}

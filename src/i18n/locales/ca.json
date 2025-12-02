@@ -2,6 +2,9 @@
  "app": {
   "title": "Quadre de gestió diària"
  },
+ "profile": {
+  "noUser": "Cap usuari trobat"
+ },
  "menu": {
   "dashboard": "Inici",
   "tasks": "Tasques diàries",

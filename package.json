@@ -2,17 +2,20 @@
  "name": "daily-management-dashboard",
  "version": "1.0.0",
  "private": true,
- "scripts": {
-  "dev:backend": "node --import ts-node/register src/server.ts",
-  "dev:frontend": "vite",
-  "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
-  "build": "tsc && vite build",
-  "start": "node dist/server.js",
-  "preview": "vite preview",
-  "update:jornadas": "node updateJornadas.js",
-  "lint": "eslint . --ext .ts,.tsx",
-  "format": "prettier --write ."
- },
+"scripts": {
+ "dev:backend": "ts-node --project tsconfig.backend.json src/server.ts",
+ "dev:frontend": "vite",
+ "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
+ "dev:json": "node server/jsonServer.js",
+ "build:backend": "tsc -p tsconfig.backend.json",
+ "build:frontend": "vite build",
+ "build": "npm run build:backend && npm run build:frontend",
+ "start": "node dist/server.js",
+ "preview": "vite preview",
+ "update:jornadas": "node updateJornadas.js",
+ "lint": "eslint . --ext .ts,.tsx",
+ "format": "prettier --write ."
+},
  "dependencies": {
   "axios": "^1.13.2",
   "cheerio": "^1.1.2",
@@ -37,6 +40,7 @@
  "devDependencies": {
   "@types/cors": "^2.8.19",
   "@types/express": "^5.0.5",
+  "@types/fs-extra": "^11.0.4",
   "@types/node": "^24.10.1",
   "@types/react": "^18.2.37",
   "@types/react-dom": "^18.2.15",
@@ -54,7 +58,7 @@
   "vite": "^7.2.4"
  },
  "description": "",
- "main": "postcss.config.js",
+ "main": "dist/server.js",
  "keywords": [],
  "author": "",
  "license": "ISC"
