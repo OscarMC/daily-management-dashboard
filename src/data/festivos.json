@@ -1,0 +1,452 @@
+[
+ {
+  "date": "2024-01-01",
+  "nombre": "Año Nuevo",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-01-06",
+  "nombre": "Reyes Magos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-03-29",
+  "nombre": "Viernes Santo",
+  "tipo": "nacional",
+  "recurrente": false
+ },
+ {
+  "date": "2024-04-01",
+  "nombre": "Lunes de Pascua",
+  "tipo": "local",
+  "recurrente": false
+ },
+ {
+  "date": "2024-05-01",
+  "nombre": "Día del Trabajador",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-06-24",
+  "nombre": "San Juan",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2024-08-15",
+  "nombre": "Asunción de la Virgen",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-09-11",
+  "nombre": "Diada de Catalunya",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2024-09-24",
+  "nombre": "La Mercè",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2024-10-12",
+  "nombre": "Fiesta Nacional de España",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-11-01",
+  "nombre": "Todos los Santos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-12-06",
+  "nombre": "Día de la Constitución",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-12-08",
+  "nombre": "Inmaculada Concepción",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-12-25",
+  "nombre": "Navidad",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2024-12-26",
+  "nombre": "San Esteban",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2025-01-01",
+  "nombre": "Año Nuevo",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-01-06",
+  "nombre": "Reyes Magos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-04-18",
+  "nombre": "Viernes Santo",
+  "tipo": "nacional",
+  "recurrente": false
+ },
+ {
+  "date": "2025-04-21",
+  "nombre": "Lunes de Pascua",
+  "tipo": "local",
+  "recurrente": false
+ },
+ {
+  "date": "2025-05-01",
+  "nombre": "Día del Trabajador",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-06-24",
+  "nombre": "San Juan",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2025-08-15",
+  "nombre": "Asunción de la Virgen",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-09-11",
+  "nombre": "Diada de Catalunya",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2025-09-24",
+  "nombre": "La Mercè",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2025-10-12",
+  "nombre": "Fiesta Nacional de España",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-11-01",
+  "nombre": "Todos los Santos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-12-06",
+  "nombre": "Día de la Constitución",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-12-08",
+  "nombre": "Inmaculada Concepción",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-12-25",
+  "nombre": "Navidad",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2025-12-26",
+  "nombre": "San Esteban",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2026-01-01",
+  "nombre": "Año Nuevo",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-01-06",
+  "nombre": "Reyes Magos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-04-03",
+  "nombre": "Viernes Santo",
+  "tipo": "nacional",
+  "recurrente": false
+ },
+ {
+  "date": "2026-04-06",
+  "nombre": "Lunes de Pascua",
+  "tipo": "local",
+  "recurrente": false
+ },
+ {
+  "date": "2026-05-01",
+  "nombre": "Día del Trabajador",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-06-24",
+  "nombre": "San Juan",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2026-08-15",
+  "nombre": "Asunción de la Virgen",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-09-11",
+  "nombre": "Diada de Catalunya",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2026-09-24",
+  "nombre": "La Mercè",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2026-10-12",
+  "nombre": "Fiesta Nacional de España",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-11-01",
+  "nombre": "Todos los Santos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-12-06",
+  "nombre": "Día de la Constitución",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-12-08",
+  "nombre": "Inmaculada Concepción",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-12-25",
+  "nombre": "Navidad",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2026-12-26",
+  "nombre": "San Esteban",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2027-01-01",
+  "nombre": "Año Nuevo",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-01-06",
+  "nombre": "Reyes Magos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-03-26",
+  "nombre": "Viernes Santo",
+  "tipo": "nacional",
+  "recurrente": false
+ },
+ {
+  "date": "2027-03-29",
+  "nombre": "Lunes de Pascua",
+  "tipo": "local",
+  "recurrente": false
+ },
+ {
+  "date": "2027-05-01",
+  "nombre": "Día del Trabajador",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-06-24",
+  "nombre": "San Juan",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2027-08-15",
+  "nombre": "Asunción de la Virgen",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-09-11",
+  "nombre": "Diada de Catalunya",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2027-09-24",
+  "nombre": "La Mercè",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2027-10-12",
+  "nombre": "Fiesta Nacional de España",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-11-01",
+  "nombre": "Todos los Santos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-12-06",
+  "nombre": "Día de la Constitución",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-12-08",
+  "nombre": "Inmaculada Concepción",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-12-25",
+  "nombre": "Navidad",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2027-12-26",
+  "nombre": "San Esteban",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2028-01-01",
+  "nombre": "Año Nuevo",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-01-06",
+  "nombre": "Reyes Magos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-04-14",
+  "nombre": "Viernes Santo",
+  "tipo": "nacional",
+  "recurrente": false
+ },
+ {
+  "date": "2028-04-17",
+  "nombre": "Lunes de Pascua",
+  "tipo": "local",
+  "recurrente": false
+ },
+ {
+  "date": "2028-05-01",
+  "nombre": "Día del Trabajador",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-06-24",
+  "nombre": "San Juan",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2028-08-15",
+  "nombre": "Asunción de la Virgen",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-09-11",
+  "nombre": "Diada de Catalunya",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2028-09-24",
+  "nombre": "La Mercè",
+  "tipo": "local",
+  "recurrente": true
+ },
+ {
+  "date": "2028-10-12",
+  "nombre": "Fiesta Nacional de España",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-11-01",
+  "nombre": "Todos los Santos",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-12-06",
+  "nombre": "Día de la Constitución",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-12-08",
+  "nombre": "Inmaculada Concepción",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-12-25",
+  "nombre": "Navidad",
+  "tipo": "nacional",
+  "recurrente": true
+ },
+ {
+  "date": "2028-12-26",
+  "nombre": "San Esteban",
+  "tipo": "local",
+  "recurrente": true
+ }
+]

@@ -1,0 +1,37 @@
+{
+ "app": {
+  "title": "Daily Management Dashboard"
+ },
+ "menu": {
+  "dashboard": "Inicio",
+  "tasks": "Tareas diarias",
+  "overview": "Resumen diario",
+  "profile": "Perfil",
+  "dailyTasks": "Tareas diarias",
+  "repositories": "Repositorios",
+  "workingDay": "Resumen Jornada",
+  "branches": "Ramas",
+  "login": "Cuco360"
+ },
+ "tasks": {
+  "new": "Nueva tarea",
+  "edit": "Editar tarea",
+  "empty": "Sin tareas disponibles",
+  "branch": "Rama Bitbucket",
+  "title": "Título de la tarea"
+ },
+ "dashboard": {
+  "welcome": "Panel principal",
+  "dailyProgress": "Progreso diario",
+  "todayTasks": "Tareas de hoy",
+  "date": "Fecha",
+  "completed": "Completadas",
+  "pending": "Pendientes",
+  "target": "Objetivo",
+  "completedTasks": "Tareas completadas",
+  "pendingTasks": "Tareas pendientes",
+  "productivity": "Productividad",
+  "totalHours": "Total de horas",
+  "tasksToday": "Tareas hoy"
+ }
+}

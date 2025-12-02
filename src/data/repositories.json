@@ -1,0 +1,18 @@
+[
+ {
+  "id": 1,
+  "name": "DbVersion"
+ },
+ {
+  "id": 2,
+  "name": "Wigos"
+ },
+ {
+  "id": 3,
+  "name": "Wigos.Base"
+ },
+ {
+  "id": 4,
+  "name": "Wigos.Components.DbVersion"
+ }
+]

@@ -1,0 +1,269 @@
+{
+  "tasks": [
+    {
+      "name": "WIGOS-118400 - Salones - ERP Luckia - Pago apuestas - Kiosco (501) registra 0 aunque hay movimientos que deberían mostrarse",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:47:41.515Z",
+      "date": "2025-11-17",
+      "hours": 6,
+      "id": 15
+    },
+    {
+      "name": "WIGOS-118415 - Salones - ERP Luckia - Pagos online - Kiosco (502) y Deposito online - Kiosco (503) los valores se encuentran cruzados",
+      "description": "https://winsytemsintl.atlassian.net/browse/WIGOS-118415",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:48:12.354Z",
+      "date": "2025-11-17",
+      "hours": 2,
+      "id": 16
+    },
+    {
+      "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:48:35.576Z",
+      "date": "2025-11-17",
+      "hours": 0.5,
+      "id": 17
+    },
+    {
+      "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:49:27.504Z",
+      "date": "2025-11-18",
+      "hours": 6,
+      "id": 18
+    },
+    {
+      "name": "WIGOS-118481 - Refinement - WIGOS-118194 Luckia - ERP data integration v1.3",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:49:47.748Z",
+      "date": "2025-11-18",
+      "hours": 0.25,
+      "id": 19
+    },
+    {
+      "name": "WIGOS-118488 - Refinement - WIGOS-109375 Luckia - ERP data integration v4 (foreign currencies)",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:50:05.770Z",
+      "date": "2025-11-18",
+      "hours": 0.25,
+      "id": 20
+    },
+    {
+      "name": "WIGOS-118159 - ERP Luckia - Pasivo Inicial (604) Valor mal calculado Pasivo Inicial",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:50:33.415Z",
+      "date": "2025-11-18",
+      "hours": 1,
+      "id": 21
+    },
+    {
+      "name": "WIGOS-117823 - ERP Luckia - Pasivo Final (605) Campo mal calculado Pasivo Final",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:50:50.179Z",
+      "date": "2025-11-18",
+      "hours": 1,
+      "id": 22
+    },
+    {
+      "name": "WIGOS-118546 - Salones - ERP Luckia - Errores detectados en el Laboratorio del cliente. Problemas de regionalización de fechas.",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:51:29.689Z",
+      "date": "2025-11-19",
+      "hours": 8.5,
+      "id": 23
+    },
+    {
+      "name": "WIGOS-118114 - Salones - ERP Luckia - (245) Tickets caducados no se suman para el fichero csv",
+      "description": "",
+      "branch": "feature/sln2/wigos-118114_salones_erp_luckia_245_tickets_caducados_no_se_suman_para_el_fichero_csv",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T13:52:04.356Z",
+      "date": "2025-11-20",
+      "hours": 8.5,
+      "id": 24
+    },
+    {
+      "name": "WIGOS-117823 - ERP Luckia - Pasivo Final (605) Campo mal calculado Pasivo Final",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:12:33.142Z",
+      "date": "2025-11-10",
+      "hours": 6,
+      "id": 25
+    },
+    {
+      "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:12:54.647Z",
+      "date": "2025-11-10",
+      "hours": 2,
+      "id": 26
+    },
+    {
+      "name": "WIGOS-118208 - Refinement - WIGOS-111228 GORGE -> WigosOne integration (Orenes) v1.0 | Manufacturer and Model maintenance",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:13:13.103Z",
+      "date": "2025-11-10",
+      "hours": 0.5,
+      "id": 27
+    },
+    {
+      "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:13:30.638Z",
+      "date": "2025-11-11",
+      "hours": 1.5,
+      "id": 28
+    },
+    {
+      "name": "WIGOS-117971 - Salones - ERP Luckia - Atributos de concepto de salida (400) contiene valores incorrectos",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:13:49.816Z",
+      "date": "2025-11-11",
+      "hours": 1.5,
+      "id": 29
+    },
+    {
+      "name": "WIGOS-118221 - Salones - ERP Integration V1 - En el archivo csv se ha generado con el cambio de día natural en lugar de tomar la fecha de \"GamingHallExtractionWorkingDayStart\" definida para los salones",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:14:17.388Z",
+      "date": "2025-11-11",
+      "hours": 5.5,
+      "id": 30
+    },
+    {
+      "name": "WIGOS-118221 - Salones - ERP Integration V1 - En el archivo csv se ha generado con el cambio de día natural en lugar de tomar la fecha de \"GamingHallExtractionWorkingDayStart\" definida para los salones",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:15:04.963Z",
+      "date": "2025-11-12",
+      "hours": 4,
+      "id": 31
+    },
+    {
+      "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
+      "description": "",
+      "branch": "",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:15:28.018Z",
+      "date": "2025-11-12",
+      "hours": 4.5,
+      "id": 32
+    },
+    {
+      "name": "WIGOS-118159 - ERP Luckia - Pasivo Inicial (604) Valor mal calculado Pasivo Inicial",
+      "description": "",
+      "branch": "feature/sln2/wigos-118159_erp_luckia_pasivo_inicial_604_valor_mal_calculado_pasivo_inicial",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:15:48.528Z",
+      "date": "2025-11-13",
+      "hours": 3,
+      "id": 33
+    },
+    {
+      "name": "WIGOS-117711 - Salones - Reporte de efectivo de sala - con WigosCollect - se están restando los movimientos de reposiciones y retiros de kiosco al realizar las recaudaciones de máquinas con la app, pero todavía no se ha cerrado la sesión de caja del recaudador",
+      "description": "",
+      "branch": "feature/sln2/WIGOS-117711_Reporte_de_efectivo_de_sala_reposiciones_retiros_restados_sin_cerrar_sesion_recaudador",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:16:03.667Z",
+      "date": "2025-11-13",
+      "hours": 5.5,
+      "id": 34
+    },
+    {
+      "name": "WIGOS-117711 - Salones - Reporte de efectivo de sala - con WigosCollect - se están restando los movimientos de reposiciones y retiros de kiosco al realizar las recaudaciones de máquinas con la app, pero todavía no se ha cerrado la sesión de caja del recaudador",
+      "description": "",
+      "branch": "feature/sln2/WIGOS-117711_Reporte_de_efectivo_de_sala_reposiciones_retiros_restados_sin_cerrar_sesion_recaudador",
+      "estimated": "",
+      "completed": true,
+      "createdAt": "2025-11-20T14:16:36.567Z",
+      "date": "2025-11-14",
+      "hours": 6,
+      "id": 35
+    }
+  ],
+  "user": [
+    {
+      "name": "Oscar Mas",
+      "email": "o.mas@winsysgroup.com",
+      "role": "Senior .NET Developer",
+      "theme": "light",
+      "language": "en",
+      "id": 1
+    },
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Developer",
+      "theme": "light",
+      "language": "en",
+      "id": 2
+    },
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Developer",
+      "theme": "light",
+      "language": "en",
+      "id": 3
+    },
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Developer",
+      "theme": "light",
+      "language": "en",
+      "id": 4
+    }
+  ]
+}

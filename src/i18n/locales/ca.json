@@ -1,0 +1,37 @@
+{
+ "app": {
+  "title": "Quadre de gestió diària"
+ },
+ "menu": {
+  "dashboard": "Inici",
+  "tasks": "Tasques diàries",
+  "overview": "Resum diari",
+  "profile": "Perfil",
+  "dailyTasks": "Tasques diàries",
+  "repositories": "Repositoris",
+  "workingDay": "Resum Jornada",
+  "branches": "Branques",
+  "login": "Cuco360"
+ },
+ "tasks": {
+  "new": "Nova tasca",
+  "edit": "Editar tasca",
+  "empty": "Sense tasques disponibles",
+  "branch": "Branca Bitbucket",
+  "title": "Títol de la tasca"
+ },
+ "dashboard": {
+  "welcome": "Quadre principal",
+  "dailyProgress": "Progrés diari",
+  "todayTasks": "Tasques d'avui",
+  "date": "Data",
+  "completed": "Completades",
+  "pending": "Pendents",
+  "target": "Objectiu",
+  "completedTasks": "Tasques completades",
+  "pendingTasks": "Tasques pendents",
+  "productivity": "Productivitat",
+  "totalHours": "Total d'hores",
+  "tasksToday": "Tasques avui"
+ }
+}

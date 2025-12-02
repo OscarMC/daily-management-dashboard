@@ -1,0 +1,37 @@
+{
+ "app": {
+  "title": "Daily Management Dashboard"
+ },
+ "menu": {
+  "dashboard": "Dashboard",
+  "tasks": "Daily Tasks",
+  "overview": "Overview",
+  "profile": "Profile",
+  "dailyTasks": "Daily Tasks",
+  "repositories": "Repositories",
+  "workingDay": "Working Day Summary",
+  "branches": "Branches",
+  "login": "Cuco360"
+ },
+ "tasks": {
+  "new": "New Task",
+  "edit": "Edit Task",
+  "empty": "No tasks available",
+  "branch": "Bitbucket Branch",
+  "title": "Task Title"
+ },
+ "dashboard": {
+  "welcome": "Main Dashboard",
+  "dailyProgress": "Daily Progress",
+  "todayTasks": "Today's Tasks",
+  "date": "Date",
+  "completed": "Completed",
+  "pending": "Pending",
+  "target": "Target",
+  "completedTasks": "Completed Tasks",
+  "pendingTasks": "Pending Tasks",
+  "productivity": "Productivity",
+  "totalHours": "Total Hours",
+  "tasksToday": "Tasks today"  
+ }
+}
