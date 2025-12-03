@@ -1,4 +1,4 @@
-import festivosData from '../data/festivos.json'
+import festivosData from '../../public/data/festivos.json'
 
 export interface Festivo {
  date: string
@@ -15,8 +15,8 @@ export function getFestivosForYear(year: number): Festivo[] {
  return (festivosData as any[]).map((f) => {
   const tipo = f.tipo === 'local' ? 'local' : 'nacional'
   if (f.recurrente) {
-   const [, month, day] = f.date.split('-')
-   return { ...f, tipo, date: `${year}-${month}-${day}` }
+   const [month, day] = f.date.split('-')
+   return { ...f, tipo, date: `${new Date().getFullYear() }-${month}-${day}` }
   }
   return { ...f, tipo }
  })

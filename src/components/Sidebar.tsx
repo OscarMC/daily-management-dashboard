@@ -11,7 +11,8 @@ const menu = [
   { path: '/repositories', label: 'repositories', icon: FolderGit2 },
   { path: '/branches', label: 'branches', icon: GitBranch },
   { path: '/working-day-summary', label: 'workingDay', icon: Clock },
-  { path: '/login', label: 'login', icon: Clock }
+  { path: '/login', label: 'login', icon: Clock },
+  { path: '/holidays', label: 'holidays', icon: Clock }
 
 ]
 

@@ -1,5 +1,4 @@
 import { Routes, Route } from 'react-router-dom'
-import { useEffect } from 'react'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Dashboard from './pages/Dashboard'
@@ -8,8 +7,7 @@ import Profile from './pages/Profile'
 import Overview from './pages/Overview'
 import Branches from './pages/Branches'
 import Login from './components/Login'
-import { seedDatabase } from './seed/seed'
-import { db } from './db/dexieDB'
+import Holidays from './pages/Holidays'
 import Repositories from './pages/Repositories'
 import WorkingDaySummary from './pages/WorkingDaySummary'
 import { useToastStack } from './components/common/ToastStack'
@@ -32,6 +30,7 @@ export default function App() {
       <Route path="/profile" element={<Profile />} />
       <Route path="/working-day-summary" element={<WorkingDaySummary />} />
       <Route path="/login" element={<Login />} />
+      <Route path="/holidays" element={<Holidays />} />
      </Routes>
     </main>
    </div>

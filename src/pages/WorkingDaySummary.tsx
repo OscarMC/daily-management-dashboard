@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
-import festivosData from '../data/festivos.json'
+import festivosData from '../../public/data/festivos.json'
 import { motion } from "framer-motion"
 
 interface JornadaDetalle {
@@ -57,10 +57,9 @@ export default function WorkingDaySummary() {
   const [diasDisponibles, setDiasDisponibles] = useState<string[]>([])
   const [detalle, setDetalle] = useState<JornadaDetalle[]>([])
   const [resumen, setResumen] = useState<JornadaResumen | null>(null)
-  const [festivos] = useState<Map<string, any>>(new Map(festivosData.map(f => [f.date, f])))
+  const [festivos] = useState<Map<string, any>>(new Map(festivosData.map(f => [new Date().getFullYear() + '-' + f.date, f])))
   const [horasJornada, setHorasJornada] = useState<Record<string, string>>({})
   const [jornadasCompletas, setJornadasCompletas] = useState<string[]>([])
-
   const todayStr = new Date().toISOString().substring(0, 10)
 
   // === cargar jornadas ===
@@ -233,7 +232,9 @@ export default function WorkingDaySummary() {
                 </div>
               )}
 
-              {festivo && <PartyPopper size={18} className="mx-auto text-blue-400" />}
+              {festivo?.tipo === 'local' && <PartyPopper size={40} className="mx-auto text-blue-400" />}
+              {festivo?.tipo === 'nacional' && <PartyPopper size={40} className="mx-auto text-red-400" />}
+              {festivo?.nombre}
             </motion.div>
           )
         })}

@@ -58,3 +58,93 @@ export async function deleteRepository(id: number) {
   method: "DELETE",
  });
 }
+
+// --- Branches API ---
+
+export async function getBranches() {
+ const res = await fetch(`${BASE_URL}/branches`);
+ if (!res.ok) throw new Error('Failed to fetch branches');
+ return await res.json();
+}
+
+export async function addBranch(data: {
+ name: string;
+ base?: string;
+ description?: string;
+ repositoryId?: number;
+}) {
+ const res = await fetch(`${BASE_URL}/branches`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data),
+ });
+ if (!res.ok) throw new Error('Failed to add branch');
+ return await res.json();
+}
+
+export async function updateBranch(id: number, data: Partial<{
+ name: string;
+ base: string;
+ description: string;
+ repositoryId: number;
+}>) {
+ const res = await fetch(`${BASE_URL}/branches/${id}`, {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data),
+ });
+ if (!res.ok) throw new Error('Failed to update branch');
+ return await res.json();
+}
+
+export async function deleteBranch(id: number) {
+ const res = await fetch(`${BASE_URL}/branches/${id}`, {
+  method: 'DELETE',
+ });
+ if (!res.ok) throw new Error('Failed to delete branch');
+}
+
+// --- Holidays API ---
+
+export async function getHolidays() {
+ const res = await fetch(`${BASE_URL}/holidays`);
+ if (!res.ok) throw new Error('Failed to fetch holidays');
+ return await res.json();
+}
+
+export async function addHoliday(data: {
+ date: string;
+ nombre: string;
+ tipo: string;
+ recurrente: boolean;
+}) {
+ const res = await fetch(`${BASE_URL}/holidays`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data),
+ });
+ if (!res.ok) throw new Error('Failed to add holiday');
+ return await res.json();
+}
+
+export async function updateHoliday(id: number, data: Partial<{
+ date: string;
+ nombre: string;
+ tipo: string;
+ recurrente: boolean;
+}>) {
+ const res = await fetch(`${BASE_URL}/holidays/${id}`, {
+  method: 'PUT',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(data),
+ });
+ if (!res.ok) throw new Error('Failed to update holiday');
+ return await res.json();
+}
+
+export async function deleteHoliday(id: number) {
+ const res = await fetch(`${BASE_URL}/holidays/${id}`, {
+  method: 'DELETE',
+ });
+ if (!res.ok) throw new Error('Failed to delete holiday');
+}

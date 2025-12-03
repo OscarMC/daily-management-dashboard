@@ -14,7 +14,8 @@
   "repositories": "Repositorios",
   "workingDay": "Resumen Jornada",
   "branches": "Ramas",
-  "login": "Cuco360"
+  "login": "Cuco360",
+  "holidays": "Días festivos"
  },
  "tasks": {
   "new": "Nueva tarea",

@@ -14,7 +14,8 @@
   "repositories": "Repositories",
   "workingDay": "Working Day Summary",
   "branches": "Branches",
-  "login": "Cuco360"
+  "login": "Cuco360",
+  "holidays": "Holidays"
  },
  "tasks": {
   "new": "New Task",

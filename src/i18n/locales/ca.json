@@ -14,7 +14,8 @@
   "repositories": "Repositoris",
   "workingDay": "Resum Jornada",
   "branches": "Branques",
-  "login": "Cuco360"
+  "login": "Cuco360",
+  "holidays": "Dies festius"
  },
  "tasks": {
   "new": "Nova tasca",

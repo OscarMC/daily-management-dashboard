@@ -1,34 +1,68 @@
-import { useState, useEffect } from 'react'
-import branchesData from '../data/branches.json'
+// src/db/branchesStore.ts
+import { useState, useEffect } from 'react';
+import { getBranches, addBranch, updateBranch, deleteBranch } from './api';
 
 export interface Branch {
- id: number
- name: string
- base: string
- description: string
- repositoryId?: number
+ id: number;
+ name: string;
+ base: string;
+ description: string;
+ repositoryId?: number;
 }
 
 export function useBranches() {
- const [branches, setBranches] = useState<Branch[]>([])
+ const [branches, setBranches] = useState<Branch[]>([]);
 
- // Cargar ramas desde el JSON local
  useEffect(() => {
-  setBranches(branchesData)
- }, [])
+  const load = async () => {
+   try {
+    const data = await getBranches();
+    setBranches(data);
+   } catch (err) {
+    console.error('Error loading branches:', err);
+    setBranches([]);
+   }
+  };
+  load();
+ }, []);
 
- const addBranch = (branch: Omit<Branch, 'id'>) => {
-  const newBranch = { ...branch, id: Date.now() }
-  setBranches((prev) => [...prev, newBranch])
- }
+ const addBranchLocal = async (branch: Omit<Branch, 'id'>) => {
+  try {
+   const newBranch = await addBranch(branch);
+   setBranches((prev) => [...prev, newBranch]);
+   return newBranch;
+  } catch (err) {
+   console.error('Error adding branch:', err);
+   throw err;
+  }
+ };
 
- const updateBranch = (id: number, updated: Partial<Branch>) => {
-  setBranches((prev) => prev.map((b) => (b.id === id ? { ...b, ...updated } : b)))
- }
+ const updateBranchLocal = async (id: number, updated: Partial<Branch>) => {
+  try {
+   const updatedBranch = await updateBranch(id, updated);
+   setBranches((prev) =>
+    prev.map((b) => (b.id === id ? updatedBranch : b))
+   );
+  } catch (err) {
+   console.error('Error updating branch:', err);
+   throw err;
+  }
+ };
 
- const deleteBranch = (id: number) => {
-  setBranches((prev) => prev.filter((b) => b.id !== id))
- }
+ const deleteBranchLocal = async (id: number) => {
+  try {
+   await deleteBranch(id);
+   setBranches((prev) => prev.filter((b) => b.id !== id));
+  } catch (err) {
+   console.error('Error deleting branch:', err);
+   throw err;
+  }
+ };
 
- return { branches, addBranch, updateBranch, deleteBranch }
+ return {
+  branches,
+  addBranch: addBranchLocal,
+  updateBranch: updateBranchLocal,
+  deleteBranch: deleteBranchLocal,
+ };
 }
