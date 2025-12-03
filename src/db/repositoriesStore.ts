@@ -1,5 +1,6 @@
+// src/db/repositoriesStore.ts
 import { useState, useEffect } from 'react'
-import repositoriesData from '../data/repositories.json'
+import { getRepositories, addRepository, updateRepository, deleteRepository } from './api'
 
 export interface Repository {
  id: number
@@ -7,35 +8,59 @@ export interface Repository {
 }
 
 export function useRepositories() {
- const [repositories, setRepositories] = useState<Repository[]>(repositoriesData)
+ const [repositories, setRepositories] = useState<Repository[]>([])
 
- const addRepository = async (name: string) => {
-  const nextId = repositories.length
-   ? Math.max(...repositories.map(r => r.id)) + 1
-   : 1
-  const updated = [...repositories, { id: nextId, name }]
-  setRepositories(updated)
-  localStorage.setItem('repositories', JSON.stringify(updated))
- }
-
- const updateRepository = async (id: number, name: string) => {
-  const updated = repositories.map(r =>
-   r.id === id ? { ...r, name } : r
-  )
-  setRepositories(updated)
-  localStorage.setItem('repositories', JSON.stringify(updated))
- }
-
- const deleteRepository = async (id: number) => {
-  const updated = repositories.filter(r => r.id !== id)
-  setRepositories(updated)
-  localStorage.setItem('repositories', JSON.stringify(updated))
- }
-
+ // Cargar repositorios al montar el componente
  useEffect(() => {
-  const stored = localStorage.getItem('repositories')
-  if (stored) setRepositories(JSON.parse(stored))
+  const loadRepositories = async () => {
+   try {
+    const data = await getRepositories()
+    setRepositories(data)
+   } catch (err) {
+    console.error('Error loading repositories:', err)
+    setRepositories([])
+   }
+  }
+  loadRepositories()
  }, [])
 
- return { repositories, addRepository, updateRepository, deleteRepository }
+ const addRepositoryLocal = async (name: string) => {
+  try {
+   const newRepo = await addRepository(name)
+   setRepositories(prev => [...prev, newRepo])
+   return newRepo
+  } catch (err) {
+   console.error('Error adding repository:', err)
+   throw err
+  }
+ }
+
+ const updateRepositoryLocal = async (id: number, name: string) => {
+  try {
+   await updateRepository(id, name)
+   setRepositories(prev =>
+    prev.map(r => (r.id === id ? { ...r, name } : r))
+   )
+  } catch (err) {
+   console.error('Error updating repository:', err)
+   throw err
+  }
+ }
+
+ const deleteRepositoryLocal = async (id: number) => {
+  try {
+   await deleteRepository(id)
+   setRepositories(prev => prev.filter(r => r.id !== id))
+  } catch (err) {
+   console.error('Error deleting repository:', err)
+   throw err
+  }
+ }
+
+ return {
+  repositories,
+  addRepository: addRepositoryLocal,
+  updateRepository: updateRepositoryLocal,
+  deleteRepository: deleteRepositoryLocal,
+ }
 }

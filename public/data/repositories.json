@@ -1,12 +1,40 @@
 {
- "repositories": [
-  {
-   "id": 1,
-   "name": "DbVersion"
-  },
-  {
-   "id": 10,
-   "name": "test"
-  }
- ]
+  "repositories": [
+    {
+      "id": 1,
+      "name": "DbVersion"
+    },
+    {
+      "id": 2,
+      "name": "Wigos"
+    },
+    {
+      "id": 3,
+      "name": "Wigos.Base"
+    },
+    {
+      "id": 4,
+      "name": "Wigos.Components.DbVersion"
+    },
+    {
+      "id": 5,
+      "name": "WigosGUI"
+    },
+    {
+      "id": 6,
+      "name": "i18n.Resources"
+    },
+    {
+      "id": 7,
+      "name": "i18n.Resources.Base"
+    },
+    {
+      "id": 8,
+      "name": "i18n.Resources.Cashier"
+    },
+    {
+      "id": 9,
+      "name": "Wigos.Components.PeriodicTasks"
+    }
+  ]
 }
