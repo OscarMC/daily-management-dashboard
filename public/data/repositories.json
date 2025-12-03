@@ -1,3 +1,12 @@
 {
- "repositories": []
+ "repositories": [
+  {
+   "id": 1,
+   "name": "DbVersion"
+  },
+  {
+   "id": 10,
+   "name": "test"
+  }
+ ]
 }
