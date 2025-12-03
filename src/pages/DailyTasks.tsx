@@ -402,40 +402,33 @@ export default function DailyTasks() {
           </div>
 
           {t.description && (
-            <p className="text-sm text-gray-600 dark:text-gray-300 mt-1">
-              {t.description}
+            <p 
+            className="text-sm text-gray-600 dark:text-gray-300 mt-1"
+            dangerouslySetInnerHTML={{ __html: t.description }}>
             </p>
           )}
 
           {!isVacation && (
             <>
               {/* ✅ Branch principal + Rama origen */}
-              {t.branch && (
+              {/* Branch + mergeIn */}
+              {t.mergeIn && (
                 <div className="flex flex-col gap-1 mt-1">
                   <div className="flex items-center gap-2">
                     <GitBranch size={14} className="text-blue-500" />
-                    {branchUrl ? (
-                      <a
-                        href={branchUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="text-sm text-blue-500 font-mono hover:underline"
-                      >
-                        {t.branch}
-                      </a>
-                    ) : (
-                      <p className="text-sm text-blue-500 font-mono">{t.branch}</p>
-                    )}
+                    <p className="text-md text-blue-500 font-mono truncate">
+                      {repoName} {"-->"} {t.mergeIn}
+                    </p>
                   </div>
 
-                  {t.mergeIn && (
+                  {t.branch && (
                     <div className="flex items-center gap-2 pl-5">
                       <GitBranch
                         size={12}
                         className="text-gray-400 dark:text-gray-500"
                       />
                       <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
-                        ← {t.mergeIn}
+                        ← {t.branch}
                       </p>
                     </div>
                   )}

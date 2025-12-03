@@ -1,0 +1,23 @@
+[
+ {
+  "id": 1,
+  "name": "master",
+  "base": "master",
+  "description": "Master",
+  "repositoryId": 1
+ },
+ {
+  "id": 2,
+  "name": "hotfix/hotfix-36",
+  "base": "hotfix/hotfix-36",
+  "description": "Hotfix-36",
+  "repositoryId": 2
+ },
+ {
+  "id": 3,
+  "name": "hotfix/hotfix-37",
+  "base": "hotfix/hotfix-37",
+  "description": "Hotfix-37",
+  "repositoryId": 3
+ }
+]

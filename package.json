@@ -3,10 +3,10 @@
  "version": "1.0.0",
  "private": true,
 "scripts": {
- "dev:backend": "ts-node --project tsconfig.backend.json src/server.ts",
  "dev:frontend": "vite",
- "dev": "concurrently \"npm run dev:backend\" \"npm run dev:frontend\"",
- "dev:json": "node server/jsonServer.js",
+ "dev": "concurrently \"npm run dev:frontend\"",
+ "dev:json": "node server/DbJsonServer.js",
+ "dev:jsonRepositories": "node server/repositoriesJsonServer.js",
  "build:backend": "tsc -p tsconfig.backend.json",
  "build:frontend": "vite build",
  "build": "npm run build:backend && npm run build:frontend",

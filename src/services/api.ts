@@ -1,7 +1,6 @@
 // src/services/api.ts
 const MY_BACKEND = 'http://localhost:4000';
 
-// Definimos la interfaz de la respuesta esperada
 interface MarcajesResponse {
  success: boolean;
  marcajes: string[];
@@ -17,20 +16,29 @@ export const fetchMarcajes = async (email: string, password: string): Promise<Ma
  console.log('🔐 Contraseña: [OCULTA por seguridad]');
 
  const url = `${MY_BACKEND}/cuco/fetch-marcajes`;
+
  const options: RequestInit = {
   method: 'POST',
+  mode: "cors",
+  credentials: "omit",
+  cache: "no-store",
   headers: {
-   'Content-Type': 'application/json',
+   "Content-Type": "application/json",
+   "Accept": "application/json"
   },
   body: JSON.stringify({ email, password }),
-  credentials: 'omit', // Evita enviar cookies del frontend
  };
 
- console.log('📡 [API] Configuración de la petición:');
- console.log('   URL:', url);
- console.log('   Método:', options.method);
- console.log('   Headers:', options.headers);
- console.log('   Cuerpo (sin contraseña):', JSON.stringify({ email, password: '***' }));
+ console.log('📡 [API] Configuración de la petición:', { url, ...options });
+ console.log('🍪 Cookies actuales:', document.cookie || "(ninguna)");
+
+ if (navigator.serviceWorker) {
+  navigator.serviceWorker.getRegistrations().then(regs => {
+   if (regs.length > 0) {
+    console.warn("⚠️ Service Workers activos:", regs.map(r => r.scope));
+   }
+  });
+ }
 
  try {
   const res = await fetch(url, options);
@@ -39,41 +47,25 @@ export const fetchMarcajes = async (email: string, password: string): Promise<Ma
   console.log(`✅ [API] Respuesta recibida en ${duration} ms`);
   console.log('   Status:', res.status);
   console.log('   Status Text:', res.statusText);
-  console.log('   Headers de respuesta:', Object.fromEntries(res.headers.entries()));
+  console.log('   Headers:', Object.fromEntries(res.headers.entries()));
 
   if (!res.ok) {
-   console.warn('⚠️ [API] La respuesta NO es exitosa (res.ok = false)');
-
-   let errorBody = 'Sin cuerpo de error';
-   try {
-    const errorText = await res.text();
-    errorBody = errorText.substring(0, 500);
-    console.log('   Cuerpo de error (truncado):', errorBody);
-   } catch (e) {
-    console.error('❌ [API] No se pudo leer el cuerpo de error:', e);
-   }
-
+   const errorText = await res.text();
+   console.error('⚠️ Error Body:', errorText);
    throw new Error(`Error HTTP ${res.status}: ${res.statusText}`);
   }
 
   const data = await res.json() as MarcajesResponse;
-  console.log('🎉 [API] Datos recibidos exitosamente:');
-  console.log('   Éxito:', data.success);
-  console.log('   Total de marcajes:', data.total);
-  console.log('   Primeros datos (preview):', data.marcajes ? data.marcajes.slice(0, 2) : 'N/A');
-
+  console.log('🎉 Datos recibidos:', data);
   return data;
 
  } catch (err: any) {
   const duration = Date.now() - startTime;
-  console.error(`💥 [API] Error tras ${duration} ms:`);
-  console.error('   Mensaje:', err.message);
-  console.error('   Stack:', err.stack);
+  console.error(`💥 [API] Error tras ${duration} ms:`, err);
   throw err;
  }
 };
 
-// Descargar como JSON
 export const downloadAsJSON = (data: any, filename = 'marcajes.json') => {
  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
  const url = URL.createObjectURL(blob);
