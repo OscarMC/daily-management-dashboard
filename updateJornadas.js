@@ -19,7 +19,7 @@ if (!jornadas.includes(today)) {
  jornadas.push(today);
  jornadas.sort(); // ordenadas cronológicamente
  fs.writeFileSync(jornadasPath, JSON.stringify(jornadas, null, 2), "utf8");
- console.log(`✅ Día ${today} agregado automáticamente a jornadas.json`);
+ //console.log(`✅ Día ${today} agregado automáticamente a jornadas.json`);
 } else {
- console.log(`ℹ️ Día ${today} ya existe en jornadas.json`);
+ //console.log(`ℹ️ Día ${today} ya existe en jornadas.json`);
 }

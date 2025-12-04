@@ -24,7 +24,12 @@
   "noEmit": true,
   "jsx": "react-jsx"
  },
+ "exclude": [
+  "node_modules",
+  "dist",
+  "build"
+ ],
  "include": [
-  "src"
+  "src/**/*"
  ]
 }

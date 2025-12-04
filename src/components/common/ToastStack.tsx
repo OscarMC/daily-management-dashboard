@@ -28,7 +28,7 @@ export function useToastStack() {
     const message = typeof input === 'string' ? input : input.message
     const type = typeof input === 'string' ? maybeType || 'info' : input.type
 
-    console.log('%c[Toast]', 'color:lime', { id, message, type })
+    //console.log('%c[Toast]', 'color:lime', { id, message, type })
 
     setToasts((prev) => [...prev, { id, message, type }])
     setTimeout(() => removeToast(id), 4000)

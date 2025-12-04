@@ -64,7 +64,7 @@ export default function WorkingDaySummary() {
 
   // === cargar jornadas ===
   useEffect(() => {
-    fetch('/public/data/jornadas.json')
+    fetch('/src/data/jornadas.json')
       .then(r => r.json())
       .then(async (data: string[]) => {
         setDiasDisponibles(data)
@@ -76,8 +76,11 @@ export default function WorkingDaySummary() {
 
         for (const fecha of data) {
           const filename = `resumen_jornada_${fecha.replace(/-/g, '')}.txt`
+          //console.log('Cargando jornada para:', fecha, filename)
           try {
-            const res = await fetch(`/public/working-day-results/${filename}`)
+            const res = await fetch(`/working-day-results/${filename}`)
+            //console.log('Fetch jornada:', filename, res.ok)
+            //console.log('Response:', res)
             if (!res.ok) continue
             const text = await res.text()
             const match = text.match(/Total\s+trabajado:[\s\t]+(\d{1,2}:\d{2})/)
@@ -101,10 +104,12 @@ export default function WorkingDaySummary() {
   // === cargar fichero seleccionado ===
   useEffect(() => {
     if (!selectedDate) return
+    //console.log('Cargando jornada para:', selectedDate)
     const filename = `resumen_jornada_${selectedDate.replace(/-/g, '')}.txt`
-    fetch(`/public/working-day-results/${filename}`)
+    fetch(`/working-day-results/${filename}`)
       .then(r => {
         if (!r.ok) throw new Error('No encontrado')
+          //console.log('Fichero encontrado:', filename)
         return r.text()
       })
       .then(parsearJornada)

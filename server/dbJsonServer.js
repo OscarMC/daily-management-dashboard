@@ -21,7 +21,7 @@ const holidaysPath = path.join(__dirname, '../src/data/festivos.json');
 // UTILS
 // ========================
 function log(msg, data) {
-  console.log(`[LOG] ${new Date().toISOString()} - ${msg}`, data ? data : '');
+  //console.log(`[LOG] ${new Date().toISOString()} - ${msg}`, data ? data : '');
 }
 
 function errorLog(msg, err) {

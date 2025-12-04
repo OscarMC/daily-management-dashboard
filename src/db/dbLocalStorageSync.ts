@@ -46,11 +46,11 @@ async function exportToJSON() {
           resp.statusText
         )
       } else {
-        console.log(
-          `✅ DB sincronizada con DbJsonServer (tareas: ${
-            payload.tasks?.length ?? 0
-          }, usuarios: ${payload.user?.length ?? 0})`
-        )
+        //console.log(
+        //  `✅ DB sincronizada con DbJsonServer (tareas: ${
+        //    payload.tasks?.length ?? 0
+        //  }, usuarios: ${payload.user?.length ?? 0})`
+        //)
 
        //console.log('✅ DB exportada a JSON')
        //console.log('📦 Tamaño del JSON:', new Blob([jsonData]).size, 'bytes')
@@ -84,7 +84,7 @@ export async function importFromJSON() {
       if (resp.ok) {
         raw = await resp.text()
         source = 'DbJsonServer'
-        console.log('✅ Datos cargados desde DbJsonServer')
+        //('✅ Datos cargados desde DbJsonServer')
       } else {
         console.warn(
           '⚠️ DbJsonServer devolvió error en GET /db:',
@@ -101,7 +101,7 @@ export async function importFromJSON() {
       raw = localStorage.getItem(LOCAL_STORAGE_KEY)
       if (raw) {
         source = 'localStorage'
-        console.log('✅ Datos cargados desde localStorage')
+        //console.log('✅ Datos cargados desde localStorage')
       }
     }
 
@@ -112,7 +112,7 @@ export async function importFromJSON() {
         if (resp.ok) {
           raw = await resp.text()
           source = 'staticFile'
-          console.log('✅ Datos cargados desde fichero estático /data/DB.json')
+          //console.log('✅ Datos cargados desde fichero estático /data/DB.json')
         } else {
           console.warn(
             '⚠️ No se pudo leer DB.json estático:',
@@ -126,7 +126,7 @@ export async function importFromJSON() {
     }
 
     if (!raw) {
-      console.log('ℹ️ No hay datos previos que importar')
+      //console.log('ℹ️ No hay datos previos que importar')
       return
     }
 
@@ -142,9 +142,9 @@ export async function importFromJSON() {
       localStorage.setItem(LOCAL_STORAGE_KEY, raw)
     }
 
-    console.log(
-      `✅ Importación completada desde ${source}: ${tasks.length} tareas, ${user.length} usuarios`
-    )
+    //console.log(
+    //  `✅ Importación completada desde ${source}: ${tasks.length} tareas, ${user.length} usuarios`
+    //)
   } catch (err) {
     console.error('❌ Error importing DB from JSON:', err)
   }
