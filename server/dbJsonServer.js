@@ -13,9 +13,9 @@ app.use(bodyParser.json({ limit: '10mb' }));
 
 // Rutas a los archivos JSON
 const dbPath = path.join(__dirname, '../public/data/DB.json');
-const repositoriesPath = path.join(__dirname, '../public/data/repositories.json');
-const branchesPath = path.join(__dirname, '../public/data/branches.json');
-const holidaysPath = path.join(__dirname, '../public/data/festivos.json');
+const repositoriesPath = path.join(__dirname, '../src/data/repositories.json');
+const branchesPath = path.join(__dirname, '../src/data/branches.json');
+const holidaysPath = path.join(__dirname, '../src/data/festivos.json');
 
 // ========================
 // UTILS

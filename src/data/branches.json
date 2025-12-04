@@ -1,0 +1,29 @@
+{
+  "branches": [
+    {
+      "id": 7,
+      "name": "hotfix/hotfix-36",
+      "base": "hotfix/hotfix-36",
+      "description": "Hotfix-36"
+    },
+    {
+      "id": 8,
+      "name": "hotfix/hotfix-37",
+      "base": "hotfix/hotfix-37",
+      "description": "Hotfix-37"
+    },
+    {
+      "id": 9,
+      "name": "master",
+      "base": "master",
+      "description": "Master"
+    },
+    {
+      "id": 10,
+      "name": "development",
+      "base": "development",
+      "description": "Development",
+      "repositoryId": 6
+    }
+  ]
+}

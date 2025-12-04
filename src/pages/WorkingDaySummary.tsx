@@ -13,7 +13,7 @@ import {
 } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
-import festivosData from '../../public/data/festivos.json'
+import festivosData from '../../src/data/festivos.json'
 import { motion } from "framer-motion"
 
 interface JornadaDetalle {

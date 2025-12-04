@@ -9,18 +9,24 @@
       "createdAt": "2025-11-20T13:47:41.515Z",
       "date": "2025-11-17",
       "hours": 6,
-      "id": 15
+      "id": 15,
+      "itemId": "WIGOS-118400",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118415 - Salones - ERP Luckia - Pagos online - Kiosco (502) y Deposito online - Kiosco (503) los valores se encuentran cruzados",
-      "description": "https://winsytemsintl.atlassian.net/browse/WIGOS-118415",
+      "description": "https://winsytemsintl.atlassian.net/browse/WIGOS-118415  ",
       "branch": "",
       "estimated": "",
       "completed": true,
       "createdAt": "2025-11-20T13:48:12.354Z",
       "date": "2025-11-17",
       "hours": 2,
-      "id": 16
+      "id": 16,
+      "itemId": "WIGOS-118415",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
@@ -31,7 +37,10 @@
       "createdAt": "2025-11-20T13:48:35.576Z",
       "date": "2025-11-17",
       "hours": 0.5,
-      "id": 17
+      "id": 17,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
@@ -42,7 +51,10 @@
       "createdAt": "2025-11-20T13:49:27.504Z",
       "date": "2025-11-18",
       "hours": 6,
-      "id": 18
+      "id": 18,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118481 - Refinement - WIGOS-118194 Luckia - ERP data integration v1.3",
@@ -53,7 +65,10 @@
       "createdAt": "2025-11-20T13:49:47.748Z",
       "date": "2025-11-18",
       "hours": 0.25,
-      "id": 19
+      "id": 19,
+      "itemId": "WIGOS-118481",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118488 - Refinement - WIGOS-109375 Luckia - ERP data integration v4 (foreign currencies)",
@@ -64,7 +79,10 @@
       "createdAt": "2025-11-20T13:50:05.770Z",
       "date": "2025-11-18",
       "hours": 0.25,
-      "id": 20
+      "id": 20,
+      "itemId": "WIGOS-118488",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118159 - ERP Luckia - Pasivo Inicial (604) Valor mal calculado Pasivo Inicial",
@@ -75,7 +93,10 @@
       "createdAt": "2025-11-20T13:50:33.415Z",
       "date": "2025-11-18",
       "hours": 1,
-      "id": 21
+      "id": 21,
+      "itemId": "WIGOS-118159",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117823 - ERP Luckia - Pasivo Final (605) Campo mal calculado Pasivo Final",
@@ -86,7 +107,10 @@
       "createdAt": "2025-11-20T13:50:50.179Z",
       "date": "2025-11-18",
       "hours": 1,
-      "id": 22
+      "id": 22,
+      "itemId": "WIGOS-117823",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118546 - Salones - ERP Luckia - Errores detectados en el Laboratorio del cliente. Problemas de regionalización de fechas.",
@@ -97,7 +121,10 @@
       "createdAt": "2025-11-20T13:51:29.689Z",
       "date": "2025-11-19",
       "hours": 8.5,
-      "id": 23
+      "id": 23,
+      "itemId": "WIGOS-118546",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118114 - Salones - ERP Luckia - (245) Tickets caducados no se suman para el fichero csv",
@@ -109,7 +136,9 @@
       "date": "2025-11-20",
       "hours": 8.5,
       "id": 24,
-      "repositoryId": 1
+      "itemId": "WIGOS-118114",
+      "repositoryId": 1,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117823 - ERP Luckia - Pasivo Final (605) Campo mal calculado Pasivo Final",
@@ -120,7 +149,10 @@
       "createdAt": "2025-11-20T14:12:33.142Z",
       "date": "2025-11-10",
       "hours": 6,
-      "id": 25
+      "id": 25,
+      "itemId": "WIGOS-117823",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
@@ -131,7 +163,10 @@
       "createdAt": "2025-11-20T14:12:54.647Z",
       "date": "2025-11-10",
       "hours": 2,
-      "id": 26
+      "id": 26,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118208 - Refinement - WIGOS-111228 GORGE -> WigosOne integration (Orenes) v1.0 | Manufacturer and Model maintenance",
@@ -142,7 +177,10 @@
       "createdAt": "2025-11-20T14:13:13.103Z",
       "date": "2025-11-10",
       "hours": 0.5,
-      "id": 27
+      "id": 27,
+      "itemId": "WIGOS-118208",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
@@ -153,7 +191,10 @@
       "createdAt": "2025-11-20T14:13:30.638Z",
       "date": "2025-11-11",
       "hours": 1.5,
-      "id": 28
+      "id": 28,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117971 - Salones - ERP Luckia - Atributos de concepto de salida (400) contiene valores incorrectos",
@@ -164,7 +205,10 @@
       "createdAt": "2025-11-20T14:13:49.816Z",
       "date": "2025-11-11",
       "hours": 1.5,
-      "id": 29
+      "id": 29,
+      "itemId": "WIGOS-117971",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118221 - Salones - ERP Integration V1 - En el archivo csv se ha generado con el cambio de día natural en lugar de tomar la fecha de \"GamingHallExtractionWorkingDayStart\" definida para los salones",
@@ -175,7 +219,10 @@
       "createdAt": "2025-11-20T14:14:17.388Z",
       "date": "2025-11-11",
       "hours": 5.5,
-      "id": 30
+      "id": 30,
+      "itemId": "WIGOS-118221",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118221 - Salones - ERP Integration V1 - En el archivo csv se ha generado con el cambio de día natural en lugar de tomar la fecha de \"GamingHallExtractionWorkingDayStart\" definida para los salones",
@@ -186,7 +233,10 @@
       "createdAt": "2025-11-20T14:15:04.963Z",
       "date": "2025-11-12",
       "hours": 4,
-      "id": 31
+      "id": 31,
+      "itemId": "WIGOS-118221",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
@@ -197,7 +247,10 @@
       "createdAt": "2025-11-20T14:15:28.018Z",
       "date": "2025-11-12",
       "hours": 4.5,
-      "id": 32
+      "id": 32,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118159 - ERP Luckia - Pasivo Inicial (604) Valor mal calculado Pasivo Inicial",
@@ -208,7 +261,10 @@
       "createdAt": "2025-11-20T14:15:48.528Z",
       "date": "2025-11-13",
       "hours": 3,
-      "id": 33
+      "id": 33,
+      "itemId": "WIGOS-118159",
+      "repositoryId": 1,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117711 - Salones - Reporte de efectivo de sala - con WigosCollect - se están restando los movimientos de reposiciones y retiros de kiosco al realizar las recaudaciones de máquinas con la app, pero todavía no se ha cerrado la sesión de caja del recaudador",
@@ -219,7 +275,10 @@
       "createdAt": "2025-11-20T14:16:03.667Z",
       "date": "2025-11-13",
       "hours": 5.5,
-      "id": 34
+      "id": 34,
+      "itemId": "WIGOS-117711",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117711 - Salones - Reporte de efectivo de sala - con WigosCollect - se están restando los movimientos de reposiciones y retiros de kiosco al realizar las recaudaciones de máquinas con la app, pero todavía no se ha cerrado la sesión de caja del recaudador",
@@ -230,7 +289,10 @@
       "createdAt": "2025-11-20T14:16:36.567Z",
       "date": "2025-11-14",
       "hours": 6,
-      "id": 35
+      "id": 35,
+      "itemId": "WIGOS-117711",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117758 - ERP Luckia - Recargas Cashless (210) Campo mal calculado para recargas cashless",
@@ -241,7 +303,10 @@
       "createdAt": "2025-11-20T17:10:46.380Z",
       "date": "2025-11-03",
       "hours": 2,
-      "id": 36
+      "id": 36,
+      "itemId": "WIGOS-117758",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117776 - ERP Luckia - Reintegros Cashless (211) Campo mal calculado para reintegros cashless",
@@ -252,7 +317,10 @@
       "createdAt": "2025-11-20T17:11:06.017Z",
       "date": "2025-11-03",
       "hours": 2,
-      "id": 37
+      "id": 37,
+      "itemId": "WIGOS-117776",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117821 - ERP Luckia - Saldo final (tarjetas) (603) Linea de la operación no se registra en el fichero csv",
@@ -263,7 +331,10 @@
       "createdAt": "2025-11-20T17:11:22.749Z",
       "date": "2025-11-03",
       "hours": 2,
-      "id": 38
+      "id": 38,
+      "itemId": "WIGOS-117821",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117823 - ERP Luckia - Pasivo Final (605) Campo mal calculado Pasivo Final",
@@ -274,7 +345,10 @@
       "createdAt": "2025-11-20T17:11:47.124Z",
       "date": "2025-11-03",
       "hours": 0.5,
-      "id": 39
+      "id": 39,
+      "itemId": "WIGOS-117823",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117822 - ERP Luckia - TITO IN Redimible (242) Campo mal calculado Tito In Redimible en máquina",
@@ -285,7 +359,10 @@
       "createdAt": "2025-11-20T17:12:08.597Z",
       "date": "2025-11-03",
       "hours": 0.5,
-      "id": 40
+      "id": 40,
+      "itemId": "WIGOS-117822",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-97950  - Rep. máquina | Creación ticket en Cajero con LPS",
@@ -296,7 +373,10 @@
       "createdAt": "2025-11-20T17:12:28.427Z",
       "date": "2025-11-03",
       "hours": 1.5,
-      "id": 41
+      "id": 41,
+      "itemId": "WIGOS-97950",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-97950  - Rep. máquina | Creación ticket en Cajero con LPS",
@@ -307,7 +387,10 @@
       "createdAt": "2025-11-20T17:12:47.380Z",
       "date": "2025-11-04",
       "hours": 1.5,
-      "id": 42
+      "id": 42,
+      "itemId": "WIGOS-97950",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117798 - Integración ERP 1.2 | Conceptos (columna text)",
@@ -318,7 +401,10 @@
       "createdAt": "2025-11-20T17:13:38.125Z",
       "date": "2025-11-04",
       "hours": 2,
-      "id": 43
+      "id": 43,
+      "itemId": "WIGOS-117798",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117885 - Integración ERP 1.2 | Caja (líneas a cero)",
@@ -329,7 +415,10 @@
       "createdAt": "2025-11-20T17:14:02.575Z",
       "date": "2025-11-04",
       "hours": 5,
-      "id": 44
+      "id": 44,
+      "itemId": "WIGOS-117885",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117885 - Integración ERP 1.2 | Caja (líneas a cero)",
@@ -340,7 +429,10 @@
       "createdAt": "2025-11-20T17:14:26.785Z",
       "date": "2025-11-05",
       "hours": 1.5,
-      "id": 45
+      "id": 45,
+      "itemId": "WIGOS-117885",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117894 - Integración ERP 1.2 | TITO (anular pagado)",
@@ -351,7 +443,10 @@
       "createdAt": "2025-11-20T17:14:42.251Z",
       "date": "2025-11-05",
       "hours": 1.5,
-      "id": 46
+      "id": 46,
+      "itemId": "WIGOS-117894",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117971 - Salones - ERP Luckia - Atributos de concepto contiene valores incorrectos",
@@ -362,7 +457,10 @@
       "createdAt": "2025-11-20T17:15:04.280Z",
       "date": "2025-11-05",
       "hours": 2,
-      "id": 47
+      "id": 47,
+      "itemId": "WIGOS-117971",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
@@ -373,7 +471,10 @@
       "createdAt": "2025-11-20T17:15:25.280Z",
       "date": "2025-11-05",
       "hours": 1,
-      "id": 48
+      "id": 48,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117758 - ERP Luckia - Recargas Cashless (210) Campo mal calculado para recargas cashless",
@@ -384,7 +485,10 @@
       "createdAt": "2025-11-20T17:15:38.551Z",
       "date": "2025-11-05",
       "hours": 1.5,
-      "id": 49
+      "id": 49,
+      "itemId": "WIGOS-117758",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117776 - ERP Luckia - Reintegros Cashless (211) Campo mal calculado para reintegros cashless",
@@ -395,7 +499,10 @@
       "createdAt": "2025-11-20T17:15:51.135Z",
       "date": "2025-11-05",
       "hours": 1,
-      "id": 50
+      "id": 50,
+      "itemId": "WIGOS-117776",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117644 - ERP Luckia - Tickets (243) Campo mal calculado para tickets out de máquina",
@@ -406,7 +513,10 @@
       "createdAt": "2025-11-20T17:16:10.272Z",
       "date": "2025-11-06",
       "hours": 3,
-      "id": 51
+      "id": 51,
+      "itemId": "WIGOS-117644",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117822 - ERP Luckia - TITO IN Redimible (242) Campo mal calculado Tito In Redimible en máquina",
@@ -417,7 +527,10 @@
       "createdAt": "2025-11-20T17:16:22.489Z",
       "date": "2025-11-06",
       "hours": 2,
-      "id": 52
+      "id": 52,
+      "itemId": "WIGOS-117822",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-118114 - Salones - ERP Luckia - (245) Tickets caducados no se suman para el fichero csv",
@@ -428,7 +541,10 @@
       "createdAt": "2025-11-20T17:16:34.167Z",
       "date": "2025-11-06",
       "hours": 2,
-      "id": 53
+      "id": 53,
+      "itemId": "WIGOS-118114",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117913 - Project Plan - WIGOS-117797 Luckia - ERP data integration v1.2",
@@ -439,7 +555,10 @@
       "createdAt": "2025-11-20T17:16:48.745Z",
       "date": "2025-11-06",
       "hours": 1.5,
-      "id": 54
+      "id": 54,
+      "itemId": "WIGOS-117913",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "WIGOS-117823 - ERP Luckia - Pasivo Final (605) Campo mal calculado Pasivo Final",
@@ -450,7 +569,10 @@
       "createdAt": "2025-11-20T17:17:18.019Z",
       "date": "2025-11-07",
       "hours": 1.5,
-      "id": 55
+      "id": 55,
+      "itemId": "WIGOS-117823",
+      "repositoryId": 2,
+      "type": "WIGOS"
     },
     {
       "name": "SOPORTE DANI BLOQUEOS EN ORENES CLIENTE CON LA v36",
@@ -474,6 +596,8 @@
       "hours": 6,
       "itemId": "WIGOS-118382",
       "repositoryId": 1,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 59
     },
     {
@@ -485,7 +609,9 @@
       "date": "2025-10-31",
       "hours": 6,
       "itemId": "WIGOS-117711",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 63
     },
     {
@@ -497,7 +623,9 @@
       "date": "2025-10-30",
       "hours": 7.5,
       "itemId": "WIGOS-117711",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 64
     },
     {
@@ -509,7 +637,9 @@
       "date": "2025-10-30",
       "hours": 1,
       "itemId": "WIGOS-116531",
-      "repositoryId": "5",
+      "repositoryId": 5,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 65
     },
     {
@@ -521,7 +651,9 @@
       "date": "2025-10-29",
       "hours": 4.5,
       "itemId": "WIGOS-117644",
-      "repositoryId": "1",
+      "repositoryId": 1,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 66
     },
     {
@@ -533,7 +665,9 @@
       "date": "2025-10-29",
       "hours": 4,
       "itemId": "WIGOS-97950",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 67
     },
     {
@@ -545,7 +679,9 @@
       "date": "2025-10-28",
       "hours": 5.5,
       "itemId": "WIGOS-97950",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 68
     },
     {
@@ -557,7 +693,9 @@
       "date": "2025-10-28",
       "hours": 2,
       "itemId": "WIGOS-117530",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 69
     },
     {
@@ -569,7 +707,9 @@
       "date": "2025-10-28",
       "hours": 1,
       "itemId": "WIGOS-116531",
-      "repositoryId": "5",
+      "repositoryId": 5,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 70
     },
     {
@@ -581,7 +721,9 @@
       "date": "2025-10-27",
       "hours": 3.5,
       "itemId": "WIGOS-117530",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 71
     },
     {
@@ -593,7 +735,9 @@
       "date": "2025-10-27",
       "hours": 3,
       "itemId": "WIGOS-117475",
-      "repositoryId": "2",
+      "repositoryId": 2,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 72
     },
     {
@@ -605,27 +749,30 @@
       "date": "2025-10-27",
       "hours": 2,
       "itemId": "WIGOS-116531",
-      "repositoryId": "5",
+      "repositoryId": 5,
+      "mergeIn": 9,
+      "type": "WIGOS",
       "id": 73
     },
     {
       "name": "WIGOS-118382 - Salones - Reporte de efectivo de sala - con WigosCollect - los datos de reposiciones y retiros de kiosco se están \"multiplicando\" en el dato de \"Tickets pendientes de reponer\" por cada operación de este tipo realizada con la app",
       "description": "Salones \n - Reporte de efectivo de sala con WigosCollect \n  - los datos de reposiciones y retiros de kiosco se están \"multiplicando\" en el dato de \"Tickets pendientes de reponer\" por cada operación de este tipo realizada con la app",
       "branch": "feature/sln2/wigos-118382_salones_reporte_de_efectivo_de_sala_con_wigoscollect_los_datos_de_reposiciones_y_retiros_de_kiosco_se_estan_multiplicando",
+      "mergeIn": 9,
       "completed": true,
       "createdAt": "2025-11-21T13:51:09.093Z",
       "date": "2025-11-24",
       "hours": 1,
       "itemId": "WIGOS-118382",
-      "repositoryId": "1",
-      "id": 74,
-      "mergeIn": "master"
+      "repositoryId": 1,
+      "type": "WIGOS",
+      "id": 74
     },
     {
       "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
       "description": "Salones \n- ERP Luckia \n- Atributos de concepto de entrada (300) no se están registrando en el fichero",
       "branch": "feature/sln2/wigos-117972_salones_erp_luckia_atributos_de_concepto_de_entrada_300_no_se_estan_registrando_en_el_fichero_nueva_branch",
-      "mergeIn": "master",
+      "mergeIn": 9,
       "completed": true,
       "createdAt": "2025-12-02T15:07:23.486Z",
       "date": "2025-12-02",
@@ -639,7 +786,7 @@
       "name": "WIGOS-118194 - Luckia - ERP data integration v1.3",
       "description": "Luckia - ERP data integration v1.3",
       "branch": "feature/sln2/wigos-118194_luckia_erp_data_integration_v1_3",
-      "mergeIn": "master",
+      "mergeIn": 9,
       "completed": true,
       "createdAt": "2025-12-02T15:10:24.839Z",
       "date": "2025-12-02",
@@ -653,7 +800,7 @@
       "name": "WIGOS-118194 - Luckia - ERP data integration v1.3",
       "description": "Épica --> Luckia - ERP data integration v1.3 || US: WIGOS-118196 - Integración ERP 1.3 | Mensaje para Luckia Salones - TITOs Redimibles",
       "branch": "feature/sln2/wigos-118194_luckia_erp_data_integration_v1_3",
-      "mergeIn": "master",
+      "mergeIn": 9,
       "completed": true,
       "createdAt": "2025-12-02T15:10:24.839Z",
       "date": "2025-12-03",
@@ -732,7 +879,7 @@
       "name": "WIGOS-119159 - Salones - GUI - Reporte simplificado de recaudación - Filtrando por máquina el reporte queda vacío",
       "description": "Salones \n - GUI \n  - Reporte simplificado de recaudación \n   - Filtrando por máquina el reporte queda vacío",
       "branch": "feature/sln2/wigos-119159_salones_gui_reporte_simplificado_de_recaudacion_filtrando_por_maquina_el_reporte_queda_vacio",
-      "mergeIn": "hotfix/hotfix-37",
+      "mergeIn": 8,
       "completed": true,
       "createdAt": "2025-12-03T08:20:30.138Z",
       "date": "2025-12-03",
@@ -741,6 +888,20 @@
       "repositoryId": 5,
       "type": "WIGOS",
       "id": 83
+    },
+    {
+      "name": "WIGOS-118194 - Luckia - ERP data integration v1.3",
+      "description": "Épica --> Luckia - ERP data integration v1.3 || US: WIGOS-118196 - Integración ERP 1.3 | Mensaje para Luckia Salones - TITOs Redimibles\n\nQueda pendiente sacar release de Sprint.",
+      "branch": "feature/sln2/wigos-118194_luckia_erp_data_integration_v1_3",
+      "mergeIn": 9,
+      "completed": true,
+      "createdAt": "2025-12-02T15:10:24.839Z",
+      "date": "2025-12-04",
+      "hours": 2.5,
+      "itemId": "WIGOS-118194",
+      "repositoryId": 1,
+      "type": "WIGOS",
+      "id": 85
     }
   ],
   "user": [

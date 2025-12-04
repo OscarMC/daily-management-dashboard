@@ -1,4 +1,4 @@
-import festivosData from '../../public/data/festivos.json'
+import festivosData from '../../src/data/festivos.json'
 
 export interface Festivo {
  date: string
