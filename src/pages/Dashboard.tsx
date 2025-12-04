@@ -20,6 +20,7 @@ import {
 import { useState } from 'react'
 import EditTaskModal from '../components/common/EditTaskModal'
 import { Button } from '../components/ui/Button'
+import { toast } from '../components/common/ToastStack'
 
 interface MessageModalProps {
   message: string
@@ -126,7 +127,21 @@ export default function Dashboard() {
       console.error('Error updating task completion status:', error);
     }
   };
+    const copyBranchName = async (text: string, id: number) => {
+      try {
+        await navigator.clipboard.writeText(text)
+        setCopiedTask(id)
+        toast({ message: '📋 Nombre copiado al portapapeles', type: 'success' })
+        setTimeout(() => setCopiedTask(null), 2000)
+      } catch {
+        toast({ message: '⚠️ Error al copiar el texto.', type: 'warn' })
+      }
+  }
 
+  //console.log('Branch URL:', branchUrl);
+  //console.log('Repository Name:', repoName);
+  //console.log('Task Branch:', t.branch??'t.branch undefined');
+  //console.log('Task Repository ID:', t.r??'t.r undefined');
   const handleOpenMessage = (
     jiraUrl: string | null,
     branchUrl: string | null,
@@ -196,6 +211,11 @@ export default function Dashboard() {
                 : repoName
                   ? `https://bitbucket.org/wigos-dev/${repoName}/branches`
                   : null
+              const mergeInUrl = t.mergeIn
+                ? `https://bitbucket.org/wigos-dev/${repoName || 'repo'}/branch/${t.mergeIn}`
+                : repoName
+                  ? `https://bitbucket.org/wigos-dev/${repoName}/branches`
+                  : null
 
               return (
                 <li className="flex justify-between gap-2 py-1" key={t.id}>
@@ -230,6 +250,32 @@ export default function Dashboard() {
                                 <p className="text-md text-blue-500 font-mono truncate">
                                   {repoName} {"-->"} {t.mergeIn}
                                 </p>
+                                <button
+                                  onClick={() => copyBranchName(t.mergeIn || '', t.id!)}
+                                  className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                  title="Copiar rama de merge"
+                                >
+                                  <ClipboardCopy
+                                    size={16}
+                                    className={
+                                      copiedTask === t.id ? 'text-green-500' : 'text-gray-400'
+                                    }
+                                  />
+                                </button>
+                                {mergeInUrl && (
+                                  <a
+                                    href={mergeInUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    title="Abrir ticket en Jira"
+                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                  >
+                                    <ExternalLink
+                                      size={16}
+                                      className="text-blue-500 hover:text-blue-400"
+                                    />
+                                  </a>
+                                )}
                               </div>
 
                               {t.branch && (
@@ -241,6 +287,32 @@ export default function Dashboard() {
                                   <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
                                     ← {t.branch}
                                   </p>
+                                  <button
+                                    onClick={() => copyBranchName(t.branch||'', t.id!)}
+                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                    title="Copiar rama de trabajo"
+                                  >
+                                    <ClipboardCopy
+                                      size={16}
+                                      className={
+                                        copiedTask === t.id ? 'text-green-500' : 'text-gray-400'
+                                      }
+                                    />
+                                  </button>
+                                  {branchUrl && (
+                                    <a
+                                      href={branchUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      title="Abrir ticket en Jira"
+                                      className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                    >
+                                      <ExternalLink
+                                        size={16}
+                                        className="text-blue-500 hover:text-blue-400"
+                                      />
+                                    </a>
+                                  )}
                                 </div>
                               )}
                             </div>
