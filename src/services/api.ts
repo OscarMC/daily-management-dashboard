@@ -32,13 +32,13 @@ export const fetchMarcajes = async (email: string, password: string): Promise<Ma
  console.log('📡 [API] Configuración de la petición:', { url, ...options });
  console.log('🍪 Cookies actuales:', document.cookie || "(ninguna)");
 
- if (navigator.serviceWorker) {
-  navigator.serviceWorker.getRegistrations().then(regs => {
-   if (regs.length > 0) {
-    console.warn("⚠️ Service Workers activos:", regs.map(r => r.scope));
-   }
-  });
- }
+ //if (navigator.serviceWorker) {
+ // navigator.serviceWorker.getRegistrations().then(regs => {
+ //  if (regs.length > 0) {
+ //   console.warn("⚠️ Service Workers activos:", regs.map(r => r.scope));
+ //  }
+ // });
+ //}
 
  try {
   const res = await fetch(url, options);

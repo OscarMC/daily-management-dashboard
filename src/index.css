@@ -80,3 +80,91 @@ body {
 .animate-fade-slide-in {
  animation: fade-slide-in 0.35s ease-out forwards;
 }
+
+/* --- Estilos para ReactQuill en modo oscuro --- */
+.ql-snow .ql-toolbar {
+  background-color: #1f2937;
+  border: 1px solid #374151;
+  color: #ffffff;
+}
+
+.ql-snow .ql-toolbar .ql-picker-label,
+.ql-snow .ql-toolbar .ql-picker-options,
+.ql-snow .ql-toolbar .ql-picker-item {
+  color: #ffffff !important;
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+}
+
+.ql-snow .ql-toolbar .ql-picker-label:hover,
+.ql-snow .ql-toolbar .ql-picker-options .ql-picker-item:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+.ql-snow .ql-toolbar .ql-picker-label svg,
+.ql-snow .ql-toolbar .ql-picker-options svg {
+  fill: #ffffff !important;
+}
+
+.ql-snow .ql-toolbar button {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.ql-snow .ql-toolbar button:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.ql-snow .ql-editor {
+  background-color: #1f2937;
+  color: #ffffff;
+  border: 1px solid #374151;
+  padding: 0.5rem;
+  font-size: 0.875rem;
+}
+
+.ql-snow .ql-editor p {
+  margin: 0.25rem 0;
+}
+
+.ql-snow .ql-editor .ql-align-center {
+  text-align: center;
+}
+
+.ql-snow .ql-editor .ql-align-right {
+  text-align: right;
+}
+
+.ql-snow .ql-editor .ql-align-left {
+  text-align: left;
+}
+
+/* Para que los estilos personalizados (como tus <p style="border:...">) se vean bien */
+.ql-snow .ql-editor p[style*="border"] {
+  padding: 2px;
+  margin: 2px;
+}
+
+.dark-theme-editor .ql-toolbar {
+  background-color: #1f2937 !important;
+  border: 1px solid #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme-editor .ql-toolbar button {
+  color: #ffffff !important;
+  fill: #ffffff !important;
+}
+
+.dark-theme-editor .ql-toolbar button:hover {
+  background-color: #374151 !important;
+  color: #ffffff !important;
+}
+
+.dark-theme-editor .ql-editor {
+  background-color: #1f2937 !important;
+  color: #ffffff !important;
+}

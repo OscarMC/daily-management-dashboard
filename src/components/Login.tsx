@@ -94,6 +94,8 @@ export default function Login() {
        a.href = url;
        a.download = `marcajes_${new Date().toISOString().slice(0, 10)}.txt`;
        a.click();
+       console.log('URL del blob:', url);
+       console.log('Descargando archivo:', a.download);
        URL.revokeObjectURL(url);
       }}
       className="mt-2 px-4 py-2 bg-green-600 text-white rounded"

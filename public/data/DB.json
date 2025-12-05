@@ -744,7 +744,7 @@
     },
     {
       "name": "WIGOS-118194 - Luckia - ERP data integration v1.3",
-      "description": "Épica --> Luckia - ERP data integration v1.3 \n<p>US:</p>\n<p style=\"border:1px blue solid; padding:2px; margin:2px\">WIGOS-118196 - Integración ERP 1.3 | Mensaje para Luckia Salones - TITOs Redimibles</p>\n<p>NOTAS:</p>\n<p style=\"border:1px red solid; padding:2px; margin:2px\">Queda pendiente sacar release de Sprint. La ERP Data Integration v1.3 y la ERP Data Integration v4 saldrán juntas de esta branch</p>",
+      "description": "<h3><strong>Épica --&gt; Luckia - ERP data integration v1.3</strong></h3><p>US:</p><p class=\"ql-indent-1\">WIGOS-118196 - Integración ERP 1.3 | Mensaje para Luckia Salones - TITOs Redimibles</p><p>NOTAS:</p><p class=\"ql-indent-1\">Queda pendiente sacar release de Sprint. La <strong>ERP Data Integration v1.3 y la ERP Data Integration v4</strong> saldrán juntas de esta branch</p>",
       "branch": "feature/sln2/wigos-118194_luckia_erp_data_integration_v1_3",
       "mergeIn": "master",
       "completed": true,
@@ -769,6 +769,20 @@
       "repositoryId": 1,
       "type": "WIGOS",
       "id": 86
+    },
+    {
+      "name": "WIGOS-109375 - Luckia - ERP data integration v4 (foreign currencies)",
+      "description": "<p>WIGOS-109375 - Luckia - ERP data integration v4 (foreign currencies)</p><p>US:</p><ul><li><strong>WIGOS-109486 - Integración ERP 4 | Mensajes para Luckia | Divisas</strong></li><li class=\"ql-indent-1\">SAP Code 216 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 217 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 218 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 219 --&gt; Hecho</li><li><strong>WIGOS-109487 - Integración ERP 4 | Mensajes para Luckia | Caja (divisas)</strong></li><li class=\"ql-indent-1\">SAP Code 600 --&gt; Fix para filtrar solo por la divisa local 'EUR'.</li><li class=\"ql-indent-1\">SAP Code 601 --&gt; Hecho</li><li><strong>WIGOS-109508 - Integración ERP 4 | Mensajes para Luckia | Conceptos (divisas)</strong></li><li class=\"ql-indent-1\"><strong>﻿SAP Code 300 --&gt; Modificado</strong></li><li class=\"ql-indent-1\"><strong>SAP Code 400 --&gt; Modificado</strong></li></ul>",
+      "branch": "feature/sln2/wigos-109375_luckia_erp_data_integration_v4_foreign_currencies",
+      "mergeIn": "master",
+      "completed": true,
+      "createdAt": "2025-12-04T11:52:47.721Z",
+      "date": "2025-12-05",
+      "hours": 5,
+      "itemId": "WIGOS-109375",
+      "repositoryId": 1,
+      "type": "WIGOS",
+      "id": 87
     }
   ],
   "user": [
