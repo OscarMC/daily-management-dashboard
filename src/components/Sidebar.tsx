@@ -1,4 +1,4 @@
-import { Home, ClipboardList, BarChart2, User, FolderGit2, Clock, GitBranch } from 'lucide-react'
+import { Home, ClipboardList, BarChart2, User, FolderGit2, Clock, GitBranch, Car, Bird, CalendarCheck } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLiveQuery } from 'dexie-react-hooks'
@@ -7,12 +7,12 @@ import { db } from '../db/dexieDB'
 const menu = [
   { path: '/', label: 'dashboard', icon: Home },
   { path: '/daily-tasks', label: 'dailyTasks', icon: ClipboardList },
-  { path: '/overview', label: 'overview', icon: BarChart2 },
+  { path: '/overview', label: 'overview', icon: CalendarCheck },
   { path: '/repositories', label: 'repositories', icon: FolderGit2 },
   { path: '/branches', label: 'branches', icon: GitBranch },
   { path: '/working-day-summary', label: 'workingDay', icon: Clock },
-  { path: '/login', label: 'login', icon: Clock },
-  { path: '/holidays', label: 'holidays', icon: Clock }
+  { path: '/login', label: 'login', icon: Bird },
+  { path: '/holidays', label: 'holidays', icon: Car }
 
 ]
 
@@ -38,7 +38,7 @@ export default function Sidebar() {
                   : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
                 }`}
             >
-              <Icon className="w-5 h-5" />
+              <Icon className="w-15 h-15" />
               {t(`menu.${label}`)}
             </Link>
           ))}

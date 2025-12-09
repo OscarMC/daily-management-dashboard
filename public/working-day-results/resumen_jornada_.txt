@@ -1,0 +1,8 @@
+﻿ENTRADA   SALIDA    CONCEPTO     DURACION
+--------  --------  -----------  --------
+-------------------------------
+Total preinicio:		               00:00
+Total trabajado:		               00:00
+Tiempo restante para jornada:		   08:30
+Total descansos:		               00:00
+-------------------------------
