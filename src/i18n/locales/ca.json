@@ -15,7 +15,8 @@
   "workingDay": "Resum Jornades",
   "branches": "Branques",
   "login": "Cuco360",
-  "holidays": "Dies festius"
+  "holidays": "Dies festius",
+  "configuration": "Configuració"
  },
  "tasks": {
   "new": "Nova tasca",

@@ -1,7 +1,6 @@
 // src/components/Login.tsx
 import { useState } from 'react';
 import { fetchMarcajes } from '../services/api';
-
 export default function Login() {
  const [email, setEmail] = useState<string>('');
  const [password, setPassword] = useState<string>('');
@@ -21,6 +20,8 @@ export default function Login() {
 
   try {
    const response = await fetchMarcajes(email, password);
+
+
 
    if (response.success && Array.isArray(response.marcajes) && response.marcajes.length > 0) {
     // Mostrar el primer resultado (o todos si prefieres)
@@ -54,7 +55,7 @@ export default function Login() {
     type="password"
     value={password}
     onChange={(e) => setPassword(e.target.value)}
-    placeholder="Contraseña"
+    placeholder= "Contraseña"
     className="text-amber-950 block w-full p-4 mb-4 border border-gray-300 rounded"
    />
    <button
@@ -77,32 +78,14 @@ export default function Login() {
        wordBreak: 'break-word',
        maxHeight: '300px',
        overflowY: 'auto',
+       color: '#212529',
+       fontFamily: 'monospace',
+       fontSize: '1.5rem'
       }}
      >
       {result}
      </pre>
     </div>
-   )}
-   {result && (
-    <>
-     <pre>{result}</pre>
-     <button
-      onClick={() => {
-       const blob = new Blob([result], { type: 'text/plain' });
-       const url = URL.createObjectURL(blob);
-       const a = document.createElement('a');
-       a.href = url;
-       a.download = `marcajes_${new Date().toISOString().slice(0, 10)}.txt`;
-       a.click();
-       console.log('URL del blob:', url);
-       console.log('Descargando archivo:', a.download);
-       URL.revokeObjectURL(url);
-      }}
-      className="mt-2 px-4 py-2 bg-green-600 text-white rounded"
-     >
-      Descargar como .txt
-     </button>
-    </>
    )}
    {error && (
     <div style={{ marginTop: '2rem', color: 'red' }}>

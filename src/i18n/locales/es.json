@@ -15,7 +15,8 @@
   "workingDay": "Resumen Jornadas",
   "branches": "Ramas",
   "login": "Cuco360",
-  "holidays": "Días festivos"
+  "holidays": "Días festivos",
+  "configuration": "Configuración"
  },
  "tasks": {
   "new": "Nueva tarea",

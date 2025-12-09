@@ -1,19 +1,38 @@
-import { Home, ClipboardList, BarChart2, User, FolderGit2, Clock, GitBranch, Car, Bird, CalendarCheck } from 'lucide-react'
+import { useState } from 'react'
+import {
+  Home,
+  ClipboardList,
+  CalendarCheck,
+  Clock,
+  FolderGit2,
+  GitBranch,
+  Car,
+  Bird,
+  ChevronRight,
+  ChevronDown,
+  User,
+  Wrench,
+  Monitor,
+  Package,
+  LayoutDashboard
+} from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/dexieDB'
 
-const menu = [
+const mainMenu = [
   { path: '/', label: 'dashboard', icon: Home },
   { path: '/daily-tasks', label: 'dailyTasks', icon: ClipboardList },
   { path: '/overview', label: 'overview', icon: CalendarCheck },
+  { path: '/working-day-summary', label: 'workingDay', icon: Clock },
+]
+
+const configMenu = [
   { path: '/repositories', label: 'repositories', icon: FolderGit2 },
   { path: '/branches', label: 'branches', icon: GitBranch },
-  { path: '/working-day-summary', label: 'workingDay', icon: Clock },
+  { path: '/holidays', label: 'holidays', icon: Car },
   { path: '/login', label: 'login', icon: Bird },
-  { path: '/holidays', label: 'holidays', icon: Car }
-
 ]
 
 export default function Sidebar() {
@@ -21,27 +40,74 @@ export default function Sidebar() {
   const location = useLocation()
   const user = useLiveQuery(() => db.user.toArray())
   const currentYear = new Date().getFullYear()
+  const [isConfigOpen, setIsConfigOpen] = useState(false)
 
   const userProfile = user && user.length > 0 ? user[0] : null
 
   return (
     <aside className="w-64 bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 p-4 flex flex-col justify-between">
-      {/* Menú principal */}
+
       <div>
+        {/* Logo / Brand */}
+        <div className="flex items-center gap-3 px-3 py-4 mb-6">
+          <div className="ml-10 w-20 h-20 rounded-lg bg-blue-700 flex items-center justify-center text-slate-300 shadow-md">
+            <Package className="w-16 h-16" />
+          </div>
+        </div>
+        {/* Menú principal */}
         <nav className="flex flex-col space-y-2">
-          {menu.map(({ path, label, icon: Icon }) => (
+          {mainMenu.map(({ path, label, icon: Icon }) => (
             <Link
               key={path}
               to={path}
               className={`flex items-center gap-2 px-3 py-2 rounded-md transition-colors ${location.pathname === path
-                  ? 'bg-blue-500 text-white'
-                  : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
+                ? 'bg-blue-500 text-white'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
                 }`}
             >
-              <Icon className="w-15 h-15" />
+              <Icon className="w-8 h-8" />
               {t(`menu.${label}`)}
             </Link>
           ))}
+
+          {/* Configuration dropdown */}
+          <div>
+            <button
+              onClick={() => setIsConfigOpen(!isConfigOpen)}
+              className={`flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors ${isConfigOpen || configMenu.some(item => location.pathname === item.path)
+                ? 'bg-blue-500 text-white'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
+                }`}
+            >
+              <span className="flex items-center gap-2">
+                <Wrench className="w-8 h-8" />
+                {t('menu.configuration')}
+              </span>
+              {isConfigOpen ? (
+                <ChevronDown className="w-8 h-8" />
+              ) : (
+                <ChevronRight className="w-8 h-8" />
+              )}
+            </button>
+
+            {isConfigOpen && (
+              <div className="ml-4 mt-1 space-y-1">
+                {configMenu.map(({ path, label, icon: Icon }) => (
+                  <Link
+                    key={path}
+                    to={path}
+                    className={`flex items-center gap-2 px-3 py-1.5 rounded-md text-sm transition-colors ${location.pathname === path
+                      ? 'bg-blue-500 text-white'
+                      : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
+                      }`}
+                  >
+                    <Icon className="w-8 h-8" />
+                    {t(`menu.${label}`)}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
         </nav>
       </div>
 

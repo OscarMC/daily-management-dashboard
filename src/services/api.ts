@@ -26,9 +26,10 @@ export const fetchMarcajes = async (email: string, password: string): Promise<Ma
    "Content-Type": "application/json",
    "Accept": "application/json"
   },
-  body: JSON.stringify({ email, password }),
+  body:  `{ "email":"${email}", "password":"${password}" }`
  };
 
+ console.log('🚀 Cuerpo de la petición:', `{ "email":"${email}", "password":"${password}" }`);
  console.log('📡 [API] Configuración de la petición:', { url, ...options });
  console.log('🍪 Cookies actuales:', document.cookie || "(ninguna)");
 

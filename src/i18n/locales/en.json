@@ -15,7 +15,8 @@
   "workingDay": "Working Days",
   "branches": "Branches",
   "login": "Cuco360",
-  "holidays": "Holidays"
+  "holidays": "Holidays",
+  "configuration": "Configuration"
  },
  "tasks": {
   "new": "New Task",
