@@ -772,17 +772,45 @@
     },
     {
       "name": "WIGOS-109375 - Luckia - ERP data integration v4 (foreign currencies)",
-      "description": "<p>WIGOS-109375 - Luckia - ERP data integration v4 (foreign currencies)</p><p>US:</p><ul><li><strong>WIGOS-109486 - Integración ERP 4 | Mensajes para Luckia | Divisas</strong></li><li class=\"ql-indent-1\">SAP Code 216 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 217 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 218 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 219 --&gt; Hecho</li><li><strong>WIGOS-109487 - Integración ERP 4 | Mensajes para Luckia | Caja (divisas)</strong></li><li class=\"ql-indent-1\">SAP Code 600 --&gt; Fix para filtrar solo por la divisa local 'EUR'.</li><li class=\"ql-indent-1\">SAP Code 601 --&gt; Hecho</li><li><strong>WIGOS-109508 - Integración ERP 4 | Mensajes para Luckia | Conceptos (divisas)</strong></li><li class=\"ql-indent-1\"><strong>﻿SAP Code 300 --&gt; Modificado</strong></li><li class=\"ql-indent-1\"><strong>SAP Code 400 --&gt; Modificado</strong></li></ul>",
+      "description": "<p>WIGOS-109375 - Luckia - ERP data integration v4 (foreign currencies)</p><p>US:</p><ul><li><strong>WIGOS-109486 - Integración ERP 4 | Mensajes para Luckia | Divisas</strong></li><li class=\"ql-indent-1\">SAP Code 216 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 217 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 218 --&gt; Hecho</li><li class=\"ql-indent-1\">SAP Code 219 --&gt; Hecho</li><li><strong>WIGOS-109487 - Integración ERP 4 | Mensajes para Luckia | Caja (divisas)</strong></li><li class=\"ql-indent-1\">SAP Code 600 --&gt; Fix para filtrar solo por la divisa local 'EUR'.</li><li class=\"ql-indent-1\">SAP Code 601 --&gt; Hecho</li><li><strong>WIGOS-109508 - Integración ERP 4 | Mensajes para Luckia | Conceptos (divisas)</strong></li><li class=\"ql-indent-1\"><strong>﻿SAP Code 300 --&gt; Modificado</strong></li><li class=\"ql-indent-1\"><strong>SAP Code 400 --&gt; Modificado</strong></li></ul><p><br></p><p><strong>VERSION DE SPRINT LIBERADA!</strong></p>",
       "branch": "feature/sln2/wigos-109375_luckia_erp_data_integration_v4_foreign_currencies",
       "mergeIn": "master",
       "completed": true,
       "createdAt": "2025-12-04T11:52:47.721Z",
       "date": "2025-12-05",
-      "hours": 5,
+      "hours": 6,
       "itemId": "WIGOS-109375",
       "repositoryId": 1,
       "type": "WIGOS",
       "id": 87
+    },
+    {
+      "name": "WIGOS-119183 - Salones - GUI - Reporte de beneficio por máquina y fecha - No muestra datos al filtrar por máquina",
+      "description": "<p>Salones - GUI - Reporte de beneficio por máquina y fecha - No muestra datos al filtrar por máquina</p>",
+      "branch": "feature/sln2/wigos-119183_salones_gui_reporte_de_beneficio_por_maquina_y_fecha_no_muestra_datos_al_filtrar_por_maquina",
+      "mergeIn": "hotfix/hotfix-37",
+      "completed": false,
+      "createdAt": "2025-12-09T08:27:13.677Z",
+      "date": "2025-12-09",
+      "hours": 1,
+      "itemId": "WIGOS-119183",
+      "repositoryId": 5,
+      "type": "WIGOS",
+      "id": 88
+    },
+    {
+      "name": "WIGOS-117972 - Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero",
+      "description": "<p>Salones - ERP Luckia - Atributos de concepto de entrada (300) no se están registrando en el fichero. Revisión en el entorno 498 y 798 de QA con Javi</p><p><br></p><p><strong style=\"color: rgb(169, 171, 175); background-color: transparent;\">WIGOS-117971</strong><strong> </strong>- Salones - ERP Luckia - Atributos de concepto de salida (400) contiene valores incorrectos</p>",
+      "branch": "feature/sln2/wigos-117972_salones_erp_luckia_atributos_de_concepto_de_entrada_300_no_se_estan_registrando_en_el_fichero_y_sap_code_400",
+      "mergeIn": "master",
+      "completed": true,
+      "createdAt": "2025-12-02T15:07:23.486Z",
+      "date": "2025-12-09",
+      "hours": 3,
+      "itemId": "WIGOS-117972",
+      "repositoryId": 1,
+      "type": "WIGOS",
+      "id": 89
     }
   ],
   "user": [

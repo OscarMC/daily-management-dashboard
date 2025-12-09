@@ -1,0 +1,17 @@
+﻿===== REGISTRO DETALLADO [20251209] =====
+ENTRADA   SALIDA    CONCEPTO     DURACION
+--------  --------  -----------  --------
+08:17:00  09:31:00  Trabajo				 01:14   
+09:31:00  09:44:00  Descanso			 00:13   
+09:44:00  12:00:00  Trabajo				 02:16   
+12:00:00  12:13:00  Descanso			 00:13   
+12:13:00  12:54:00  Trabajo				 00:41   
+12:54:00  13:03:00  Descanso			 00:09   
+13:03:00  14:21:28  Trabajo				 01:18   
+-------------------------------
+Total preinicio:		               00:00
+Total trabajado:		               05:29
+Tiempo restante para jornada:		   03:00
+Total descansos:		               00:35
+Hora estimada de salida:		       17:22
+-------------------------------

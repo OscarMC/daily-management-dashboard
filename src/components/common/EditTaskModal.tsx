@@ -94,9 +94,14 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
 
   if (!task) return null;
 
-  // Filtrar ramas por repositorio seleccionado
+  // ✅ NUEVA LÓGICA: ramas para "mergeIn"
   const filteredBranches = task.repositoryId
-    ? branches.filter((b) => b.repositoryId === Number(task.repositoryId))
+    ? [
+      // Ramas específicas del repositorio de la tarea (excluyendo las de DbVersion)
+      ...branches.filter(b => b.repositoryId === Number(task.repositoryId) && b.repositoryId !== 1),
+      // Ramas por defecto (repositoryId = 1) → siempre disponibles
+      ...branches.filter(b => b.repositoryId === 1)
+    ]
     : [];
 
   return (
@@ -275,8 +280,8 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
             onClick={handleSave}
             disabled={loading || !task.name.trim()}
             className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || !task.name.trim()
-                ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                : 'bg-blue-600 hover:bg-blue-700 text-white'
+              ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+              : 'bg-blue-600 hover:bg-blue-700 text-white'
               }`}
           >
             {loading ? 'Guardando...' : 'Guardar cambios'}

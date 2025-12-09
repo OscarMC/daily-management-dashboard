@@ -121,9 +121,14 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
       }
    };
 
-   // Ramas filtradas por repositorio
+   // ✅ NUEVA LÓGICA: ramas para "mergeIn"
    const filteredBranches = repositoryId
-      ? branches.filter(b => b.repositoryId === Number(repositoryId))
+      ? [
+         // Ramas específicas del repositorio seleccionado (excluyendo las de DbVersion)
+         ...branches.filter(b => b.repositoryId === Number(repositoryId) && b.repositoryId !== 1),
+         // Ramas por defecto (repositoryId = 1) → siempre disponibles
+         ...branches.filter(b => b.repositoryId === 1)
+      ]
       : [];
 
    return (
@@ -159,8 +164,8 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                            type="button"
                            onClick={() => setTaskType(type)}
                            className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${taskType === type
-                                 ? 'bg-blue-600 text-white'
-                                 : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                              ? 'bg-blue-600 text-white'
+                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
                               }`}
                         >
                            {type}
@@ -320,8 +325,8 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                   onClick={handleSubmit}
                   disabled={loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim()}
                   className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim()
-                        ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                        : 'bg-blue-600 hover:bg-blue-700 text-white'
+                     ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                     : 'bg-blue-600 hover:bg-blue-700 text-white'
                      }`}
                >
                   {loading ? 'Creando...' : 'Crear tarea'}

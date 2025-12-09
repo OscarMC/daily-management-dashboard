@@ -1,5 +1,5 @@
 // src/pages/Repositories.tsx
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Plus, Trash2, Pencil, Save, FolderGit2, GitBranch, Search, X } from 'lucide-react';
 import { useRepositories } from '../db/repositoriesStore';
 import { useBranches } from '../db/branchesStore';
@@ -15,16 +15,23 @@ export default function Repositories() {
   const [expandedRepos, setExpandedRepos] = useState<Record<number, boolean>>({});
   const { ToastContainer } = useToastStack();
 
-  // ✅ NUEVO: Todas las ramas sin repositoryId son globales (no solo "master")
-  const globalBranches = branches.filter(b =>
-    b.repositoryId === undefined ||
-    b.repositoryId === null ||
-    b.repositoryId === ''
-  );
+  // ✅ Ramas con repositoryId = 1 (DbVersion) → se tratan como globales
+  const defaultBranches = branches.filter(b => b.repositoryId === 1);
 
   const filteredRepos = repositories.filter(r =>
     r.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  // ✅ Expandir repositorios que tienen ramas (específicas o por defecto)
+  useEffect(() => {
+    const initialExpanded: Record<number, boolean> = {};
+    repositories.forEach(repo => {
+      const specificBranches = branches.filter(b => b.repositoryId === repo.id && b.repositoryId !== 1);
+      const hasBranches = specificBranches.length > 0 || defaultBranches.length > 0;
+      initialExpanded[repo.id] = hasBranches;
+    });
+    setExpandedRepos(initialExpanded);
+  }, [repositories, branches]);
 
   const handleAdd = async () => {
     const trimmed = newRepo.trim();
@@ -140,10 +147,11 @@ export default function Repositories() {
       {filteredRepos.length > 0 ? (
         <div className="space-y-4">
           {filteredRepos.map((repo) => {
-            // Ramas específicas de este repositorio
-            const repoBranches = branches.filter(b => b.repositoryId === repo.id);
-            // ✅ Ahora: todas las ramas globales + las del repo
-            const hasBranches = repoBranches.length > 0 || globalBranches.length > 0;
+            // Ramas específicas de este repositorio (excluyendo las de DbVersion)
+            const specificBranches = branches.filter(b =>
+              b.repositoryId === repo.id && b.repositoryId !== 1
+            );
+            const hasBranches = specificBranches.length > 0 || defaultBranches.length > 0;
 
             return (
               <div
@@ -167,8 +175,7 @@ export default function Repositories() {
                     )}
                     {hasBranches && (
                       <span className="text-xs bg-gray-200 dark:bg-gray-700 text-gray-600 dark:text-gray-300 px-2 py-0.5 rounded-full">
-                        {/* ✅ Contamos ramas del repo + ramas globales */}
-                        {repoBranches.length + globalBranches.length} branches
+                        {specificBranches.length + defaultBranches.length} branches
                       </span>
                     )}
                   </div>
@@ -217,16 +224,16 @@ export default function Repositories() {
                 {expandedRepos[repo.id] && hasBranches && (
                   <div className="px-6 pb-4 border-t border-gray-200 dark:border-gray-700">
                     <div className="space-y-2 mt-3">
-                      {/* ✅ Todas las ramas globales (no solo master) */}
-                      {globalBranches.map((branch) => (
+                      {/* ✅ Ramas por defecto (repositoryId = 1) → aparecen en todos */}
+                      {defaultBranches.map((branch) => (
                         <div
-                          key={`global-${branch.id}`}
+                          key={`default-${branch.id}`}
                           className="flex items-center gap-2 pl-4 py-1.5 bg-gray-50 dark:bg-gray-700/50 rounded"
                         >
                           <GitBranch className="text-purple-500" size={14} />
                           <span className="text-sm font-mono text-gray-700 dark:text-gray-300">{branch.name}</span>
-                          <span className="text-xs bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 px-2 py-0.5 rounded">
-                            global
+                          <span className="text-xs bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300 px-2 py-0.5 rounded">
+                            default
                           </span>
                           {branch.description && (
                             <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
@@ -236,8 +243,8 @@ export default function Repositories() {
                         </div>
                       ))}
 
-                      {/* Ramas específicas del repositorio */}
-                      {repoBranches.map((branch) => (
+                      {/* Ramas específicas del repositorio (repositoryId = repo.id y ≠ 1) */}
+                      {specificBranches.map((branch) => (
                         <div key={branch.id} className="flex items-center gap-2 pl-4 py-1.5">
                           <GitBranch className="text-purple-500" size={14} />
                           <span className="text-sm font-mono text-gray-700 dark:text-gray-300">{branch.name}</span>
@@ -254,7 +261,7 @@ export default function Repositories() {
                         </div>
                       ))}
 
-                      {repoBranches.length === 0 && globalBranches.length === 0 && (
+                      {specificBranches.length === 0 && defaultBranches.length === 0 && (
                         <p className="text-sm text-gray-500 dark:text-gray-400 italic pl-4">
                           No branches
                         </p>
