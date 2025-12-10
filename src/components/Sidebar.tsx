@@ -6,15 +6,13 @@ import {
   Clock,
   FolderGit2,
   GitBranch,
-  Car,
   Bird,
   ChevronRight,
   ChevronDown,
   User,
   Wrench,
-  Package,
-  Map,
-  Caravan
+  Caravan,
+  LayoutDashboard
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -25,8 +23,7 @@ const mainMenu = [
   { path: '/', label: 'dashboard', icon: Home },
   { path: '/daily-tasks', label: 'dailyTasks', icon: ClipboardList },
   { path: '/overview', label: 'overview', icon: CalendarCheck },
-  { path: '/working-day-summary', label: 'workingDay', icon: Clock },
-  { path: '/guide', label: 'guide', icon: Map, backColor: '#919191', fontColor: '#ffffff' }
+  { path: '/working-day-summary', label: 'workingDay', icon: Clock }
 ]
 
 const configMenu = [
@@ -109,7 +106,7 @@ export default function Sidebar() {
         {/* Logo / Brand */}
         <div className="flex items-center gap-3 px-3 py-4 mb-6">
           <div className="ml-10 w-20 h-20 rounded-lg bg-blue-700 flex items-center justify-center text-slate-300 shadow-md">
-            <Package className="w-16 h-16" />
+            <LayoutDashboard className="w-16 h-16" />
           </div>
         </div>
 

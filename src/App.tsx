@@ -10,7 +10,6 @@ import Login from './components/Login'
 import Holidays from './pages/Holidays'
 import Repositories from './pages/Repositories'
 import WorkingDaySummary from './pages/WorkingDaySummary'
-import Guide from './components/Guide';
 import { useToastStack } from './components/common/ToastStack'
 
 export default function App() {
@@ -30,7 +29,6 @@ export default function App() {
       <Route path="/branches" element={<Branches />} />
       <Route path="/profile" element={<Profile />} />
       <Route path="/working-day-summary" element={<WorkingDaySummary />} />
-      <Route path="/guide" element={<Guide />} />
       <Route path="/login" element={<Login />} />
       <Route path="/holidays" element={<Holidays />} />
      </Routes>

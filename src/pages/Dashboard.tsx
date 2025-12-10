@@ -169,15 +169,15 @@ export default function Dashboard() {
               hour12: false,
             })
             .replace(',', '')}
-          icon={<CalendarDays size={16} className="text-blue-500" />}
+          icon={<CalendarDays size={50} className="text-blue-500" />}
         />
         <WidgetCard
-          icon={<Calculator size={16} className="text-amber-500" />}
+          icon={<Calculator size={50} className="text-amber-500" />}
           title={t('dashboard.tasksToday')}
           value={todaysTasks.length}
         />
         <WidgetCard
-          icon={<Clock size={16} className="text-red-500" />}
+          icon={<Clock size={50} className="text-red-500" />}
           title={t('dashboard.totalHours')}
           value={totalHours.toFixed(1)}
         />

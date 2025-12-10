@@ -817,13 +817,27 @@
       "description": "<p>Presentación a Joaquín de la versión inicial de la aplicación.</p><p>Sala Buenos Aires.</p>",
       "branch": "",
       "mergeIn": "",
-      "completed": false,
+      "completed": true,
       "createdAt": "2025-12-10T08:51:04.772Z",
       "date": "2025-12-10",
       "hours": 0.5,
       "itemId": "TASK-00001",
       "type": "OTROS",
       "id": 91
+    },
+    {
+      "name": "WIGOS-119562   Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.",
+      "description": "<p>Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.</p>",
+      "branch": "feature/sln2/wigos-119562_salones_cajero_recaudacion_de_maquinas_la_finalizacion_de_la_recaudacion_queda_congelada_no_finaliza_ni_devuelve_error_en_pantalla_error_en_el_log_error_error_in_aop_aspect_onexit_count_must_be_non_negative",
+      "mergeIn": "hotfix/hotfix-37",
+      "completed": true,
+      "createdAt": "2025-12-10T11:22:31.334Z",
+      "date": "2025-12-10",
+      "hours": 7,
+      "itemId": "WIGOS-119562",
+      "repositoryId": 2,
+      "type": "WIGOS",
+      "id": 92
     }
   ],
   "user": [
