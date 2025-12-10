@@ -4,7 +4,7 @@ import App from './App'
 import './index.css'
 import './i18n'
 import { BrowserRouter } from 'react-router-dom'
-import { importFromJSON, setupAutoSync } from './db/dblocalStorageSync'
+import { importFromJSON, setupAutoSync } from './db/dbLocalStorageSync'
 //import { importFromRepositoriesJSON, setupAutoSyncRepositories } from './db/repositoriesLocalStorageSync'
 
 async function init() {

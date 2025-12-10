@@ -228,7 +228,7 @@ export default function WorkingDaySummary() {
                     <FileText size={20} className="text-blue-600" />
                   ) : null}
                 </span>
-                {isToday && <Clock size={14} className="text-blue-500" />}
+                {isToday && <Clock size={30} className="text-yellow-500" />}
               </div>
 
               {isAvailable && horas && (
@@ -237,8 +237,8 @@ export default function WorkingDaySummary() {
                 </div>
               )}
 
-              {festivo?.tipo === 'local' && <PartyPopper size={40} className="mx-auto text-blue-400" />}
-              {festivo?.tipo === 'nacional' && <PartyPopper size={40} className="mx-auto text-red-400" />}
+              {festivo?.tipo === 'local' && <PartyPopper size={25} className="mx-auto text-blue-400" />}
+              {festivo?.tipo === 'nacional' && <PartyPopper size={25} className="mx-auto text-red-400" />}
               {festivo?.nombre}
             </motion.div>
           )

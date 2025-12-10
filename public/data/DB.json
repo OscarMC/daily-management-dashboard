@@ -811,6 +811,19 @@
       "repositoryId": 1,
       "type": "WIGOS",
       "id": 89
+    },
+    {
+      "name": "Presentación aplicación PerformanceLogger",
+      "description": "<p>Presentación a Joaquín de la versión inicial de la aplicación.</p><p>Sala Buenos Aires.</p>",
+      "branch": "",
+      "mergeIn": "",
+      "completed": false,
+      "createdAt": "2025-12-10T08:51:04.772Z",
+      "date": "2025-12-10",
+      "hours": 0.5,
+      "itemId": "TASK-00001",
+      "type": "OTROS",
+      "id": 91
     }
   ],
   "user": [

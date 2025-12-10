@@ -16,7 +16,8 @@
   "branches": "Branches",
   "login": "Cuco360",
   "holidays": "Holidays",
-  "configuration": "Configuration"
+  "configuration": "Configuration",
+  "guide": "Performance Log Tree Viewer"
  },
  "tasks": {
   "new": "New Task",

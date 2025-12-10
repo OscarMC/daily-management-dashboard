@@ -16,7 +16,8 @@
   "branches": "Ramas",
   "login": "Cuco360",
   "holidays": "Días festivos",
-  "configuration": "Configuración"
+  "configuration": "Configuración",
+  "guide": "Performance Log Tree Viewer"
  },
  "tasks": {
   "new": "Nueva tarea",
