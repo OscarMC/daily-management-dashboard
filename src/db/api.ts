@@ -148,3 +148,28 @@ export async function deleteHoliday(id: number) {
  });
  if (!res.ok) throw new Error('Failed to delete holiday');
 }
+
+// --- Auth / Users API ---
+
+export async function getUsers() {
+ const res = await fetch(`${BASE_URL}/user`);
+ if (!res.ok) throw new Error('Failed to fetch users');
+ return await res.json();
+}
+
+export async function createUser(userData: {
+ name: string;
+ email: string;
+ password: string;
+ role: string;
+ theme: string;
+ language: string;
+}) {
+ const res = await fetch(`${BASE_URL}/user`, {
+  method: 'POST',
+  headers: { 'Content-Type': 'application/json' },
+  body: JSON.stringify(userData),
+ });
+ if (!res.ok) throw new Error('Failed to create user');
+ return await res.json();
+}

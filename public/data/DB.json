@@ -899,6 +899,15 @@
       "theme": "light",
       "language": "en",
       "id": 4
+    },
+    {
+      "id": 5,
+      "name": "Oscar",
+      "email": "o.mas@winsysgroup.com",
+      "password": "1234",
+      "role": "User",
+      "theme": "light",
+      "language": "es"
     }
   ]
 }

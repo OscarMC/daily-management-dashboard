@@ -4,20 +4,18 @@ import App from './App'
 import './index.css'
 import './i18n'
 import { BrowserRouter } from 'react-router-dom'
-import { importFromJSON, setupAutoSync } from './db/dbLocalStorageSync'
-//import { importFromRepositoriesJSON, setupAutoSyncRepositories } from './db/repositoriesLocalStorageSync'
+import { AuthProvider } from './contexts/AuthContext'
+import { importFromJSON } from './db/dbLocalStorageSync'
 
 async function init() {
  await importFromJSON()
- //await importFromRepositoriesJSON()
- 
- //setupAutoSync()
- //setupAutoSyncRepositories()
 
  ReactDOM.createRoot(document.getElementById('root')!).render(
   <React.StrictMode>
    <BrowserRouter>
-    <App />
+    <AuthProvider>
+     <App />
+    </AuthProvider>
    </BrowserRouter>
   </React.StrictMode>
  )

@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import EditTaskModal from '../components/common/EditTaskModal'
-import { Button } from '../components/ui/Button'
+import { Button } from '@/components/ui/button'
 import { toast } from '../components/common/ToastStack'
 
 interface MessageModalProps {
@@ -131,7 +131,7 @@ export default function Dashboard() {
       try {
         await navigator.clipboard.writeText(text)
         setCopiedTask(id)
-        toast({ message: 'üìã Nombre copiado al portapapeles', type: 'success' })
+        toast({ message: 'Ì†ΩÌ≥ã Nombre copiado al portapapeles', type: 'success' })
         setTimeout(() => setCopiedTask(null), 2000)
       } catch {
         toast({ message: '‚ö†Ô∏è Error al copiar el texto.', type: 'warn' })
