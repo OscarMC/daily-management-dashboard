@@ -838,13 +838,40 @@
       "repositoryId": 2,
       "type": "WIGOS",
       "id": 92
+    },
+    {
+      "name": "WIGOS-116531 - Cambios en PerformanceLog Viewer",
+      "description": "<p>Cambios en PerformanceLog Viewer</p>",
+      "branch": "master",
+      "completed": true,
+      "createdAt": "2025-11-21T13:28:57.517Z",
+      "date": "2025-12-10",
+      "hours": 1,
+      "itemId": "WIGOS-116531",
+      "repositoryId": 5,
+      "mergeIn": "master",
+      "id": 93
+    },
+    {
+      "name": "WIGOS-119562   Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.",
+      "description": "<p>Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.</p>",
+      "branch": "feature/sln2/wigos-119562_salones_cajero_recaudacion_de_maquinas_la_finalizacion_de_la_recaudacion_queda_congelada_no_finaliza_ni_devuelve_error_en_pantalla_error_en_el_log_error_error_in_aop_aspect_onexit_count_must_be_non_negative",
+      "mergeIn": "hotfix/hotfix-37",
+      "completed": false,
+      "createdAt": "2025-12-10T11:22:31.334Z",
+      "date": "2025-12-11",
+      "hours": 0,
+      "itemId": "WIGOS-119562",
+      "repositoryId": 2,
+      "type": "WIGOS",
+      "id": 94
     }
   ],
   "user": [
     {
-      "name": "Oscar Mas",
-      "email": "o.mas@winsysgroup.com",
-      "role": "Senior .NET Developer",
+      "name": "Test",
+      "email": "test@winsysgroup.com",
+      "role": "Test",
       "theme": "light",
       "language": "en",
       "id": 1
