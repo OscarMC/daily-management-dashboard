@@ -962,7 +962,7 @@
       "completed": false,
       "createdAt": "2025-12-10T11:22:31.334Z",
       "date": "2025-12-12",
-      "hours": 0,
+      "hours": 3,
       "itemId": "WIGOS-119562",
       "repositoryId": 2,
       "type": "WIGOS",
@@ -978,7 +978,7 @@
       "role": "Admin",
       "theme": "dark",
       "language": "es",
-      "password": "$2b$10$01I5NCQl5QrivFbuvS9KKerCq4jSSOrSc0fDSLcqNlMtOEptzeBF2"
+      "password": "$2b$10$KGiBbhgAiylKM1kVeKrWteICntIcn5vtZsIDLxU8tnTqSf/SUsShq"
     },
     {
       "id": 2,

@@ -35,6 +35,10 @@
     {
       "id": 9,
       "name": "Wigos.Components.PeriodicTasks"
+    },
+    {
+      "id": 10,
+      "name": "Wigos.Components.SessionManager"
     }
   ]
 }
