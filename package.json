@@ -4,12 +4,12 @@
  "private": true,
  "scripts": {
   "dev:frontend": "vite",
-  "dev": "concurrently \"npm run dev:frontend\"",
   "dev:json": "node server/DbJsonServer.js",
+  "dev": "concurrently \"npm run dev:frontend\" \"npm run dev:json\"",
   "build:frontend": "vite build",
-  "build": "npm run build:frontend",
-  "build:dev": "vite build --mode development",
-  "start": "node dist/server.js",
+  "build:json": "copyfiles -u 1 server/DbJsonServer.js dist/",
+  "build": "npm run build:frontend && npm run build:json",
+  "start": "node dist/DbJsonServer.js",
   "preview": "vite preview",
   "update:jornadas": "node updateJornadas.js",
   "lint": "eslint . --ext .ts,.tsx",
@@ -57,6 +57,7 @@
   "@types/three": "^0.181.0",
   "@vitejs/plugin-react": "^4.2.1",
   "autoprefixer": "^10.4.16",
+  "copyfiles": "^2.4.1",
   "eslint": "^8.57.0",
   "eslint-config-prettier": "^9.1.0",
   "eslint-plugin-react": "^7.33.2",
@@ -68,7 +69,6 @@
   "vite": "^7.2.4"
  },
  "description": "",
- "main": "dist/server.js",
  "keywords": [],
  "author": "",
  "license": "ISC"

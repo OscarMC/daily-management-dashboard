@@ -968,6 +968,21 @@
       "type": "WIGOS",
       "userId": 1,
       "id": 97
+    },
+    {
+      "name": "WIGOS-116171 - Demo - WIGOS-109181 - Luckia - ERP data integration v3 (bank operations)",
+      "description": "Demo\n - WIGOS-109181 \n   -  Luckia - ERP data integration v3 (bank operations)",
+      "branch": "",
+      "mergeIn": "",
+      "completed": true,
+      "createdAt": "2025-12-12T10:57:35.419Z",
+      "date": "2025-12-12",
+      "hours": 0.5,
+      "itemId": "WIGOS-116171",
+      "repositoryId": 0,
+      "type": "WIGOS",
+      "userId": 1,
+      "id": 100
     }
   ],
   "user": [
@@ -988,6 +1003,22 @@
       "theme": "light",
       "language": "en",
       "password": "$2b$10$mkCNqcXf6Psn3kobCL3xI.wz8p.7VBBTgeZFpZ9XrTTvLjpt9nHRO"
+    },
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Developer",
+      "theme": "light",
+      "language": "en",
+      "id": 3
+    },
+    {
+      "name": "John Doe",
+      "email": "john@example.com",
+      "role": "Developer",
+      "theme": "light",
+      "language": "en",
+      "id": 4
     }
   ]
 }
