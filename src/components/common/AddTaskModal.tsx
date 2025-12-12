@@ -6,17 +6,19 @@ import { useTranslation } from 'react-i18next';
 import { useRepositories } from '../../db/repositoriesStore';
 import { useBranches } from '../../db/branchesStore';
 import { toast } from '../common/ToastStack';
+import { useAuth } from '../../contexts/AuthContext';
 
 interface AddTaskModalProps {
    onClose: () => void;
    onAdded: () => void;
-   date?: string; // Opcional: para crear tareas en una fecha específica
+   date?: string;
 }
 
 export default function AddTaskModal({ onClose, onAdded, date: initialDate }: AddTaskModalProps) {
    const { t } = useTranslation();
    const { repositories } = useRepositories();
    const { branches } = useBranches();
+   const { user } = useAuth();
 
    const today = new Date().toISOString().substring(0, 10);
    const [name, setName] = useState('');
@@ -29,7 +31,6 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
    const [taskType, setTaskType] = useState<'WIGOS' | 'VACACIONES' | 'OTROS'>('OTROS');
    const [suggestedBranch, setSuggestedBranch] = useState('');
 
-   // Verificar si ya hay vacaciones en esta fecha
    const [hasVacation, setHasVacation] = useState(false);
    const [loading, setLoading] = useState(false);
 
@@ -55,7 +56,7 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
       return `TASK-${String(counter).padStart(5, '0')}`;
    };
 
-   // Generar nombre de rama sugerido
+   // 👇 NUEVO: Aplicar sugerencia automáticamente al campo `branch` si está vacío
    useEffect(() => {
       if (taskType === 'WIGOS' && name.trim() && repositoryId) {
          const jiraMatch = name.match(/^(WIGOS-\d{4,7})/i);
@@ -68,14 +69,22 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                .toLowerCase()
                .replace(/\s+/g, '_');
             const fullKey = cleanName ? `${prefix}_${cleanName}` : prefix;
-            setSuggestedBranch(`feature/sln2/${fullKey}`);
+            const newSuggestion = `feature/sln2/${fullKey}`;
+            setSuggestedBranch(newSuggestion);
+            // ✅ Solo rellenar si el campo `branch` está vacío
+            if (!branch.trim()) {
+               setBranch(newSuggestion);
+            }
          } else {
             setSuggestedBranch('feature/sln2/[nombre]');
+            if (!branch.trim()) {
+               setBranch('feature/sln2/[nombre]');
+            }
          }
       } else {
          setSuggestedBranch('');
       }
-   }, [name, taskType, repositoryId]);
+   }, [name, taskType, repositoryId, branch]); // 👈 branch en dependencias para evitar sobrescritura
 
    const handleSubmit = async () => {
       if (!name.trim()) {
@@ -85,6 +94,11 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
 
       if (taskType === 'VACACIONES' && hasVacation) {
          toast('❌ Ya tienes vacaciones asignadas en esta fecha.', 'error');
+         return;
+      }
+
+      if (!user) {
+         toast('❌ Usuario no autenticado.', 'error');
          return;
       }
 
@@ -106,7 +120,8 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
             hours: taskHours,
             itemId,
             repositoryId: jiraMatch ? Number(repositoryId) : undefined,
-            type: taskType as 'WIGOS' | 'VACACIONES' | 'OTROS'
+            type: taskType as 'WIGOS' | 'VACACIONES' | 'OTROS',
+            userId: user.id,
          };
 
          await db.tasks.add(newTask);
@@ -121,19 +136,16 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
       }
    };
 
-   // ✅ NUEVA LÓGICA: ramas para "mergeIn"
    const filteredBranches = repositoryId
       ? [
-         // Ramas específicas del repositorio seleccionado (excluyendo las de DbVersion)
          ...branches.filter(b => b.repositoryId === Number(repositoryId) && b.repositoryId !== 1),
-         // Ramas por defecto (repositoryId = 1) → siempre disponibles
          ...branches.filter(b => b.repositoryId === 1)
       ]
       : [];
 
    return (
       <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+         <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-[100vh] overflow-hidden">
             <div className="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
                <div className="flex items-center gap-2">
                   <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded">
@@ -229,7 +241,6 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                {/* Campos específicos por tipo */}
                {taskType === 'WIGOS' && (
                   <div className="space-y-4 mb-5">
-                     {/* Repositorio */}
                      <div>
                         <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
                            <FolderGit2 size={14} /> Repositorio
@@ -248,7 +259,6 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                         </select>
                      </div>
 
-                     {/* Rama base */}
                      {repositoryId && (
                         <div>
                            <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
@@ -269,39 +279,22 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                         </div>
                      )}
 
-                     {/* Rama de trabajo (con sugerencia) */}
+                     {/* ✅ Campo de rama de trabajo (sin sugerencia visible ni botón) */}
                      <div>
                         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
                            Rama de trabajo
                         </label>
-                        <div className="relative">
-                           <input
-                              type="text"
-                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                              value={branch}
-                              onChange={(e) => setBranch(e.target.value)}
-                              placeholder="feature/sln2/..."
-                           />
-                           {suggestedBranch && (
-                              <div className="absolute -bottom-6 left-0 text-xs text-gray-500 dark:text-gray-400">
-                                 Sugerida: <span className="font-mono">{suggestedBranch}</span>
-                              </div>
-                           )}
-                        </div>
-                        {suggestedBranch && !branch && (
-                           <button
-                              type="button"
-                              onClick={() => setBranch(suggestedBranch)}
-                              className="mt-1 text-xs text-blue-600 dark:text-blue-400 hover:underline"
-                           >
-                              Usar sugerencia
-                           </button>
-                        )}
+                        <input
+                           type="text"
+                           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           value={branch}
+                           onChange={(e) => setBranch(e.target.value)}
+                           placeholder="feature/sln2/..."
+                        />
                      </div>
                   </div>
                )}
 
-               {/* Horas (solo si no es vacaciones) */}
                {taskType !== 'VACACIONES' && (
                   <div className="mb-5">
                      <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
@@ -320,11 +313,10 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
                   </div>
                )}
 
-               {/* Botón de acción */}
                <button
                   onClick={handleSubmit}
-                  disabled={loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim()}
-                  className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim()
+                  disabled={loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim() || !user}
+                  className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim() || !user
                      ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
                      : 'bg-blue-600 hover:bg-blue-700 text-white'
                      }`}

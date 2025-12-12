@@ -9,6 +9,7 @@
       "createdAt": "2025-11-20T13:47:41.515Z",
       "date": "2025-11-17",
       "hours": 6,
+      "userId": 1,
       "id": 15
     },
     {
@@ -20,6 +21,7 @@
       "createdAt": "2025-11-20T13:48:12.354Z",
       "date": "2025-11-17",
       "hours": 2,
+      "userId": 1,
       "id": 16
     },
     {
@@ -31,6 +33,7 @@
       "createdAt": "2025-11-20T13:48:35.576Z",
       "date": "2025-11-17",
       "hours": 0.5,
+      "userId": 1,
       "id": 17
     },
     {
@@ -42,6 +45,7 @@
       "createdAt": "2025-11-20T13:49:27.504Z",
       "date": "2025-11-18",
       "hours": 6,
+      "userId": 1,
       "id": 18
     },
     {
@@ -53,6 +57,7 @@
       "createdAt": "2025-11-20T13:49:47.748Z",
       "date": "2025-11-18",
       "hours": 0.25,
+      "userId": 1,
       "id": 19
     },
     {
@@ -64,6 +69,7 @@
       "createdAt": "2025-11-20T13:50:05.770Z",
       "date": "2025-11-18",
       "hours": 0.25,
+      "userId": 1,
       "id": 20
     },
     {
@@ -75,6 +81,7 @@
       "createdAt": "2025-11-20T13:50:33.415Z",
       "date": "2025-11-18",
       "hours": 1,
+      "userId": 1,
       "id": 21
     },
     {
@@ -86,6 +93,7 @@
       "createdAt": "2025-11-20T13:50:50.179Z",
       "date": "2025-11-18",
       "hours": 1,
+      "userId": 1,
       "id": 22
     },
     {
@@ -97,6 +105,7 @@
       "createdAt": "2025-11-20T13:51:29.689Z",
       "date": "2025-11-19",
       "hours": 8.5,
+      "userId": 1,
       "id": 23
     },
     {
@@ -108,6 +117,7 @@
       "createdAt": "2025-11-20T13:52:04.356Z",
       "date": "2025-11-20",
       "hours": 8.5,
+      "userId": 1,
       "id": 24,
       "repositoryId": 1
     },
@@ -120,6 +130,7 @@
       "createdAt": "2025-11-20T14:12:33.142Z",
       "date": "2025-11-10",
       "hours": 6,
+      "userId": 1,
       "id": 25
     },
     {
@@ -131,6 +142,7 @@
       "createdAt": "2025-11-20T14:12:54.647Z",
       "date": "2025-11-10",
       "hours": 2,
+      "userId": 1,
       "id": 26
     },
     {
@@ -142,6 +154,7 @@
       "createdAt": "2025-11-20T14:13:13.103Z",
       "date": "2025-11-10",
       "hours": 0.5,
+      "userId": 1,
       "id": 27
     },
     {
@@ -153,6 +166,7 @@
       "createdAt": "2025-11-20T14:13:30.638Z",
       "date": "2025-11-11",
       "hours": 1.5,
+      "userId": 1,
       "id": 28
     },
     {
@@ -164,6 +178,7 @@
       "createdAt": "2025-11-20T14:13:49.816Z",
       "date": "2025-11-11",
       "hours": 1.5,
+      "userId": 1,
       "id": 29
     },
     {
@@ -175,6 +190,7 @@
       "createdAt": "2025-11-20T14:14:17.388Z",
       "date": "2025-11-11",
       "hours": 5.5,
+      "userId": 1,
       "id": 30
     },
     {
@@ -186,6 +202,7 @@
       "createdAt": "2025-11-20T14:15:04.963Z",
       "date": "2025-11-12",
       "hours": 4,
+      "userId": 1,
       "id": 31
     },
     {
@@ -197,6 +214,7 @@
       "createdAt": "2025-11-20T14:15:28.018Z",
       "date": "2025-11-12",
       "hours": 4.5,
+      "userId": 1,
       "id": 32
     },
     {
@@ -208,6 +226,7 @@
       "createdAt": "2025-11-20T14:15:48.528Z",
       "date": "2025-11-13",
       "hours": 3,
+      "userId": 1,
       "id": 33
     },
     {
@@ -219,6 +238,7 @@
       "createdAt": "2025-11-20T14:16:03.667Z",
       "date": "2025-11-13",
       "hours": 5.5,
+      "userId": 1,
       "id": 34
     },
     {
@@ -230,6 +250,7 @@
       "createdAt": "2025-11-20T14:16:36.567Z",
       "date": "2025-11-14",
       "hours": 6,
+      "userId": 1,
       "id": 35
     },
     {
@@ -241,6 +262,7 @@
       "createdAt": "2025-11-20T17:10:46.380Z",
       "date": "2025-11-03",
       "hours": 2,
+      "userId": 1,
       "id": 36
     },
     {
@@ -252,6 +274,7 @@
       "createdAt": "2025-11-20T17:11:06.017Z",
       "date": "2025-11-03",
       "hours": 2,
+      "userId": 1,
       "id": 37
     },
     {
@@ -263,6 +286,7 @@
       "createdAt": "2025-11-20T17:11:22.749Z",
       "date": "2025-11-03",
       "hours": 2,
+      "userId": 1,
       "id": 38
     },
     {
@@ -274,6 +298,7 @@
       "createdAt": "2025-11-20T17:11:47.124Z",
       "date": "2025-11-03",
       "hours": 0.5,
+      "userId": 1,
       "id": 39
     },
     {
@@ -285,6 +310,7 @@
       "createdAt": "2025-11-20T17:12:08.597Z",
       "date": "2025-11-03",
       "hours": 0.5,
+      "userId": 1,
       "id": 40
     },
     {
@@ -296,6 +322,7 @@
       "createdAt": "2025-11-20T17:12:28.427Z",
       "date": "2025-11-03",
       "hours": 1.5,
+      "userId": 1,
       "id": 41
     },
     {
@@ -307,6 +334,7 @@
       "createdAt": "2025-11-20T17:12:47.380Z",
       "date": "2025-11-04",
       "hours": 1.5,
+      "userId": 1,
       "id": 42
     },
     {
@@ -318,6 +346,7 @@
       "createdAt": "2025-11-20T17:13:38.125Z",
       "date": "2025-11-04",
       "hours": 2,
+      "userId": 1,
       "id": 43
     },
     {
@@ -329,6 +358,7 @@
       "createdAt": "2025-11-20T17:14:02.575Z",
       "date": "2025-11-04",
       "hours": 5,
+      "userId": 1,
       "id": 44
     },
     {
@@ -340,6 +370,7 @@
       "createdAt": "2025-11-20T17:14:26.785Z",
       "date": "2025-11-05",
       "hours": 1.5,
+      "userId": 1,
       "id": 45
     },
     {
@@ -351,6 +382,7 @@
       "createdAt": "2025-11-20T17:14:42.251Z",
       "date": "2025-11-05",
       "hours": 1.5,
+      "userId": 1,
       "id": 46
     },
     {
@@ -362,6 +394,7 @@
       "createdAt": "2025-11-20T17:15:04.280Z",
       "date": "2025-11-05",
       "hours": 2,
+      "userId": 1,
       "id": 47
     },
     {
@@ -373,6 +406,7 @@
       "createdAt": "2025-11-20T17:15:25.280Z",
       "date": "2025-11-05",
       "hours": 1,
+      "userId": 1,
       "id": 48
     },
     {
@@ -384,6 +418,7 @@
       "createdAt": "2025-11-20T17:15:38.551Z",
       "date": "2025-11-05",
       "hours": 1.5,
+      "userId": 1,
       "id": 49
     },
     {
@@ -395,6 +430,7 @@
       "createdAt": "2025-11-20T17:15:51.135Z",
       "date": "2025-11-05",
       "hours": 1,
+      "userId": 1,
       "id": 50
     },
     {
@@ -406,6 +442,7 @@
       "createdAt": "2025-11-20T17:16:10.272Z",
       "date": "2025-11-06",
       "hours": 3,
+      "userId": 1,
       "id": 51
     },
     {
@@ -417,6 +454,7 @@
       "createdAt": "2025-11-20T17:16:22.489Z",
       "date": "2025-11-06",
       "hours": 2,
+      "userId": 1,
       "id": 52
     },
     {
@@ -428,6 +466,7 @@
       "createdAt": "2025-11-20T17:16:34.167Z",
       "date": "2025-11-06",
       "hours": 2,
+      "userId": 1,
       "id": 53
     },
     {
@@ -439,6 +478,7 @@
       "createdAt": "2025-11-20T17:16:48.745Z",
       "date": "2025-11-06",
       "hours": 1.5,
+      "userId": 1,
       "id": 54
     },
     {
@@ -450,6 +490,7 @@
       "createdAt": "2025-11-20T17:17:18.019Z",
       "date": "2025-11-07",
       "hours": 1.5,
+      "userId": 1,
       "id": 55
     },
     {
@@ -461,6 +502,7 @@
       "createdAt": "2025-11-20T17:17:51.891Z",
       "date": "2025-11-07",
       "hours": 4.5,
+      "userId": 1,
       "id": 56
     },
     {
@@ -474,6 +516,7 @@
       "hours": 6,
       "itemId": "WIGOS-118382",
       "repositoryId": 1,
+      "userId": 1,
       "id": 59
     },
     {
@@ -486,6 +529,7 @@
       "hours": 6,
       "itemId": "WIGOS-117711",
       "repositoryId": "2",
+      "userId": 1,
       "id": 63
     },
     {
@@ -498,6 +542,7 @@
       "hours": 7.5,
       "itemId": "WIGOS-117711",
       "repositoryId": "2",
+      "userId": 1,
       "id": 64
     },
     {
@@ -510,6 +555,7 @@
       "hours": 1,
       "itemId": "WIGOS-116531",
       "repositoryId": "5",
+      "userId": 1,
       "id": 65
     },
     {
@@ -522,6 +568,7 @@
       "hours": 4.5,
       "itemId": "WIGOS-117644",
       "repositoryId": "1",
+      "userId": 1,
       "id": 66
     },
     {
@@ -534,6 +581,7 @@
       "hours": 4,
       "itemId": "WIGOS-97950",
       "repositoryId": "2",
+      "userId": 1,
       "id": 67
     },
     {
@@ -546,6 +594,7 @@
       "hours": 5.5,
       "itemId": "WIGOS-97950",
       "repositoryId": "2",
+      "userId": 1,
       "id": 68
     },
     {
@@ -558,6 +607,7 @@
       "hours": 2,
       "itemId": "WIGOS-117530",
       "repositoryId": "2",
+      "userId": 1,
       "id": 69
     },
     {
@@ -570,6 +620,7 @@
       "hours": 1,
       "itemId": "WIGOS-116531",
       "repositoryId": "5",
+      "userId": 1,
       "id": 70
     },
     {
@@ -582,6 +633,7 @@
       "hours": 3.5,
       "itemId": "WIGOS-117530",
       "repositoryId": "2",
+      "userId": 1,
       "id": 71
     },
     {
@@ -594,6 +646,7 @@
       "hours": 3,
       "itemId": "WIGOS-117475",
       "repositoryId": "2",
+      "userId": 1,
       "id": 72
     },
     {
@@ -606,6 +659,7 @@
       "hours": 2,
       "itemId": "WIGOS-116531",
       "repositoryId": "5",
+      "userId": 1,
       "id": 73
     },
     {
@@ -619,6 +673,7 @@
       "itemId": "WIGOS-118382",
       "repositoryId": "1",
       "id": 74,
+      "userId": 1,
       "mergeIn": "master"
     },
     {
@@ -633,6 +688,7 @@
       "itemId": "WIGOS-117972",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 75
     },
     {
@@ -647,6 +703,7 @@
       "itemId": "WIGOS-118194",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 76
     },
     {
@@ -661,6 +718,7 @@
       "itemId": "WIGOS-118194",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 77
     },
     {
@@ -674,6 +732,7 @@
       "hours": 8,
       "itemId": "TASK-00001",
       "type": "VACACIONES",
+      "userId": 1,
       "id": 78
     },
     {
@@ -687,6 +746,7 @@
       "hours": 8,
       "itemId": "TASK-00002",
       "type": "VACACIONES",
+      "userId": 1,
       "id": 79
     },
     {
@@ -700,6 +760,7 @@
       "hours": 8,
       "itemId": "TASK-00003",
       "type": "VACACIONES",
+      "userId": 1,
       "id": 80
     },
     {
@@ -713,6 +774,7 @@
       "hours": 8,
       "itemId": "TASK-00004",
       "type": "VACACIONES",
+      "userId": 1,
       "id": 81
     },
     {
@@ -726,6 +788,7 @@
       "hours": 8,
       "itemId": "TASK-00005",
       "type": "VACACIONES",
+      "userId": 1,
       "id": 82
     },
     {
@@ -740,6 +803,7 @@
       "itemId": "WIGOS-119159",
       "repositoryId": 5,
       "type": "WIGOS",
+      "userId": 1,
       "id": 83
     },
     {
@@ -754,6 +818,7 @@
       "itemId": "WIGOS-118194",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 85
     },
     {
@@ -768,6 +833,7 @@
       "itemId": "WIGOS-109375",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 86
     },
     {
@@ -782,6 +848,7 @@
       "itemId": "WIGOS-109375",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 87
     },
     {
@@ -796,6 +863,7 @@
       "itemId": "WIGOS-119183",
       "repositoryId": 5,
       "type": "WIGOS",
+      "userId": 1,
       "id": 88
     },
     {
@@ -810,6 +878,7 @@
       "itemId": "WIGOS-117972",
       "repositoryId": 1,
       "type": "WIGOS",
+      "userId": 1,
       "id": 89
     },
     {
@@ -823,6 +892,7 @@
       "hours": 0.5,
       "itemId": "TASK-00001",
       "type": "OTROS",
+      "userId": 1,
       "id": 91
     },
     {
@@ -837,6 +907,7 @@
       "itemId": "WIGOS-119562",
       "repositoryId": 2,
       "type": "WIGOS",
+      "userId": 1,
       "id": 92
     },
     {
@@ -850,7 +921,38 @@
       "itemId": "WIGOS-116531",
       "repositoryId": 5,
       "mergeIn": "master",
+      "userId": 1,
       "id": 93
+    },
+    {
+      "name": "WIGOS-119562   Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.",
+      "description": "<p>Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.</p>",
+      "branch": "feature/sln2/wigos-119562_salones_cajero_recaudacion_de_maquinas_la_finalizacion_de_la_recaudacion_queda_congelada_no_finaliza_ni_devuelve_error_en_pantalla_error_en_el_log_error_error_in_aop_aspect_onexit_count_must_be_non_negative",
+      "mergeIn": "hotfix/hotfix-37",
+      "completed": true,
+      "createdAt": "2025-12-10T11:22:31.334Z",
+      "date": "2025-12-11",
+      "hours": 4,
+      "itemId": "WIGOS-119562",
+      "repositoryId": 2,
+      "type": "WIGOS",
+      "userId": 1,
+      "id": 94
+    },
+    {
+      "name": "WIGOS-119754 - Comida Navidad Empresa",
+      "description": "Comida Navidad Empresa",
+      "branch": "",
+      "mergeIn": "",
+      "completed": true,
+      "createdAt": "2025-12-11T12:28:57.214Z",
+      "date": "2025-12-11",
+      "hours": 4.5,
+      "itemId": "WIGOS-119754",
+      "repositoryId": 0,
+      "type": "WIGOS",
+      "userId": 1,
+      "id": 96
     },
     {
       "name": "WIGOS-119562   Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.",
@@ -859,46 +961,33 @@
       "mergeIn": "hotfix/hotfix-37",
       "completed": false,
       "createdAt": "2025-12-10T11:22:31.334Z",
-      "date": "2025-12-11",
+      "date": "2025-12-12",
       "hours": 0,
       "itemId": "WIGOS-119562",
       "repositoryId": 2,
       "type": "WIGOS",
-      "id": 94
+      "userId": 1,
+      "id": 97
     }
   ],
   "user": [
     {
-      "name": "Test",
-      "email": "test@winsysgroup.com",
-      "role": "Test",
-      "theme": "light",
-      "language": "en",
-      "id": 1
+      "id": 1,
+      "name": "Oscar (Admin)",
+      "email": "o.mas@winsysgroup.com",
+      "role": "Admin",
+      "theme": "dark",
+      "language": "es",
+      "password": "$2b$10$01I5NCQl5QrivFbuvS9KKerCq4jSSOrSc0fDSLcqNlMtOEptzeBF2"
     },
     {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "Developer",
+      "id": 2,
+      "name": "Oscar (User)",
+      "email": "o.mas.user@winsysgroup.com",
+      "role": "User",
       "theme": "light",
       "language": "en",
-      "id": 2
-    },
-    {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "Developer",
-      "theme": "light",
-      "language": "en",
-      "id": 3
-    },
-    {
-      "name": "John Doe",
-      "email": "john@example.com",
-      "role": "Developer",
-      "theme": "light",
-      "language": "en",
-      "id": 4
+      "password": "$2b$10$mkCNqcXf6Psn3kobCL3xI.wz8p.7VBBTgeZFpZ9XrTTvLjpt9nHRO"
     }
   ]
 }

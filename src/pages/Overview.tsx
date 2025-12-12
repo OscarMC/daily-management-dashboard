@@ -19,12 +19,22 @@ import {
 } from 'lucide-react'
 import { format } from 'date-fns'
 import { es } from 'date-fns/locale'
-//import FloatingLines from '../components/FloatingLines'
 import { getFestivosMap } from '../hooks/useFestivos'
-import { useToastStack, toast } from '../components/common/ToastStack'
+import { toast } from '../components/common/ToastStack'
+import { useAuth } from '../contexts/AuthContext' // 👈 Nuevo
 
 export default function Overview() {
-  const tasks = useLiveQuery(() => db.tasks.toArray(), [])
+  const { user } = useAuth() // 👈 Usuario autenticado
+
+  // ✅ Filtramos SOLO las tareas del userId actual
+  const tasks = useLiveQuery(() => {
+    if (!user) return []
+    return db.tasks
+      .where('userId')
+      .equals(user.id)
+      .toArray()
+  }, [user?.id])
+
   const [currentMonth, setCurrentMonth] = useState(new Date())
   const [selectedDate, setSelectedDate] = useState<string | null>(null)
   const [editId, setEditId] = useState<number | null>(null)
@@ -90,11 +100,11 @@ export default function Overview() {
   const handleTaskDeleted = (name: string) => toast(`⚠️ Tarea "${name}" eliminada`, 'warn')
 
   const handleDelete = async (id: number) => {
+    if (!user) return
     const task = await db.tasks.get(id)
-    if (task) {
-      await db.tasks.delete(id)
-      handleTaskDeleted(task.name)
-    }
+    if (!task || task.userId !== user.id) return // 👈 Defensivo
+    await db.tasks.delete(id)
+    handleTaskDeleted(task.name)
   }
 
   return (

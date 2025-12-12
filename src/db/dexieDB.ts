@@ -16,10 +16,11 @@ export interface Task {
  repositoryId?: number
  mergeIn?: string
  type?: 'WIGOS' | 'TASK' | 'VACACIONES' | 'OTROS'
+ userId: number // 👈 obligatorio
 }
 
 export interface UserProfile {
- id?: number
+ id: number
  name: string
  role: string
  email?: string
@@ -37,9 +38,10 @@ export class AppDatabase extends Dexie {
 
  constructor() {
   super('dailyManagementDB')
-  this.version(3).stores({
-   tasks: '++id, name, date, completed, type',
-   user: '++id, name'
+  // 👇 Incrementamos la versión y añadimos userId al índice
+  this.version(5).stores({
+   tasks: '++id, userId, name, date, completed, type',
+   user: '++id, email' // ✅ Ahora `email` está indexado
   })
  }
 }

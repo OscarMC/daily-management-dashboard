@@ -7,7 +7,7 @@ import EditTaskModal from './EditTaskModal'
 
 export default function TaskList() {
   const tasks = useLiveQuery(() => db.tasks.toArray(), [])
-  const [selectedTask, setSelectedTask] = useState<Task | null>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<number | null>(null)
   const [refresh, setRefresh] = useState(0)
 
   const toggleComplete = async (task: Task) => {
@@ -29,13 +29,18 @@ export default function TaskList() {
     .filter((t) => t.completed)
     .reduce((acc, t) => acc + (t.hours || 0), 0)
 
+  const inProgressHours = todaysTasks
+    .filter((t) => !t.completed && t.hours > 0)
+    .reduce((acc, t) => acc + (t.hours || 0), 0)
+
   const weekday = new Date(today).getDay()
   const dailyTarget = weekday >= 1 && weekday <= 4 ? 8.5 : weekday === 5 ? 6 : 0
-  const progress = dailyTarget > 0 ? Math.min((completedHours / dailyTarget) * 100, 100) : 0
+  const progressCompleted = dailyTarget > 0 ? Math.min((completedHours / dailyTarget) * 100, 100) : 0
+  const progressInProgress = dailyTarget > 0 ? Math.min((inProgressHours / dailyTarget) * 100, 100) : 0
 
   return (
     <div className="space-y-4">
-      <ProgressBar value={progress} />
+      <ProgressBar completed={progressCompleted} inProgress={progressInProgress} />
       {todaysTasks.map((task) => (
         <div
           key={task.id}
@@ -56,7 +61,7 @@ export default function TaskList() {
                 <Square className="w-5 h-5 text-gray-400" />
               )}
             </button>
-            <button onClick={() => setSelectedTask(task)}>
+            <button onClick={() => setSelectedTaskId(task.id!)}>
               <Pencil className="w-5 h-5 text-blue-500" />
             </button>
             <button onClick={() => deleteTask(task)}>
@@ -66,10 +71,10 @@ export default function TaskList() {
         </div>
       ))}
 
-      {selectedTask && (
+      {selectedTaskId && (
         <EditTaskModal
-          task={selectedTask}
-          onClose={() => setSelectedTask(null)}
+          taskId={selectedTaskId}
+          onClose={() => setSelectedTaskId(null)}
           onUpdated={() => setRefresh((r) => r + 1)}
         />
       )}

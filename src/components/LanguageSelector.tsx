@@ -1,5 +1,5 @@
 import { useTranslation } from 'react-i18next';
-import { Button } from '../components/ui/Button';
+import { Button } from './ui/Button';
 import { Flag } from 'lucide-react';
 
 const LanguageSelector = () => {

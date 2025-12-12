@@ -1,4 +1,3 @@
-// server/DbJsonServer.js
 const express = require('express');
 const fs = require('fs-extra');
 const path = require('path');
@@ -30,7 +29,7 @@ function errorLog(msg, err) {
 }
 
 // ========================
-// DB.json
+// DB.json — Shared utility for user/tasks
 // ========================
 async function loadDB() {
   log('Loading DB.json');
@@ -47,6 +46,7 @@ async function saveDB(db) {
   await fs.outputJson(dbPath, db, { spaces: 2 });
 }
 
+// Full DB endpoints (already existed)
 app.get('/db', async (req, res) => {
   try {
     const db = await loadDB();
@@ -65,6 +65,59 @@ app.post('/db', async (req, res) => {
   } catch (err) {
     errorLog('Error in POST /db', err);
     res.status(500).json({ error: 'Failed to save DB.json' });
+  }
+});
+
+// ========================
+// USERS (Auth support)
+// ========================
+app.get('/user', async (req, res) => {
+  try {
+    const db = await loadDB();
+    res.json(db.user || []);
+  } catch (err) {
+    errorLog('Error in GET /user', err);
+    res.status(500).json({ error: 'Failed to load users' });
+  }
+});
+
+app.post('/user', async (req, res) => {
+  try {
+    log('POST /user - body:', req.body);
+    const { name, email, password, role = 'User', theme = 'light', language = 'es' } = req.body;
+
+    if (!name || !email) {
+      return res.status(400).json({ error: 'name and email are required' });
+    }
+
+    const db = await loadDB();
+    const users = db.user || [];
+
+    // Optional: prevent duplicate email (you already check in frontend, but good to double-check)
+    const existing = users.find(u => u.email.toLowerCase() === email.toLowerCase());
+    if (existing) {
+      return res.status(409).json({ error: 'User with this email already exists' });
+    }
+
+    const nextId = users.length > 0 ? Math.max(...users.map(u => u.id)) + 1 : 1;
+    const newUser = {
+      id: nextId,
+      name: name.trim(),
+      email: email.trim().toLowerCase(),
+      password, // stored in plain text (for demo only!)
+      role,
+      theme,
+      language
+    };
+
+    db.user = [...users, newUser];
+    await saveDB(db);
+    // Return without password
+    const { password: _, ...userWithoutPassword } = newUser;
+    res.status(201).json(userWithoutPassword);
+  } catch (err) {
+    errorLog('Error in POST /user', err);
+    res.status(500).json({ error: 'Failed to create user' });
   }
 });
 
@@ -285,7 +338,7 @@ async function loadHolidays() {
     return defaultHolidays;
   }
   const data = await fs.readJson(holidaysPath);
-  // Asegurar que todos tengan `id` (por si el JSON original no lo tenía)
+  // Asegurar que todos tengan `id`
   return data.map((h, i) => ({ ...h, id: h.id ?? i + 1 }));
 }
 
