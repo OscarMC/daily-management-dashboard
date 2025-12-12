@@ -39,9 +39,9 @@ export class AppDatabase extends Dexie {
  constructor() {
   super('dailyManagementDB')
   // 👇 Incrementamos la versión y añadimos userId al índice
-  this.version(4).stores({
+  this.version(5).stores({
    tasks: '++id, userId, name, date, completed, type',
-   user: '++id, name'
+   user: '++id, email' // ✅ Ahora `email` está indexado
   })
  }
 }

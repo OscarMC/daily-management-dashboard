@@ -975,19 +975,19 @@
       "id": 1,
       "name": "Oscar (Admin)",
       "email": "o.mas@winsysgroup.com",
-      "password": "1234",
       "role": "Admin",
       "theme": "dark",
-      "language": "es"
+      "language": "es",
+      "password": "$2b$10$01I5NCQl5QrivFbuvS9KKerCq4jSSOrSc0fDSLcqNlMtOEptzeBF2"
     },
     {
       "id": 2,
       "name": "Oscar (User)",
       "email": "o.mas.user@winsysgroup.com",
-      "password": "1234",
       "role": "User",
       "theme": "light",
-      "language": "en"
+      "language": "en",
+      "password": "$2b$10$mkCNqcXf6Psn3kobCL3xI.wz8p.7VBBTgeZFpZ9XrTTvLjpt9nHRO"
     }
   ]
 }
