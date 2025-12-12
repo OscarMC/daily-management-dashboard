@@ -2,9 +2,10 @@ import { ThemeToggle } from './ThemeToggle'
 import { LanguageSelector } from './LanguageSelector'
 import { useTranslation } from 'react-i18next'
 import { useAuth } from '../contexts/AuthContext'
-import { Button } from '@/components/ui/button'
+import { Button } from './ui/Button'
 import { LogOut } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import { Shield, User } from 'lucide-react';
 
 export default function Header() {
  const { t } = useTranslation()
@@ -20,7 +21,15 @@ export default function Header() {
   <header className="relative flex items-center justify-between p-4 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700">
    {/* Izquierda: info usuario */}
    <div className="flex items-center gap-2 text-sm text-muted-foreground">
-    {user && <span>{user.name}</span>}
+    {user && user.role === 'Admin' && <Shield
+     size={16}
+     className='text-red-500'
+    />}
+    {user && user.role !== 'Admin' && <User
+     size={16}
+     className='text-blue-500'
+    />}
+    {user && <span>{user.role}</span>}
    </div>
 
    {/* Título centrado absolutamente en el centro del header */}

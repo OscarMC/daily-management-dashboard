@@ -19,8 +19,9 @@ import {
 } from 'lucide-react'
 import { useState } from 'react'
 import EditTaskModal from '../components/common/EditTaskModal'
-import { Button } from '@/components/ui/button'
+import { Button } from '../components/ui/Button'
 import { toast } from '../components/common/ToastStack'
+import { useAuth } from '../contexts/AuthContext' // ðŸ‘ˆ Nuevo
 
 interface MessageModalProps {
   message: string
@@ -65,7 +66,17 @@ function MessageModal({ message, onClose }: MessageModalProps) {
 
 export default function Dashboard() {
   const { t } = useTranslation()
-  const tasks = useLiveQuery(() => db.tasks.toArray(), [])
+  const { user } = useAuth() // ðŸ‘ˆ Usuario autenticado
+
+  // âœ… Filtramos SOLO las tareas del userId actual
+  const tasks = useLiveQuery(() => {
+    if (!user) return []
+    return db.tasks
+      .where('userId')
+      .equals(user.id)
+      .toArray()
+  }, [user?.id])
+
   const { repositories } = useRepositories()
   const [copiedTask, setCopiedTask] = useState<number | null>(null)
   const [copiedBranch, setCopiedBranch] = useState<number | null>(null)
@@ -120,35 +131,35 @@ export default function Dashboard() {
       console.error('Error copying to clipboard:', err)
     }
   }
+
   const toggleTaskCompleted = async (taskId: number, currentStatus: boolean) => {
+    if (!user) return
+    const task = await db.tasks.get(taskId)
+    if (!task || task.userId !== user.id) return // ðŸ‘ˆ Defensivo
     try {
-      await db.tasks.update(taskId, { completed: !currentStatus });
+      await db.tasks.update(taskId, { completed: !currentStatus })
     } catch (error) {
-      console.error('Error updating task completion status:', error);
+      console.error('Error updating task completion status:', error)
     }
-  };
-    const copyBranchName = async (text: string, id: number) => {
-      try {
-        await navigator.clipboard.writeText(text)
-        setCopiedTask(id)
-        toast({ message: 'í ½í³‹ Nombre copiado al portapapeles', type: 'success' })
-        setTimeout(() => setCopiedTask(null), 2000)
-      } catch {
-        toast({ message: 'âš ï¸ Error al copiar el texto.', type: 'warn' })
-      }
   }
 
-  //console.log('Branch URL:', branchUrl);
-  //console.log('Repository Name:', repoName);
-  //console.log('Task Branch:', t.branch??'t.branch undefined');
-  //console.log('Task Repository ID:', t.r??'t.r undefined');
+  const copyBranchName = async (text: string, id: number) => {
+    try {
+      await navigator.clipboard.writeText(text)
+      setCopiedTask(id)
+      toast({ message: 'ðŸ“‹ Nombre copiado al portapapeles', type: 'success' })
+      setTimeout(() => setCopiedTask(null), 2000)
+    } catch {
+      toast({ message: 'âš ï¸ Error al copiar el texto.', type: 'warn' })
+    }
+  }
+
   const handleOpenMessage = (
     jiraUrl: string | null,
     branchUrl: string | null,
     mergeIn?: string
   ) => {
-    const messageText = `- Jira: ${jiraUrl || 'No Jira link'}\n\n- Pull Request: ${branchUrl || 'No Bitbucket link'
-      }\n\n- Para mergear en: [${mergeIn || 'master'}].`
+    const messageText = `- Jira: ${jiraUrl || 'No Jira link'}\n\n- Pull Request: ${branchUrl || 'No Bitbucket link'}\n\n- Para mergear en: [${mergeIn || 'master'}].`
     setMessage(messageText)
   }
 
@@ -222,8 +233,8 @@ export default function Dashboard() {
                   <div
                     key={t.id}
                     className={`p-3 rounded-lg min-w-full border ${t.completed
-                        ? 'border-green-400 bg-green-50 dark:border-green-600/30 dark:bg-green-900/30'
-                        : 'border-orange-300 bg-yellow-50 dark:border-orange-600/30 dark:bg-yellow-900/30'
+                      ? 'border-green-400 bg-green-50 dark:border-green-600/30 dark:bg-green-900/30'
+                      : 'border-orange-300 bg-yellow-50 dark:border-orange-600/30 dark:bg-yellow-900/30'
                       }`}
                   >
                     <div className="flex items-start justify-between gap-4 w-full">
@@ -267,7 +278,7 @@ export default function Dashboard() {
                                     href={mergeInUrl}
                                     target="_blank"
                                     rel="noopener noreferrer"
-                                    title="Abrir ticket en Jira"
+                                    title="Abrir rama en Bitbucket"
                                     className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                                   >
                                     <ExternalLink
@@ -288,7 +299,7 @@ export default function Dashboard() {
                                     â† {t.branch}
                                   </p>
                                   <button
-                                    onClick={() => copyBranchName(t.branch||'', t.id!)}
+                                    onClick={() => copyBranchName(t.branch || '', t.id!)}
                                     className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                                     title="Copiar rama de trabajo"
                                   >
@@ -304,7 +315,7 @@ export default function Dashboard() {
                                       href={branchUrl}
                                       target="_blank"
                                       rel="noopener noreferrer"
-                                      title="Abrir ticket en Jira"
+                                      title="Abrir rama en Bitbucket"
                                       className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
                                     >
                                       <ExternalLink
@@ -421,8 +432,8 @@ export default function Dashboard() {
                             <span
                               id={`toggle-label-${t.id}`}
                               className={`text-sm font-medium ${t.completed
-                                  ? 'text-green-700 dark:text-green-300'
-                                  : 'text-gray-500 dark:text-gray-400'
+                                ? 'text-green-700 dark:text-green-300'
+                                : 'text-gray-500 dark:text-gray-400'
                                 }`}
                             >
                               {t.completed ? 'Completada' : 'En curso'}
@@ -432,8 +443,8 @@ export default function Dashboard() {
                           {/* Horas */}
                           <div
                             className={`text-xl font-bold font-mono px-3 py-1 rounded-md shadow-sm ${t.completed
-                                ? 'text-green-700 bg-green-100 dark:bg-green-900/40 dark:text-green-300'
-                                : 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900/40 dark:text-yellow-300'
+                              ? 'text-green-700 bg-green-100 dark:bg-green-900/40 dark:text-green-300'
+                              : 'text-yellow-700 bg-yellow-100 dark:bg-yellow-900/40 dark:text-yellow-300'
                               }`}
                           >
                             <Clock size={18} className="inline mr-1.5 mb-0.5" />

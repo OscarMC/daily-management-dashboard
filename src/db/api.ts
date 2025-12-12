@@ -1,32 +1,54 @@
+import { Task } from '../db/dexieDB'
+
 // src/db/api.ts
 const BASE_URL = "http://localhost:3001";
 
-export async function getTasks() {
- const res = await fetch(`${BASE_URL}/tasks`);
+// 👇 Nueva función auxiliar: obtener userId del contexto
+// Pero como api.ts no debe depender de React, lo pasaremos desde los hooks
+// Así que refactorizamos las funciones para aceptar userId
+
+// --- Tasks API (filtradas por userId) ---
+
+export async function getTasks(userId: number) {
+ const res = await fetch(`${BASE_URL}/tasks?userId=${userId}`);
+ if (!res.ok) throw new Error('Failed to fetch tasks');
  return await res.json();
 }
 
-export async function addTask(task: any) {
+export async function addTask(task: Omit<Task, 'id' | 'createdAt' | 'updatedAt'>, userId: number) {
+ const newTask = {
+  ...task,
+  userId,
+  createdAt: new Date().toISOString(),
+  updatedAt: new Date().toISOString()
+ };
  const res = await fetch(`${BASE_URL}/tasks`, {
   method: "POST",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(task),
+  body: JSON.stringify(newTask),
  });
+ if (!res.ok) throw new Error('Failed to add task');
  return await res.json();
 }
 
-export async function updateTask(task: any) {
- await fetch(`${BASE_URL}/tasks/${task.id}`, {
+export async function updateTask(task: Task & { id: number }) {
+ const res = await fetch(`${BASE_URL}/tasks/${task.id}`, {
   method: "PUT",
   headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(task),
+  body: JSON.stringify({
+   ...task,
+   updatedAt: new Date().toISOString()
+  }),
  });
+ if (!res.ok) throw new Error('Failed to update task');
+ return await res.json();
 }
 
 export async function deleteTask(id: number) {
- await fetch(`${BASE_URL}/tasks/${id}`, {
+ const res = await fetch(`${BASE_URL}/tasks/${id}`, {
   method: "DELETE",
  });
+ if (!res.ok) throw new Error('Failed to delete task');
 }
 
 // --- Repositories API ---

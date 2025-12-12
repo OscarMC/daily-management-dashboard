@@ -16,22 +16,28 @@ import {
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
-import { useLiveQuery } from 'dexie-react-hooks'
-import { db } from '../db/dexieDB'
+import { useAuth } from '../contexts/AuthContext'
 
-const mainMenu = [
+const mainMenuBase = [
   { path: '/', label: 'dashboard', icon: Home },
   { path: '/daily-tasks', label: 'dailyTasks', icon: ClipboardList },
   { path: '/overview', label: 'overview', icon: CalendarCheck },
+]
+
+const configMenuBase = [
+  { path: '/repositories', label: 'repositories', icon: FolderGit2, fontColor: 'white', backColor: '#EF4444' },
+  { path: '/branches', label: 'branches', icon: GitBranch, fontColor: 'white', backColor: '#6366F1' },
+]
+
+const adminOnlyMain = [
   { path: '/working-day-summary', label: 'workingDay', icon: Clock }
 ]
 
-const configMenu = [
-  { path: '/repositories', label: 'repositories', icon: FolderGit2, fontColor: 'white', backColor: '#EF4444' },
-  { path: '/branches', label: 'branches', icon: GitBranch, fontColor: 'white', backColor: '#6366F1' },
-  { path: '/holidays', label: 'holidays', icon: Caravan, fontColor: 'white', backColor: '#10B981' },
-  { path: '/login', label: 'login', icon: Bird, fontColor: 'white', backColor: '#F59E0B' },
+const adminOnlyConfig = [
+  { path: '/holidays', label: 'holidays', icon: Caravan, fontColor: 'white', backColor: '#10B981' }
 ]
+
+const loginMenuItem = { path: '/login', label: 'login', icon: Bird, fontColor: 'white', backColor: '#F59E0B' }
 
 interface MenuItem {
   path: string
@@ -44,11 +50,20 @@ interface MenuItem {
 export default function Sidebar() {
   const { t } = useTranslation()
   const location = useLocation()
-  const user = useLiveQuery(() => db.user.toArray())
+  const { user } = useAuth()
   const currentYear = new Date().getFullYear()
   const [isConfigOpen, setIsConfigOpen] = useState(false)
 
-  const userProfile = user && user.length > 0 ? user[0] : null
+  const userProfile = user
+
+  // Construir menús según el rol
+  const mainMenu = user?.role === 'Admin'
+    ? [...mainMenuBase, ...adminOnlyMain]
+    : mainMenuBase
+
+  const configMenu = user?.role === 'Admin'
+    ? [...configMenuBase, ...adminOnlyConfig, loginMenuItem]
+    : [...configMenuBase ]
 
   const renderMenuItem = ({ path, label, icon: Icon, fontColor, backColor }: MenuItem) => {
     const isActive = location.pathname === path
@@ -118,11 +133,10 @@ export default function Sidebar() {
           <div>
             <button
               onClick={() => setIsConfigOpen(!isConfigOpen)}
-              className={`flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors ${
-                isConfigOpen || configMenu.some(item => location.pathname === item.path)
+              className={`flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors ${isConfigOpen || configMenu.some(item => location.pathname === item.path)
                   ? 'bg-blue-500 text-white'
                   : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
-              }`}
+                }`}
             >
               <span className="flex items-center gap-2">
                 <Wrench className="w-8 h-8" />

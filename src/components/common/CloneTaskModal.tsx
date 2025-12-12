@@ -5,6 +5,7 @@ import { X, Copy, Type, FileText, GitBranch, Calendar } from 'lucide-react';
 import { useRepositories } from '../../db/repositoriesStore';
 import { useBranches } from '../../db/branchesStore';
 import { toast } from '../common/ToastStack';
+import { useAuth } from '../../contexts/AuthContext'; // 👈 Nuevo
 
 interface CloneTaskModalProps {
   taskId: number;
@@ -15,6 +16,7 @@ interface CloneTaskModalProps {
 export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskModalProps) {
   const { repositories } = useRepositories();
   const { branches } = useBranches();
+  const { user } = useAuth(); // 👈 Autenticación
 
   const [task, setTask] = useState<any>(null);
   const [loading, setLoading] = useState(false);
@@ -24,17 +26,17 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
   }, [taskId]);
 
   const handleClone = async () => {
-    if (!task) return;
+    if (!task || !user) return;
 
     setLoading(true);
     try {
-      // Clonar sin ID, completado = false, horas = 0, fecha = hoy
       const newTask = {
         ...task,
         id: undefined,
         completed: false,
         hours: task.type === 'VACACIONES' ? 8 : 0,
-        date: new Date().toISOString().substring(0, 10)
+        date: new Date().toISOString().substring(0, 10),
+        userId: user.id, // 👈 ✅ OBLIGATORIO en clonación
       };
       await db.tasks.add(newTask);
       toast('📋 Tarea clonada correctamente.', 'success');
@@ -50,24 +52,20 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
 
   if (!task) return null;
 
-  // Encontrar nombre del repositorio si existe
   const repoName = task.repositoryId
     ? repositories.find(r => r.id === task.repositoryId)?.name
     : null;
 
-  // ✅ NUEVA LÓGICA: ramas para "Rama base (To merge in...)" al clonar
   const filteredBranches = task.repositoryId
     ? [
-      // Ramas específicas del repositorio de la tarea original (excluyendo las de DbVersion)
       ...branches.filter(b => b.repositoryId === Number(task.repositoryId) && b.repositoryId !== 1),
-      // Ramas por defecto (repositoryId = 1) → siempre disponibles
       ...branches.filter(b => b.repositoryId === 1)
     ]
-    : branches; // Si no hay repositoryId, mostramos todas (comportamiento fallback)
+    : branches;
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-md overflow-hidden">
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-[100vh] overflow-hidden">
         <div className="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-emerald-100 dark:bg-emerald-900/30 rounded">
@@ -84,7 +82,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
         </div>
 
         <div className="p-5">
-          {/* Tipo de tarea (solo informativo) */}
           {task.type && (
             <div className="mb-4">
               <span className="inline-block px-2.5 py-0.5 text-xs font-medium rounded-full bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-300">
@@ -93,7 +90,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             </div>
           )}
 
-          {/* Nombre */}
           <div className="mb-4">
             <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <Type size={14} /> Nombre
@@ -106,7 +102,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             />
           </div>
 
-          {/* Descripción */}
           <div className="mb-4">
             <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <FileText size={14} /> Descripción
@@ -119,7 +114,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             />
           </div>
 
-          {/* Repositorio (solo informativo si existe) */}
           {repoName && (
             <div className="mb-4">
               <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
@@ -131,7 +125,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             </div>
           )}
 
-          {/* Rama de trabajo */}
           <div className="mb-4">
             <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <GitBranch size={14} /> Rama de trabajo
@@ -144,7 +137,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             />
           </div>
 
-          {/* Rama base (To merge in...) — ✅ AHORA FILTRADO */}
           <div className="mb-5">
             <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
               Rama base (To merge in...)
@@ -163,7 +155,6 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             </select>
           </div>
 
-          {/* Fecha de la nueva tarea (siempre hoy) */}
           <div className="mb-6 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
             <div className="flex items-center gap-2 text-sm text-blue-700 dark:text-blue-300">
               <Calendar size={14} />
@@ -171,13 +162,12 @@ export default function CloneTaskModal({ taskId, onClose, onCloned }: CloneTaskM
             </div>
           </div>
 
-          {/* Botón de acción */}
           <button
             onClick={handleClone}
-            disabled={loading}
-            className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading
-                ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                : 'bg-emerald-600 hover:bg-emerald-700 text-white'
+            disabled={loading || !user}
+            className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || !user
+              ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+              : 'bg-emerald-600 hover:bg-emerald-700 text-white'
               }`}
           >
             {loading ? 'Clonando...' : 'Clonar tarea'}

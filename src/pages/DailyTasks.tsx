@@ -13,12 +13,13 @@ import {
   Umbrella,
   Copy,
   FileText,
-  GitBranch, // ✅ NUEVO
+  GitBranch,
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useRepositories } from '../db/repositoriesStore'
 import { useLocation } from 'react-router-dom'
 import { toast } from '../components/common/ToastStack'
+import { useAuth } from '../contexts/AuthContext' // 👈 Nuevo: para obtener el usuario actual
 
 const JIRA_BASE = 'https://winsytemsintl.atlassian.net/browse/'
 
@@ -34,7 +35,17 @@ const getTodayLocalISO = () => {
 
 export default function DailyTasks() {
   const { t } = useTranslation()
-  const tasks = useLiveQuery(() => db.tasks.toArray(), [])
+  const { user } = useAuth() // 👈 Usuario autenticado
+
+  // ✅ Filtramos SOLO las tareas del userId actual
+  const tasks = useLiveQuery(() => {
+    if (!user) return []
+    return db.tasks
+      .where('userId')
+      .equals(user.id)
+      .toArray()
+  }, [user?.id])
+
   const { repositories } = useRepositories()
   const [showAdd, setShowAdd] = useState(false)
   const [editId, setEditId] = useState<number | null>(null)
@@ -60,8 +71,10 @@ export default function DailyTasks() {
 
   // === Acciones con Toasts ===
   const toggleComplete = async (id: number, completed: boolean) => {
+    if (!user) return
     const task = await db.tasks.get(id)
-    if (!task || task.type === 'VACACIONES') return
+    // ✅ Defensivo: asegurar que la tarea pertenece al usuario
+    if (!task || task.userId !== user.id || task.type === 'VACACIONES') return
     const newStatus = !completed
     await db.tasks.update(id, { completed: newStatus })
     toast({
@@ -73,7 +86,10 @@ export default function DailyTasks() {
   }
 
   const deleteTask = async (id: number) => {
+    if (!user) return
     const task = await db.tasks.get(id)
+    // ✅ Defensivo: solo eliminar si es del usuario
+    if (!task || task.userId !== user.id) return
     await db.tasks.delete(id)
     toast({
       message: `🗑️ Tarea eliminada: ${task?.name || 'Desconocida'}`,
@@ -178,6 +194,10 @@ export default function DailyTasks() {
         <h2 className="text-xl font-semibold">{t('menu.dailyTasks')}</h2>
         <button
           onClick={() => {
+            if (!user) {
+              toast({ message: '❌ Usuario no autenticado.', type: 'error' })
+              return
+            }
             const hasVacation = filteredTasks.some(
               (t) =>
                 t.type === 'VACACIONES' &&
@@ -343,12 +363,12 @@ export default function DailyTasks() {
       <div
         key={t.id}
         className={`p-4 rounded-lg border shadow-sm flex justify-between items-center mb-2 ${isVacation
-            ? 'bg-teal-100 dark:bg-teal-900/40 border-teal-400'
-            : t.completed
-              ? 'bg-green-50 dark:bg-green-900/30 border-green-400'
-              : isOther
-                ? 'bg-slate-100 dark:bg-amber-950 border-amber-500'
-                : 'bg-gray-100 dark:bg-gray-800 border-gray-600'
+          ? 'bg-teal-100 dark:bg-teal-900/40 border-teal-400'
+          : t.completed
+            ? 'bg-green-50 dark:bg-green-900/30 border-green-400'
+            : isOther
+              ? 'bg-slate-100 dark:bg-amber-950 border-amber-500'
+              : 'bg-gray-100 dark:bg-gray-800 border-gray-600'
           }`}
       >
         <div className="flex flex-col">
@@ -402,16 +422,14 @@ export default function DailyTasks() {
           </div>
 
           {t.description && (
-            <p 
-            className="text-sm text-gray-600 dark:text-gray-300 mt-1"
-            dangerouslySetInnerHTML={{ __html: t.description }}>
+            <p
+              className="text-sm text-gray-600 dark:text-gray-300 mt-1"
+              dangerouslySetInnerHTML={{ __html: t.description }}>
             </p>
           )}
 
           {!isVacation && (
             <>
-              {/* ✅ Branch principal + Rama origen */}
-              {/* Branch + mergeIn */}
               {t.mergeIn && (
                 <div className="flex flex-col gap-1 mt-1">
                   <div className="flex items-center gap-2">
@@ -447,8 +465,8 @@ export default function DailyTasks() {
               <button
                 onClick={() => toggleComplete(t.id!, t.completed)}
                 className={`flex items-center gap-1 px-2 py-1.5 transition-colors ${t.completed
-                    ? 'bg-green-500 text-white hover:bg-green-600'
-                    : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
+                  ? 'bg-green-500 text-white hover:bg-green-600'
+                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
                   }`}
                 title={
                   t.completed ? 'Marcar como pendiente' : 'Marcar como completada'

@@ -5,8 +5,6 @@ import { X, Calendar, Clock, GitBranch, FolderGit2, Type } from 'lucide-react';
 import { useRepositories } from '../../db/repositoriesStore';
 import { useBranches } from '../../db/branchesStore';
 import { toast } from '../common/ToastStack';
-
-// Importamos ReactQuill y su CSS
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 
@@ -23,7 +21,6 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
   const [task, setTask] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
-  // Configuración del editor Quill
   const modules = {
     toolbar: [
       [{ header: [1, 2, 3, false] }],
@@ -74,8 +71,10 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
 
     setLoading(true);
     try {
+      // 👇 Aseguramos que `userId` no se pierda al actualizar
       const updateData = {
         ...task,
+        userId: task.userId, // 👈 ✅ Preservamos el userId original
         repositoryId: task.repositoryId ? Number(task.repositoryId) : undefined,
         hours: Number(task.hours) || 0,
       };
@@ -94,21 +93,16 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
 
   if (!task) return null;
 
-  // ✅ NUEVA LÓGICA: ramas para "mergeIn"
   const filteredBranches = task.repositoryId
     ? [
-      // Ramas específicas del repositorio de la tarea (excluyendo las de DbVersion)
       ...branches.filter(b => b.repositoryId === Number(task.repositoryId) && b.repositoryId !== 1),
-      // Ramas por defecto (repositoryId = 1) → siempre disponibles
       ...branches.filter(b => b.repositoryId === 1)
     ]
     : [];
 
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      {/* Modal con layout flex vertical */}
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl h-[90vh] flex flex-col">
-        {/* Header */}
+      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-[100vh] h-[90vh] flex flex-col">
         <div className="p-5 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
           <div className="flex items-center gap-2">
             <div className="p-1.5 bg-blue-100 dark:bg-blue-900/30 rounded">
@@ -126,9 +120,7 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
           </button>
         </div>
 
-        {/* Contenido principal con scroll interno */}
         <div className="p-5 flex-1 overflow-y-auto">
-          {/* Nombre */}
           <div className="mb-4">
             <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
               Nombre
@@ -141,7 +133,6 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
             />
           </div>
 
-          {/* Descripción — ahora con estilos oscuros forzados */}
           <div className="mb-5">
             <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
               Descripción (HTML WYSIWYG)
@@ -149,8 +140,8 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
             <div
               className="border border-gray-300 dark:border-gray-600 rounded-lg overflow-hidden"
               style={{
-                backgroundColor: '#1f2937', // Fondo oscuro
-                color: '#ffffff', // Texto blanco
+                backgroundColor: '#1f2937',
+                color: '#ffffff',
               }}
             >
               <ReactQuill
@@ -169,14 +160,12 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
                   fontSize: '0.875rem',
                   padding: '0.5rem',
                 }}
-                // Forzar estilos en la toolbar
                 bounds=".dark-theme-editor"
                 placeholder="Escribe aquí..."
               />
             </div>
           </div>
 
-          {/* Fecha */}
           <div className="mb-4">
             <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
               <Calendar size={14} /> Fecha
@@ -189,7 +178,6 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
             />
           </div>
 
-          {/* Horas */}
           {task.type !== 'VACACIONES' && (
             <div className="mb-5">
               <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
@@ -208,10 +196,8 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
             </div>
           )}
 
-          {/* Campos para tipo WIGOS */}
           {task.type === 'WIGOS' && (
             <div className="space-y-4 mb-5">
-              {/* Repositorio */}
               <div>
                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
                   <FolderGit2 size={14} /> Repositorio
@@ -223,7 +209,7 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
                     setTask({
                       ...task,
                       repositoryId: e.target.value,
-                      mergeIn: '', // reset mergeIn al cambiar repo
+                      mergeIn: '',
                     })
                   }
                 >
@@ -236,7 +222,6 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
                 </select>
               </div>
 
-              {/* Rama base (To merge in...) */}
               {task.repositoryId && (
                 <div>
                   <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
@@ -257,7 +242,6 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
                 </div>
               )}
 
-              {/* Rama de trabajo */}
               <div>
                 <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
                   Rama de trabajo
@@ -274,7 +258,6 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
           )}
         </div>
 
-        {/* Footer con botón de acción */}
         <div className="p-5 border-t border-gray-200 dark:border-gray-700">
           <button
             onClick={handleSave}
