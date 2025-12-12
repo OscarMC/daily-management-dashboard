@@ -15,8 +15,9 @@
   "workingDay": "Working Days",
   "branches": "Branches",
   "login": "Cuco360",
-  "holidays": "Holidays",
-  "configuration": "Configuration"
+  "holidays": "Non-Working Days",
+  "configuration": "Configuration",
+  "weeklyReportPage":"Report"
  },
  "tasks": {
   "new": "New Task",
@@ -37,6 +38,7 @@
   "pendingTasks": "Pending Tasks",
   "productivity": "Productivity",
   "totalHours": "Total Hours",
-  "tasksToday": "Tasks today"  
+  "tasksToday": "Tasks today" ,
+  "previousWorkDayTasks": "Previous working day tasks"
  }
 }

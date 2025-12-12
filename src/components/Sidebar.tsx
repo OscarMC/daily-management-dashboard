@@ -12,7 +12,8 @@ import {
   User,
   Wrench,
   Caravan,
-  LayoutDashboard
+  LayoutDashboard,
+  PieChart
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -21,6 +22,7 @@ import { useAuth } from '../contexts/AuthContext'
 const mainMenuBase = [
   { path: '/', label: 'dashboard', icon: Home },
   { path: '/daily-tasks', label: 'dailyTasks', icon: ClipboardList },
+  { path: '/weekly-report-page', label: 'weeklyReportPage', icon: PieChart },
   { path: '/overview', label: 'overview', icon: CalendarCheck },
 ]
 
@@ -34,7 +36,7 @@ const adminOnlyMain = [
 ]
 
 const adminOnlyConfig = [
-  { path: '/holidays', label: 'holidays', icon: Caravan, fontColor: 'white', backColor: '#10B981' }
+  { path: '/holidays', label: 'holidays', icon: Caravan, fontColor: 'white', backColor: '#10B981' },
 ]
 
 const loginMenuItem = { path: '/login', label: 'login', icon: Bird, fontColor: 'white', backColor: '#F59E0B' }

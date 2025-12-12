@@ -12,6 +12,7 @@ import Repositories from './pages/Repositories'
 import WorkingDaySummary from './pages/WorkingDaySummary'
 import AuthPage from './pages/AuthPage'
 import ProtectedRoute from './components/ProtectedRoute'
+import WeeklyReportPage from './pages/WeeklyReportPage'
 import { useToastStack } from './components/common/ToastStack'
 
 export default function App() {
@@ -37,6 +38,7 @@ export default function App() {
          <Route path="/working-day-summary" element={<WorkingDaySummary />} />
          <Route path="/login" element={<Login />} />
          <Route path="/holidays" element={<Holidays />} />
+         <Route path="/weekly-report-page" element={<WeeklyReportPage />} />
         </Routes>
        </main>
       </div>

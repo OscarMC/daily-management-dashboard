@@ -5,11 +5,13 @@ ENTRADA   SALIDA    CONCEPTO     DURACION
 08:33:00  08:43:00  Descanso			 00:10   
 08:43:00  10:20:00  Trabajo				 01:37   
 10:20:00  10:32:00  Descanso			 00:12   
-10:32:00  11:40:53  Trabajo				 01:08   
+10:32:00  12:25:00  Trabajo				 01:53   
+12:25:00  12:36:00  Descanso			 00:11   
+12:36:00  14:50:23  Trabajo				 02:14   
 -------------------------------
 Total preinicio:		               00:00
-Total trabajado:		               03:14
-Tiempo restante para jornada:		   02:45
-Total descansos:		               00:22
-Hora estimada de salida:		       14:26
+Total trabajado:		               06:13
+Tiempo restante para jornada:		   00:00
+Total descansos:		               00:33
+Hora estimada de salida:		       14:50
 -------------------------------

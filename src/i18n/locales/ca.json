@@ -16,7 +16,8 @@
   "branches": "Branques",
   "login": "Cuco360",
   "holidays": "Dies festius",
-  "configuration": "Configuració"
+  "configuration": "Configuració",
+  "weeklyReportPage":"Report"
  },
  "tasks": {
   "new": "Nova tasca",
@@ -37,6 +38,7 @@
   "pendingTasks": "Tasques pendents",
   "productivity": "Productivitat",
   "totalHours": "Total d'hores",
-  "tasksToday": "Tasques avui"
+  "tasksToday": "Tasques avui",
+  "previousWorkDayTasks": "Tasques de l'últim dia treballat"
  }
 }

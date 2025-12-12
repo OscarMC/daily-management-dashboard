@@ -23,7 +23,7 @@ export interface UserProfile {
  id: number
  name: string
  role: string
- email?: string
+ email: string
  theme?: string
  language?: string
  notificationsEnabled?: boolean

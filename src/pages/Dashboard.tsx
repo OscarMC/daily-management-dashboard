@@ -21,7 +21,7 @@ import { useState } from 'react'
 import EditTaskModal from '../components/common/EditTaskModal'
 import { Button } from '../components/ui/Button'
 import { toast } from '../components/common/ToastStack'
-import { useAuth } from '../contexts/AuthContext' // 👈 Nuevo
+import { useAuth } from '../contexts/AuthContext'
 
 interface MessageModalProps {
   message: string
@@ -66,9 +66,8 @@ function MessageModal({ message, onClose }: MessageModalProps) {
 
 export default function Dashboard() {
   const { t } = useTranslation()
-  const { user } = useAuth() // 👈 Usuario autenticado
+  const { user } = useAuth()
 
-  // ✅ Filtramos SOLO las tareas del userId actual
   const tasks = useLiveQuery(() => {
     if (!user) return []
     return db.tasks
@@ -104,6 +103,13 @@ export default function Dashboard() {
   const progressInProgress =
     dailyTarget > 0 ? Math.min((inProgressHours / dailyTarget) * 100, 100) : 0
 
+  // ✅ Obtener último día con tareas antes de hoy
+  const allTaskDates = [...new Set(tasks.map(t => t.date))].sort((a, b) => b.localeCompare(a))
+  const previousWorkDate = allTaskDates.find(date => date < today) || null
+  const previousDayTasks = previousWorkDate
+    ? tasks.filter(t => t.date === previousWorkDate)
+    : []
+
   const JIRA_BASE = 'https://winsytemsintl.atlassian.net/browse/'
   const extractJiraKey = (name: string): string | null => {
     const match = name.match(/^(WIGOS-\d{4,6})/i)
@@ -135,7 +141,7 @@ export default function Dashboard() {
   const toggleTaskCompleted = async (taskId: number, currentStatus: boolean) => {
     if (!user) return
     const task = await db.tasks.get(taskId)
-    if (!task || task.userId !== user.id) return // 👈 Defensivo
+    if (!task || task.userId !== user.id) return
     try {
       await db.tasks.update(taskId, { completed: !currentStatus })
     } catch (error) {
@@ -232,7 +238,7 @@ export default function Dashboard() {
                 <li className="flex justify-between gap-2 py-1" key={t.id}>
                   <div
                     key={t.id}
-                    className={`p-3 rounded-lg min-w-full border ${t.completed
+                    className={`p-3 rounded-lg min-w-full border relative ${t.completed
                       ? 'border-green-400 bg-green-50 dark:border-green-600/30 dark:bg-green-900/30'
                       : 'border-orange-300 bg-yellow-50 dark:border-orange-600/30 dark:bg-yellow-900/30'
                       }`}
@@ -248,12 +254,10 @@ export default function Dashboard() {
                         </span>
 
                         <div className="flex flex-col gap-2 flex-1">
-                          {/* Nombre */}
                           <p className="text-lg font-semibold text-white truncate line-clamp-3 text-wrap">
                             {t.name}
                           </p>
 
-                          {/* Branch + mergeIn */}
                           {t.mergeIn && (
                             <div className="flex flex-col gap-1 mt-1">
                               <div className="flex items-center gap-2">
@@ -329,7 +333,6 @@ export default function Dashboard() {
                             </div>
                           )}
 
-                          {/* Descripción */}
                           <div
                             className="p-2 border-gray-400 bg-gray-50 dark:border-gray-600/30 dark:bg-gray-900/30 text-sm text-gray-400 line-clamp-100 text-wrap font-mono"
                             dangerouslySetInnerHTML={{ __html: t.description }}
@@ -337,7 +340,6 @@ export default function Dashboard() {
                         </div>
                       </div>
 
-                      {/* Botonera derecha (2x3 grid) */}
                       <div className="flex flex-col items-end gap-2">
                         <div className="grid grid-cols-3 gap-px">
                           <Button
@@ -412,9 +414,7 @@ export default function Dashboard() {
                           </Button>
                         </div>
 
-                        {/* ✅ Toggle + Horas */}
                         <div className="flex items-center gap-3 mt-2">
-                          {/* Toggle Switch */}
                           <div className="flex items-center gap-2">
                             <button
                               type="button"
@@ -440,7 +440,6 @@ export default function Dashboard() {
                             </span>
                           </div>
 
-                          {/* Horas */}
                           <div
                             className={`text-xl font-bold font-mono px-3 py-1 rounded-md shadow-sm ${t.completed
                               ? 'text-green-700 bg-green-100 dark:bg-green-900/40 dark:text-green-300'
@@ -451,8 +450,15 @@ export default function Dashboard() {
                             {t.hours.toFixed(2)} h
                           </div>
                         </div>
+                      {/* ✅ Badge del usuario */}
+                      <div className="relative bottom-1 top-1 right-1">
+                        <span className="px-1 py-1 text-xs font-medium text-white bg-blue-500 rounded-full">
+                          {user?.name || 'Usuario'}
+                        </span>
+                      </div>
                       </div>
                     </div>
+
                   </div>
                 </li>
               )
@@ -464,6 +470,139 @@ export default function Dashboard() {
           </p>
         )}
       </div>
+
+      {/* ✅ Sección: Tareas del último día con imputaciones */}
+      {previousDayTasks.length > 0 && (
+        <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow-sm mt-6">
+          <h2 className="text-lg font-semibold mb-1">
+            {t('dashboard.previousWorkDayTasks')} —{' '}
+            {new Date(previousWorkDate!).toLocaleDateString('es-ES', {
+              weekday: 'long',
+              year: 'numeric',
+              month: '2-digit',
+              day: '2-digit',
+            })}
+          </h2>
+          <ul role="list" className="divide-y divide-white/5">
+            {previousDayTasks.map((t) => {
+              const jiraKey = extractJiraKey(t.name)
+              const jiraUrl = jiraKey ? `${JIRA_BASE}${jiraKey}` : null
+              const repo = repositories.find((r) => r.id === Number(t.repositoryId))
+              const repoName = repo?.name
+              const branchUrl = t.branch
+                ? `https://bitbucket.org/wigos-dev/${repoName || 'repo'}/branch/${t.branch}`
+                : repoName
+                  ? `https://bitbucket.org/wigos-dev/${repoName}/branches`
+                  : null
+              const mergeInUrl = t.mergeIn
+                ? `https://bitbucket.org/wigos-dev/${repoName || 'repo'}/branch/${t.mergeIn}`
+                : repoName
+                  ? `https://bitbucket.org/wigos-dev/${repoName}/branches`
+                  : null
+
+              return (
+                <li className="flex justify-between gap-2 py-1" key={`prev-${t.id}`}>
+                  <div
+                    className={`p-3 rounded-lg min-w-full border relative ${t.completed
+                      ? 'border-green-400 bg-green-50/30 dark:border-green-600/30 dark:bg-green-900/30'
+                      : 'border-blue-300 bg-blue-50/30 dark:border-blue-600/30 dark:bg-blue-900/30'
+                      }`}
+                  >
+                    <div className="flex items-start justify-between gap-4 w-full">
+                      <div className="flex min-w-0 flex-1 gap-x-2 items-start">
+                        <span className="mt-10 size-15 flex-none inline-flex items-center rounded-full bg-green-400/10 p-2">
+                          {t.completed ? (
+                            <CheckCircle size={30} className="text-green-500 ml-1" />
+                          ) : (
+                            <Hammer size={30} className="text-blue-500 ml-1" />
+                          )}
+                        </span>
+
+                        <div className="flex flex-col gap-2 flex-1">
+                          <p className="text-lg font-semibold text-white truncate line-clamp-3 text-wrap">
+                            {t.name}
+                          </p>
+
+                          {t.mergeIn && (
+                            <div className="flex flex-col gap-1 mt-1">
+                              <div className="flex items-center gap-2">
+                                <GitBranch size={14} className="text-blue-500" />
+                                <p className="text-md text-blue-500 font-mono truncate">
+                                  {repoName} {"-->"} {t.mergeIn}
+                                </p>
+                                <button
+                                  onClick={() => copyBranchName(t.mergeIn || '', t.id!)}
+                                  className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                  title="Copiar rama de merge"
+                                >
+                                  <ClipboardCopy
+                                    size={16}
+                                    className={copiedTask === t.id ? 'text-green-500' : 'text-gray-400'}
+                                  />
+                                </button>
+                                {mergeInUrl && (
+                                  <a
+                                    href={mergeInUrl}
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                  >
+                                    <ExternalLink size={16} className="text-blue-500 hover:text-blue-400" />
+                                  </a>
+                                )}
+                              </div>
+
+                              {t.branch && (
+                                <div className="flex items-center gap-2 pl-5">
+                                  <GitBranch size={12} className="text-gray-400 dark:text-gray-500" />
+                                  <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
+                                    ← {t.branch}
+                                  </p>
+                                  <button
+                                    onClick={() => copyBranchName(t.branch || '', t.id!)}
+                                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                  >
+                                    <ClipboardCopy
+                                      size={16}
+                                      className={copiedTask === t.id ? 'text-green-500' : 'text-gray-400'}
+                                    />
+                                  </button>
+                                  {branchUrl && (
+                                    <a
+                                      href={branchUrl}
+                                      target="_blank"
+                                      rel="noopener noreferrer"
+                                      className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                                    >
+                                      <ExternalLink size={16} className="text-blue-500 hover:text-blue-400" />
+                                    </a>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          )}
+
+                          <div
+                            className="p-2 border-gray-400 bg-gray-50 dark:border-gray-600/30 dark:bg-gray-900/30 text-sm text-gray-400 line-clamp-100 text-wrap font-mono"
+                            dangerouslySetInnerHTML={{ __html: t.description }}
+                          />
+                        </div>
+                      </div>
+
+                      {/* ✅ Badge del usuario */}
+                      <div className="relative bottom-1 top-1 right-1">
+                        <span className="px-1 py-1 text-xs font-medium text-white bg-blue-500 rounded-full">
+                          {user?.name || 'Usuario'}
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </li>
+              )
+            })}
+          </ul>
+        </div>
+      )}
 
       {message && <MessageModal message={message} onClose={() => setMessage(null)} />}
       {editId && <EditTaskModal taskId={editId} onClose={() => setEditId(null)} />}
