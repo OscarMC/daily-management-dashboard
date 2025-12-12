@@ -25,7 +25,7 @@ export default defineConfig(({ mode }) => ({
       }
     },
     allowedHosts: [
-      "*.netlify.app",
+      "devserver-main--mprsnldshbrd.netlify.app",
       "localhost"
     ]
   }
