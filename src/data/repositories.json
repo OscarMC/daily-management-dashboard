@@ -39,6 +39,10 @@
     {
       "id": 10,
       "name": "Wigos.Components.SessionManager"
+    },
+    {
+      "id": 11,
+      "name": "Wigos.LiveOperations"
     }
   ]
 }

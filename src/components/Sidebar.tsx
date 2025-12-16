@@ -161,7 +161,7 @@ export default function Sidebar() {
       </div>
 
       {/* Perfil + Copyright */}
-      <div className="mt-6 border-t border-gray-200 dark:border-gray-700 pt-4">
+      <div className="mt-4 border-t border-gray-200 dark:border-gray-700 pt-6">
         <Link
           to="/profile"
           className="flex items-center gap-3 mb-3 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-md p-2 transition"
@@ -187,7 +187,7 @@ export default function Sidebar() {
           )}
         </Link>
 
-        <p className="text-xs text-gray-400 dark:text-gray-500 text-center mt-3">
+        <p className="text-md dark:text-app-gold text-gray-500 text-center mt-3">
           © {currentYear} WinSystems Intl
         </p>
       </div>

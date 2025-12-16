@@ -1,4 +1,4 @@
-﻿===== REGISTRO DETALLADO [20251212] =====
+﻿===== REGISTRO DETALLADO [20251213] =====
 ENTRADA   SALIDA    CONCEPTO     DURACION
 --------  --------  -----------  --------
 08:04:00  08:33:00  Trabajo				 00:29   

@@ -1,4 +1,5 @@
-﻿ENTRADA   SALIDA    CONCEPTO     DURACION
+﻿===== REGISTRO DETALLADO [] =====
+ENTRADA   SALIDA    CONCEPTO     DURACION
 --------  --------  -----------  --------
 -------------------------------
 Total preinicio:		               00:00
