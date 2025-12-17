@@ -1,15 +1,15 @@
 [
   {
     "id": 1,
-    "taskId": "1",
-    "title": "Nueva tarea",
-    "repositoryId": "1",
-    "sourceBranch": "test-branch",
+    "taskId": "109",
+    "title": "WIGOS-119562   Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.",
+    "repositoryId": "2",
+    "sourceBranch": "feature/sln2/wigos-119562_salones_cajero_recaudacion_de_maquinas_la_finalizacion_de_la_recaudacion_queda_congelada_no_finaliza_ni_devuelve_error_en_pantalla_error_en_el_log_error_error_in_aop_aspect_onexit_count_must_be_non_negative",
     "targetBranch": "master",
-    "status": "approved",
+    "status": "pending",
     "externalUrl": "http://example.com/test-pr",
     "notes": "test note",
-    "createdAt": "2025-12-17T07:55:13.812Z",
-    "updatedAt": "2025-12-17T07:55:35.592Z"
+    "createdAt": "2025-12-17T09:13:25.237Z",
+    "updatedAt": "2025-12-17T09:13:25.237Z"
   }
 ]

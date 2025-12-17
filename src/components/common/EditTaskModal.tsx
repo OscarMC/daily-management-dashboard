@@ -7,6 +7,8 @@ import { useBranches } from '../../db/branchesStore';
 import ReactQuill from 'react-quill';
 import 'react-quill/dist/quill.snow.css';
 import { toast } from '../common/ToastStack';
+import PrRegistrationModal from '../PrRegistrationModal';
+import { usePullRequests, PullRequest } from '../../hooks/usePullRequests';
 
 interface EditTaskModalProps {
   taskId: number;
@@ -17,11 +19,12 @@ interface EditTaskModalProps {
 export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskModalProps) {
   const { repositories } = useRepositories();
   const { branches } = useBranches();
+  const { createPr } = usePullRequests();
 
   const [task, setTask] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  // 👇 Nuevo estado para controlar pantalla post-guardado
   const [taskSaved, setTaskSaved] = useState<{ id: number; name: string; branch: string; repositoryId: string } | null>(null);
+  const [showPrModal, setShowPrModal] = useState(false);
 
   const modules = {
     toolbar: [
@@ -82,7 +85,7 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
 
       await db.tasks.update(taskId, updateData);
 
-      // 👇 Verificar si es WIGOS y tiene datos para PR
+      // ������ Verificar si es WIGOS y tiene datos para PR
       if (task.type === 'WIGOS' && task.repositoryId && task.branch?.trim()) {
         setTaskSaved({
           id: taskId,
@@ -133,7 +136,7 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
         </div>
 
         <div className="p-5 flex-1 overflow-y-auto">
-          {taskSaved ? (
+          {taskSaved && !showPrModal ? (
             <div className="text-center py-4 h-full flex flex-col items-center justify-center">
               <div className="mb-4 text-green-600 dark:text-green-400 font-medium">
                 ✅ Tarea actualizada correctamente.
@@ -150,20 +153,10 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
                   Cerrar
                 </button>
                 <button
-                  onClick={() => {
-                    console.log('Creating PR for task:', taskSaved);
-                    toast('✅ Redirigiendo a registro de PR...', 'success');
-                    if (onUpdated) onUpdated();
-                    console.log('Task updated, proceeding to PR registration.');
-                    onClose();
-                    console.log('Modal closed, redirecting to PRs page.');
-                    const newHash = `/prs?taskId=${taskSaved.id}&title=${encodeURIComponent(taskSaved.name)}&branch=${encodeURIComponent(taskSaved.branch)}&repo=${taskSaved.repositoryId}`;
-                    console.log('Setting window location hash to:', newHash);
-                    window.location.hash = newHash;
-                  }}
+                  onClick={() => setShowPrModal(true)}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                 >
-                  📌 Registrar PR para seguimiento
+                  ��� Registrar PR para seguimiento ���
                 </button>
               </div>
             </div>
@@ -312,8 +305,8 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
               onClick={handleSave}
               disabled={loading || !task.name.trim()}
               className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || !task.name.trim()
-                  ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                  : 'bg-blue-600 hover:bg-blue-700 text-white'
+                ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                : 'bg-blue-600 hover:bg-blue-700 text-white'
                 }`}
             >
               {loading ? 'Guardando...' : 'Guardar cambios'}
@@ -321,6 +314,33 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
           </div>
         )}
       </div>
+
+      {/* PR Registration Modal */}
+      {showPrModal && taskSaved && (
+        <PrRegistrationModal
+          taskId={String(taskSaved.id)}
+          taskTitle={taskSaved.name}
+          repositoryId={taskSaved.repositoryId}
+          branch={taskSaved.branch}
+          onClose={() => {
+            setShowPrModal(false);
+            if (onUpdated) onUpdated();
+            onClose();
+          }}
+          onSave={async (pr) => {
+            try {
+              await createPr(pr);
+              toast('✅ PR registrado correctamente.', 'success');
+              setShowPrModal(false);
+              if (onUpdated) onUpdated();
+              onClose();
+            } catch (err) {
+              console.error('Error saving PR:', err);
+              toast('❌ Error al registrar el PR.', 'error');
+            }
+          }}
+        />
+      )}
     </div>
   );
 }
