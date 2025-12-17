@@ -79,5 +79,22 @@ export const usePullRequests = () => {
   }
  };
 
- return { prs, loading, createPr, updatePrStatus };
+ const deletePr = async (id: number) => {
+  console.log(`Deleting PR with id: ${id}`);
+  const res = await fetch(`${API_BASE}/pull-requests/${id}`, {
+   method: 'DELETE',
+  });
+  console.log('Response from deleting PR:', res);
+  if (res.ok) {
+   console.log(`PR ${id} deleted successfully.`);
+   fetchPrs();
+   console.log(`PR ${id} has been deleted.`);
+  } else {
+   const error = await res.text();
+   console.log('Error deleting PR:', error);
+   throw new Error(`Failed to delete PR: ${error}`);
+  }
+ };
+
+ return { prs, loading, createPr, updatePrStatus, deletePr };
 };

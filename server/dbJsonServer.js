@@ -170,6 +170,31 @@ app.put('/pull-requests/:id', async (req, res) => {
   }
 });
 
+// DELETE /pull-requests/:id
+app.delete('/pull-requests/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    log(`DELETE /pull-requests/${id}`);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid PR ID' });
+    }
+
+    const prs = await loadPullRequests();
+    const index = prs.findIndex(p => p.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Pull request not found' });
+    }
+
+    const deletedPr = prs.splice(index, 1)[0];
+    await savePullRequests(prs);
+    log(`Pull request deleted successfully: ID ${id}`);
+    res.json({ message: 'Pull request deleted', deleted: deletedPr });
+  } catch (err) {
+    errorLog(`Error in DELETE /pull-requests/${req.params.id}`, err);
+    res.status(500).json({ error: 'Failed to delete pull request' });
+  }
+});
+
 // ========================
 // USERS (Auth support)
 // ========================

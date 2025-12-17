@@ -23,7 +23,7 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
 
   const [task, setTask] = useState<any>(null);
   const [loading, setLoading] = useState(false);
-  const [taskSaved, setTaskSaved] = useState<{ id: number; name: string; branch: string; repositoryId: string } | null>(null);
+  const [taskSaved, setTaskSaved] = useState<{ id: number; name: string; branch: string; repositoryId: string; repositoryName: string; } | null>(null);
   const [showPrModal, setShowPrModal] = useState(false);
 
   const modules = {
@@ -66,6 +66,9 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
         });
       }
     });
+    // Dentro de EditTaskModal.tsx, en el useEffect o en el render
+    const repo = repositories.find(r => r.id === Number(task?.repositoryId));
+    const repositoryName = repo?.name || '';
   }, [taskId]);
 
   const handleSave = async () => {
@@ -87,11 +90,13 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
 
       // ������ Verificar si es WIGOS y tiene datos para PR
       if (task.type === 'WIGOS' && task.repositoryId && task.branch?.trim()) {
+        const repo = repositories.find(r => r.id === Number(task.repositoryId));
         setTaskSaved({
           id: taskId,
           name: task.name,
           branch: task.branch,
           repositoryId: task.repositoryId,
+          repositoryName: repo?.name || '', // 👈
         });
       } else {
         toast('✅ Tarea actualizada correctamente.', 'success');
@@ -321,6 +326,7 @@ export default function EditTaskModal({ taskId, onClose, onUpdated }: EditTaskMo
           taskId={String(taskSaved.id)}
           taskTitle={taskSaved.name}
           repositoryId={taskSaved.repositoryId}
+          repositoryName={taskSaved.repositoryName} // 👈
           branch={taskSaved.branch}
           onClose={() => {
             setShowPrModal(false);
