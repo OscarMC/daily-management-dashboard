@@ -17,7 +17,8 @@
   "login": "Cuco360",
   "holidays": "Dies festius",
   "configuration": "Configuració",
-  "weeklyReportPage":"Report"
+  "weeklyReportPage":"Report",
+  "pullRequests": "Pull Requests"
  },
  "tasks": {
   "new": "Nova tasca",

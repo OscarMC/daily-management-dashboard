@@ -13,7 +13,8 @@ import {
   Wrench,
   Caravan,
   LayoutDashboard,
-  PieChart
+  PieChart,
+  GitPullRequest
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -29,6 +30,7 @@ const mainMenuBase = [
 const configMenuBase = [
   { path: '/repositories', label: 'repositories', icon: FolderGit2, fontColor: 'white', backColor: '#EF4444' },
   { path: '/branches', label: 'branches', icon: GitBranch, fontColor: 'white', backColor: '#6366F1' },
+  { path: '/prs', label: 'pullRequests', icon: GitPullRequest, fontColor: 'white', backColor: '#6366F1' },
 ]
 
 const adminOnlyMain = [
@@ -65,7 +67,7 @@ export default function Sidebar() {
 
   const configMenu = user?.role === 'Admin'
     ? [...configMenuBase, ...adminOnlyConfig, loginMenuItem]
-    : [...configMenuBase ]
+    : [...configMenuBase]
 
   const renderMenuItem = ({ path, label, icon: Icon, fontColor, backColor }: MenuItem) => {
     const isActive = location.pathname === path
@@ -136,8 +138,8 @@ export default function Sidebar() {
             <button
               onClick={() => setIsConfigOpen(!isConfigOpen)}
               className={`flex items-center justify-between w-full px-3 py-2 rounded-md transition-colors ${isConfigOpen || configMenu.some(item => location.pathname === item.path)
-                  ? 'bg-blue-500 text-white'
-                  : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
+                ? 'bg-blue-500 text-white'
+                : 'hover:bg-gray-200 dark:hover:bg-gray-700 text-gray-800 dark:text-gray-300'
                 }`}
             >
               <span className="flex items-center gap-2">

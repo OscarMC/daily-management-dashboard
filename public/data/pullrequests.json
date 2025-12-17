@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "taskId": "105",
+    "title": "WIGOS-119911 - [Ticket #119567] P1 - SALON ANDÚJAR SE COBRAN LOS TICKETS VARIAS VECES",
+    "repositoryId": "12",
+    "sourceBranch": "feature/sln2/wigos-119911_ticket_119567_p1_salon_andujar_se_cobran_los_tickets_varias_veces_master",
+    "targetBranch": "master",
+    "status": "merged",
+    "externalUrl": "https://bitbucket.org/wigos-dev/wigos.kernel.kioskredemptionwebapi/pull-requests/17",
+    "notes": "test",
+    "createdAt": "2025-12-17T09:49:16.183Z",
+    "updatedAt": "2025-12-17T10:17:31.789Z"
+  }
+]
