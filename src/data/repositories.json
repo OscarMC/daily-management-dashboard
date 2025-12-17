@@ -43,6 +43,10 @@
     {
       "id": 11,
       "name": "Wigos.LiveOperations"
+    },
+    {
+      "id": 12,
+      "name": "Wigos.Kernel.KioskRedemptionWebApi"
     }
   ]
 }

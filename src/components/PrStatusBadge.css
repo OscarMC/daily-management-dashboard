@@ -1,0 +1,51 @@
+/* Asegura contraste en modo oscuro */
+.pr-status-badge {
+ display: inline-block;
+ padding: 0.25rem 0.5rem;
+ border-radius: 4px;
+ font-size: 0.85rem;
+ font-weight: 500;
+ cursor: default;
+ user-select: none;
+}
+
+.pr-status-pending {
+ background-color: #4b5563;
+ color: #e5e7eb;
+}
+
+/* gray-600 */
+.pr-status-in-review {
+ background-color: #d97706;
+ color: #fef3c7;
+}
+
+/* amber-600 */
+.pr-status-approved {
+ background-color: #0d9488;
+ color: #ccfbf1;
+}
+
+/* teal-600 */
+.pr-status-merged {
+ background-color: #16a34a;
+ color: #dcfce7;
+}
+
+/* green-600 */
+.pr-status-blocked {
+ background-color: #dc2626;
+ color: #fee2e2;
+}
+
+/* red-600 */
+
+/* Si es clickable */
+.pr-status-badge[tabindex="0"] {
+ cursor: pointer;
+ transition: opacity 0.2s;
+}
+
+.pr-status-badge[tabindex="0"]:hover {
+ opacity: 0.9;
+}

@@ -34,6 +34,14 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
    const [hasVacation, setHasVacation] = useState(false);
    const [loading, setLoading] = useState(false);
 
+   // 👇 Nuevo estado para controlar la pantalla post-creación
+   const [taskCreated, setTaskCreated] = useState<{
+      id: string;
+      name: string;
+      branch: string;
+      repositoryId: string;
+   } | null>(null);
+
    const checkVacationConflict = useCallback(async () => {
       if (date) {
          const existing = await db.tasks
@@ -56,7 +64,6 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
       return `TASK-${String(counter).padStart(5, '0')}`;
    };
 
-   // 👇 NUEVO: Aplicar sugerencia automáticamente al campo `branch` si está vacío
    useEffect(() => {
       if (taskType === 'WIGOS' && name.trim() && repositoryId) {
          const jiraMatch = name.match(/^(WIGOS-\d{4,7})/i);
@@ -71,7 +78,6 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
             const fullKey = cleanName ? `${prefix}_${cleanName}` : prefix;
             const newSuggestion = `feature/sln2/${fullKey}`;
             setSuggestedBranch(newSuggestion);
-            // ✅ Solo rellenar si el campo `branch` está vacío
             if (!branch.trim()) {
                setBranch(newSuggestion);
             }
@@ -84,7 +90,7 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
       } else {
          setSuggestedBranch('');
       }
-   }, [name, taskType, repositoryId, branch]); // 👈 branch en dependencias para evitar sobrescritura
+   }, [name, taskType, repositoryId, branch]);
 
    const handleSubmit = async () => {
       if (!name.trim()) {
@@ -124,10 +130,21 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
             userId: user.id,
          };
 
-         await db.tasks.add(newTask);
-         toast('✅ Tarea creada correctamente.', 'success');
-         onAdded();
-         onClose();
+         const taskId = await db.tasks.add(newTask);
+
+         // 👇 Solo mostrar opción de PR si es WIGOS y tiene datos completos
+         if (taskType === 'WIGOS' && repositoryId && branch.trim()) {
+            setTaskCreated({
+               id: taskId.toString(),
+               name: newTask.name,
+               branch: newTask.branch,
+               repositoryId: String(newTask.repositoryId),
+            });
+         } else {
+            toast('✅ Tarea creada correctamente.', 'success');
+            onAdded();
+            onClose();
+         }
       } catch (err) {
          console.error('Error creating task:', err);
          toast('❌ Error al crear la tarea.', 'error');
@@ -139,7 +156,7 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
    const filteredBranches = repositoryId
       ? [
          ...branches.filter(b => b.repositoryId === Number(repositoryId) && b.repositoryId !== 1),
-         ...branches.filter(b => b.repositoryId === 1)
+         ...branches.filter(b => b.repositoryId === 1),
       ]
       : [];
 
@@ -164,165 +181,203 @@ export default function AddTaskModal({ onClose, onAdded, date: initialDate }: Ad
             </div>
 
             <div className="p-5 max-h-[70vh] overflow-y-auto">
-               {/* Tipo de tarea */}
-               <div className="mb-5">
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
-                     Tipo de tarea
-                  </label>
-                  <div className="grid grid-cols-3 gap-2">
-                     {(['WIGOS', 'VACACIONES', 'OTROS'] as const).map(type => (
+               {taskCreated ? (
+                  <div className="text-center py-4">
+                     <div className="mb-4 text-green-600 dark:text-green-400 font-medium">
+                        ✅ Tarea creada correctamente.
+                     </div>
+                     <div className="flex flex-col sm:flex-row gap-3">
                         <button
-                           key={type}
-                           type="button"
-                           onClick={() => setTaskType(type)}
-                           className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${taskType === type
-                              ? 'bg-blue-600 text-white'
-                              : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
-                              }`}
+                           onClick={() => {
+                              toast('✅ Tarea creada.', 'success');
+                              onAdded();
+                              onClose();
+                           }}
+                           className="px-4 py-2 bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 rounded-lg font-medium hover:bg-gray-300 dark:hover:bg-gray-600 transition-colors"
                         >
-                           {type}
+                           Cerrar
                         </button>
-                     ))}
-                  </div>
-               </div>
-
-               {/* Fecha */}
-               <div className="mb-4">
-                  <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
-                     <Calendar size={14} /> Fecha
-                  </label>
-                  <input
-                     type="date"
-                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                     value={date}
-                     onChange={(e) => setDate(e.target.value)}
-                  />
-                  {taskType === 'VACACIONES' && hasVacation && (
-                     <p className="mt-1 text-sm text-red-600 dark:text-red-400">
-                        ⚠️ Ya tienes vacaciones en esta fecha.
-                     </p>
-                  )}
-               </div>
-
-               {/* Nombre */}
-               <div className="mb-4">
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
-                     Nombre
-                  </label>
-                  <input
-                     type="text"
-                     placeholder={
-                        taskType === 'WIGOS'
-                           ? 'WIGOS-123456 - Descripción de la tarea'
-                           : taskType === 'VACACIONES'
-                              ? 'Vacaciones - Semana Santa'
-                              : 'Nombre de la tarea'
-                     }
-                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                     value={name}
-                     onChange={(e) => setName(e.target.value)}
-                  />
-               </div>
-
-               {/* Descripción */}
-               <div className="mb-5">
-                  <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
-                     Descripción
-                  </label>
-                  <textarea
-                     placeholder="Detalles adicionales..."
-                     className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                     value={description}
-                     onChange={(e) => setDescription(e.target.value)}
-                     rows={2}
-                  />
-               </div>
-
-               {/* Campos específicos por tipo */}
-               {taskType === 'WIGOS' && (
-                  <div className="space-y-4 mb-5">
-                     <div>
-                        <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
-                           <FolderGit2 size={14} /> Repositorio
-                        </label>
-                        <select
-                           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                           value={repositoryId}
-                           onChange={(e) => setRepositoryId(e.target.value)}
+                        <button
+                           onClick={() => {
+                              console.log('Creating PR for task:', taskCreated);
+                              onAdded();
+                              console.log('Task created, proceeding to PR registration.');
+                              onClose();
+                              console.log('Modal closed, redirecting to PRs page.');
+                              // Redirige a /prs con parámetros para pre-rellenar (opcional, mejorable más adelante)
+                              const url = `/prs?taskId=${taskCreated.id}&title=${encodeURIComponent(taskCreated.name)}&branch=${encodeURIComponent(taskCreated.branch)}&repo=${taskCreated.repositoryId}`;
+                              console.log('Redirecting to PRs page with URL:', url);
+                              window.location.hash = url;
+                           }}
+                           className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center justify-center gap-2"
                         >
-                           <option value="">Seleccionar repositorio</option>
-                           {repositories.map(repo => (
-                              <option key={repo.id} value={repo.id}>
-                                 {repo.name}
-                              </option>
+                           📌 Registrar PR para seguimiento
+                        </button>
+                     </div>
+                  </div>
+               ) : (
+                  <>
+                     {/* Tipo de tarea */}
+                     <div className="mb-5">
+                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                           Tipo de tarea
+                        </label>
+                        <div className="grid grid-cols-3 gap-2">
+                           {(['WIGOS', 'VACACIONES', 'OTROS'] as const).map((type) => (
+                              <button
+                                 key={type}
+                                 type="button"
+                                 onClick={() => setTaskType(type)}
+                                 className={`py-2 px-3 rounded-lg text-sm font-medium transition-colors ${taskType === type
+                                       ? 'bg-blue-600 text-white'
+                                       : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-200 dark:hover:bg-gray-600'
+                                    }`}
+                              >
+                                 {type}
+                              </button>
                            ))}
-                        </select>
+                        </div>
                      </div>
 
-                     {repositoryId && (
-                        <div>
-                           <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
-                              <GitBranch size={14} /> Rama base
-                           </label>
-                           <select
-                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
-                              value={mergeIn}
-                              onChange={(e) => setMergeIn(e.target.value)}
-                           >
-                              <option value="">To merge in...</option>
-                              {filteredBranches.map(b => (
-                                 <option key={b.id} value={b.name}>
-                                    {b.name} {b.base && `(← ${b.base})`}
-                                 </option>
-                              ))}
-                           </select>
-                        </div>
-                     )}
+                     {/* Fecha */}
+                     <div className="mb-4">
+                        <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+                           <Calendar size={14} /> Fecha
+                        </label>
+                        <input
+                           type="date"
+                           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           value={date}
+                           onChange={(e) => setDate(e.target.value)}
+                        />
+                        {taskType === 'VACACIONES' && hasVacation && (
+                           <p className="mt-1 text-sm text-red-600 dark:text-red-400">
+                              ⚠️ Ya tienes vacaciones en esta fecha.
+                           </p>
+                        )}
+                     </div>
 
-                     {/* ✅ Campo de rama de trabajo (sin sugerencia visible ni botón) */}
-                     <div>
+                     {/* Nombre */}
+                     <div className="mb-4">
                         <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
-                           Rama de trabajo
+                           Nombre
                         </label>
                         <input
                            type="text"
+                           placeholder={
+                              taskType === 'WIGOS'
+                                 ? 'WIGOS-123456 - Descripción de la tarea'
+                                 : taskType === 'VACACIONES'
+                                    ? 'Vacaciones - Semana Santa'
+                                    : 'Nombre de la tarea'
+                           }
                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                           value={branch}
-                           onChange={(e) => setBranch(e.target.value)}
-                           placeholder="feature/sln2/..."
+                           value={name}
+                           onChange={(e) => setName(e.target.value)}
                         />
                      </div>
-                  </div>
-               )}
 
-               {taskType !== 'VACACIONES' && (
-                  <div className="mb-5">
-                     <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
-                        <Clock size={14} /> Horas
-                     </label>
-                     <input
-                        type="number"
-                        min="0"
-                        max="24"
-                        step="0.25"
-                        placeholder="0.0"
-                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                        value={hours || ''}
-                        onChange={(e) => setHours(Number(e.target.value) || 0)}
-                     />
-                  </div>
-               )}
+                     {/* Descripción */}
+                     <div className="mb-5">
+                        <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                           Descripción
+                        </label>
+                        <textarea
+                           placeholder="Detalles adicionales..."
+                           className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                           value={description}
+                           onChange={(e) => setDescription(e.target.value)}
+                           rows={2}
+                        />
+                     </div>
 
-               <button
-                  onClick={handleSubmit}
-                  disabled={loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim() || !user}
-                  className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim() || !user
-                     ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
-                     : 'bg-blue-600 hover:bg-blue-700 text-white'
-                     }`}
-               >
-                  {loading ? 'Creando...' : 'Crear tarea'}
-               </button>
+                     {/* Campos específicos por tipo */}
+                     {taskType === 'WIGOS' && (
+                        <div className="space-y-4 mb-5">
+                           <div>
+                              <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+                                 <FolderGit2 size={14} /> Repositorio
+                              </label>
+                              <select
+                                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                                 value={repositoryId}
+                                 onChange={(e) => setRepositoryId(e.target.value)}
+                              >
+                                 <option value="">Seleccionar repositorio</option>
+                                 {repositories.map((repo) => (
+                                    <option key={repo.id} value={repo.id}>
+                                       {repo.name}
+                                    </option>
+                                 ))}
+                              </select>
+                           </div>
+
+                           {repositoryId && (
+                              <div>
+                                 <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+                                    <GitBranch size={14} /> Rama base
+                                 </label>
+                                 <select
+                                    className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500"
+                                    value={mergeIn}
+                                    onChange={(e) => setMergeIn(e.target.value)}
+                                 >
+                                    <option value="">To merge in...</option>
+                                    {filteredBranches.map((b) => (
+                                       <option key={b.id} value={b.name}>
+                                          {b.name} {b.base && `(← ${b.base})`}
+                                       </option>
+                                    ))}
+                                 </select>
+                              </div>
+                           )}
+
+                           {/* Rama de trabajo */}
+                           <div>
+                              <label className="block text-xs font-medium text-gray-500 dark:text-gray-400 mb-2">
+                                 Rama de trabajo
+                              </label>
+                              <input
+                                 type="text"
+                                 className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                                 value={branch}
+                                 onChange={(e) => setBranch(e.target.value)}
+                                 placeholder="feature/sln2/..."
+                              />
+                           </div>
+                        </div>
+                     )}
+
+                     {taskType !== 'VACACIONES' && (
+                        <div className="mb-5">
+                           <label className="text-xs font-medium text-gray-500 dark:text-gray-400 mb-2 flex items-center gap-1.5">
+                              <Clock size={14} /> Horas
+                           </label>
+                           <input
+                              type="number"
+                              min="0"
+                              max="24"
+                              step="0.25"
+                              placeholder="0.0"
+                              className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 rounded-lg bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-white focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                              value={hours || ''}
+                              onChange={(e) => setHours(Number(e.target.value) || 0)}
+                           />
+                        </div>
+                     )}
+
+                     <button
+                        onClick={handleSubmit}
+                        disabled={loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim() || !user}
+                        className={`w-full py-2.5 rounded-lg font-medium transition-colors ${loading || (taskType === 'VACACIONES' && hasVacation) || !name.trim() || !user
+                              ? 'bg-gray-300 dark:bg-gray-600 text-gray-500 dark:text-gray-400 cursor-not-allowed'
+                              : 'bg-blue-600 hover:bg-blue-700 text-white'
+                           }`}
+                     >
+                        {loading ? 'Creando...' : 'Crear tarea'}
+                     </button>
+                  </>
+               )}
             </div>
          </div>
       </div>

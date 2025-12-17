@@ -17,7 +17,8 @@
   "login": "Cuco360",
   "holidays": "Non-Working Days",
   "configuration": "Configuration",
-  "weeklyReportPage":"Report"
+  "weeklyReportPage":"Report",
+  "pullRequests": "Pull Requests"
  },
  "tasks": {
   "new": "New Task",

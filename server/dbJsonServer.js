@@ -1,3 +1,4 @@
+// server.ts
 const express = require('express');
 const fs = require('fs-extra');
 const path = require('path');
@@ -15,12 +16,13 @@ const dbPath = path.join(__dirname, '../public/data/DB.json');
 const repositoriesPath = path.join(__dirname, '../src/data/repositories.json');
 const branchesPath = path.join(__dirname, '../src/data/branches.json');
 const holidaysPath = path.join(__dirname, '../src/data/festivos.json');
+const pullRequestsPath = path.join(__dirname, '../public/data/pullrequests.json'); // ✨ nuevo
 
 // ========================
 // UTILS
 // ========================
 function log(msg, data) {
-  //console.log(`[LOG] ${new Date().toISOString()} - ${msg}`, data ? data : '');
+  console.log(`[LOG] ${new Date().toISOString()} - ${msg}`, data ? data : '');
 }
 
 function errorLog(msg, err) {
@@ -69,6 +71,106 @@ app.post('/db', async (req, res) => {
 });
 
 // ========================
+// PULL REQUESTS — ✨ NUEVO SISTEMA
+// ========================
+async function loadPullRequests() {
+  log('Loading pullrequests.json');
+  const exists = await fs.pathExists(pullRequestsPath);
+  if (!exists) {
+    log('pullrequests.json not found, creating empty array');
+    await fs.outputJson(pullRequestsPath, [], { spaces: 2 });
+  }
+  log('pullrequests.json loaded', pullRequestsPath);
+  return await fs.readJson(pullRequestsPath);
+}
+
+async function savePullRequests(prs) {
+  log('Saving pullrequests.json', { count: prs.length });
+  await fs.outputJson(pullRequestsPath, prs, { spaces: 2 });
+}
+
+// GET /pull-requests
+app.get('/pull-requests', async (req, res) => {
+  try {
+    const prs = await loadPullRequests();
+    // ⚠️ Sin autenticación real → devolvemos todo (como haces con /tasks)
+    // Si en el futuro añades auth, filtra por userId aquí.
+    res.json(prs);
+  } catch (err) {
+    errorLog('Error in GET /pull-requests', err);
+    res.status(500).json({ error: 'Failed to load pull requests' });
+  }
+});
+
+// POST /pull-requests
+app.post('/pull-requests', async (req, res) => {
+  try {
+    log('POST /pull-requests - body:', req.body);
+    const { taskId, title, repositoryId, sourceBranch, targetBranch, status = 'pending', externalUrl, notes } = req.body;
+
+    if (!taskId || !title || !repositoryId || !sourceBranch) {
+      return res.status(400).json({ error: 'Missing required fields: taskId, title, repositoryId, sourceBranch' });
+    }
+
+    const prs = await loadPullRequests();
+    const nextId = prs.length > 0 ? Math.max(...prs.map(p => p.id)) + 1 : 1;
+    const newPr = {
+      id: nextId,
+      taskId,
+      title: title.trim(),
+      repositoryId: repositoryId.toString().trim(),
+      sourceBranch: sourceBranch.trim(),
+      targetBranch: (targetBranch || 'master').trim(),
+      status,
+      externalUrl: externalUrl?.trim() || undefined,
+      notes: notes?.trim() || undefined,
+      createdAt: new Date().toISOString(),
+      updatedAt: new Date().toISOString()
+    };
+
+    prs.push(newPr);
+    await savePullRequests(prs);
+    res.status(201).json(newPr);
+  } catch (err) {
+    errorLog('Error in POST /pull-requests', err);
+    res.status(500).json({ error: 'Failed to create pull request' });
+  }
+});
+
+// PUT /pull-requests/:id
+app.put('/pull-requests/:id', async (req, res) => {
+  try {
+    const id = parseInt(req.params.id, 10);
+    log(`PUT /pull-requests/${id} - body:`, req.body);
+    if (isNaN(id)) {
+      return res.status(400).json({ error: 'Invalid PR ID' });
+    }
+
+    const { status, externalUrl, notes, targetBranch } = req.body;
+    const prs = await loadPullRequests();
+    const index = prs.findIndex(p => p.id === id);
+    if (index === -1) {
+      return res.status(404).json({ error: 'Pull request not found' });
+    }
+
+    prs[index] = {
+      ...prs[index],
+      ...(status !== undefined ? { status } : {}),
+      ...(externalUrl !== undefined ? { externalUrl: externalUrl.trim() } : {}),
+      ...(notes !== undefined ? { notes: notes.trim() } : {}),
+      ...(targetBranch !== undefined ? { targetBranch: targetBranch.trim() } : {}),
+      updatedAt: new Date().toISOString()
+    };
+
+    await savePullRequests(prs);
+    res.json(prs[index]);
+  } catch (err) {
+    errorLog(`Error in PUT /pull-requests/${req.params.id}`, err);
+    res.status(500).json({ error: 'Failed to update pull request' });
+  }
+});
+
+// ========================
 // USERS (Auth support)
 // ========================
 app.get('/user', async (req, res) => {
@@ -93,7 +195,6 @@ app.post('/user', async (req, res) => {
     const db = await loadDB();
     const users = db.user || [];
 
-    // Optional: prevent duplicate email (you already check in frontend, but good to double-check)
     const existing = users.find(u => u.email.toLowerCase() === email.toLowerCase());
     if (existing) {
       return res.status(409).json({ error: 'User with this email already exists' });
@@ -104,7 +205,7 @@ app.post('/user', async (req, res) => {
       id: nextId,
       name: name.trim(),
       email: email.trim().toLowerCase(),
-      password, // stored in plain text (for demo only!)
+      password,
       role,
       theme,
       language
@@ -112,7 +213,6 @@ app.post('/user', async (req, res) => {
 
     db.user = [...users, newUser];
     await saveDB(db);
-    // Return without password
     const { password: _, ...userWithoutPassword } = newUser;
     res.status(201).json(userWithoutPassword);
   } catch (err) {
@@ -338,7 +438,6 @@ async function loadHolidays() {
     return defaultHolidays;
   }
   const data = await fs.readJson(holidaysPath);
-  // Asegurar que todos tengan `id`
   return data.map((h, i) => ({ ...h, id: h.id ?? i + 1 }));
 }
 

@@ -1,0 +1,15 @@
+[
+  {
+    "id": 1,
+    "taskId": "1",
+    "title": "Nueva tarea",
+    "repositoryId": "1",
+    "sourceBranch": "test-branch",
+    "targetBranch": "master",
+    "status": "approved",
+    "externalUrl": "http://example.com/test-pr",
+    "notes": "test note",
+    "createdAt": "2025-12-17T07:55:13.812Z",
+    "updatedAt": "2025-12-17T07:55:35.592Z"
+  }
+]
