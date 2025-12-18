@@ -1,7 +1,7 @@
 // src/db/dbLocalStorageSync.ts
 import { db } from './dexieDB'
 
-const JSON_SERVER_URL = 'http://localhost:3001/db'
+const JSON_SERVER_URL = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:3001'}/db`;
 const STATIC_DB_URL = '/data/DB.json'
 const LOCAL_STORAGE_KEY = 'DB_BACKUP'
 

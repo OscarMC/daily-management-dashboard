@@ -584,6 +584,8 @@ app.delete('/holidays/:id', async (req, res) => {
 // ========================
 // START SERVER
 // ========================
-app.listen(PORT, () => {
-  log(`✅ Server started on http://localhost:${PORT}`);
+const HOST = process.env.HOST || '0.0.0.0'; // ← permite conexión desde fuera de localhost
+
+app.listen(PORT, HOST, () => {
+  log(`✅ Server started on http://${HOST}:${PORT}`);
 });
