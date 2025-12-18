@@ -225,7 +225,7 @@ export default function WeeklyReportPage() {
       {repoData.length > 0 && (
         <div className="bg-white dark:bg-gray-800 p-4 rounded-lg shadow mb-6">
           <h2 className="text-lg font-semibold mb-4">Horas por proyecto/repositorio</h2>
-          <div className="h-64">
+          <div className="h-[25rem]">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
                 <Pie
@@ -233,7 +233,7 @@ export default function WeeklyReportPage() {
                   cx="50%"
                   cy="50%"
                   labelLine={true}
-                  outerRadius={80}
+                  outerRadius={100}
                   fill="#8884d8"
                   dataKey="hours"
                   nameKey="name"
