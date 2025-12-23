@@ -17,9 +17,11 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useRepositories } from '../db/repositoriesStore'
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate } from 'react-router-dom' // 👈 añadido useNavigate
 import { toast } from '../components/common/ToastStack'
-import { useAuth } from '../contexts/AuthContext' // 👈 Nuevo: para obtener el usuario actual
+import { useAuth } from '../contexts/AuthContext'
+import { usePullRequests } from '../hooks/usePullRequests' // 👈 nuevo
+import PrStatusBadge from '../components/PrStatusBadge' // 👈 nuevo
 
 const JIRA_BASE = 'https://winsytemsintl.atlassian.net/browse/'
 
@@ -35,7 +37,8 @@ const getTodayLocalISO = () => {
 
 export default function DailyTasks() {
   const { t } = useTranslation()
-  const { user } = useAuth() // 👈 Usuario autenticado
+  const { user } = useAuth()
+  const navigate = useNavigate() // 👈 para navegación programática
 
   // ✅ Filtramos SOLO las tareas del userId actual
   const tasks = useLiveQuery(() => {
@@ -47,6 +50,8 @@ export default function DailyTasks() {
   }, [user?.id])
 
   const { repositories } = useRepositories()
+  const { prs } = usePullRequests() // 👈 cargamos los PRs
+
   const [showAdd, setShowAdd] = useState(false)
   const [editId, setEditId] = useState<number | null>(null)
   const [cloneId, setCloneId] = useState<number | null>(null)
@@ -73,7 +78,6 @@ export default function DailyTasks() {
   const toggleComplete = async (id: number, completed: boolean) => {
     if (!user) return
     const task = await db.tasks.get(id)
-    // ✅ Defensivo: asegurar que la tarea pertenece al usuario
     if (!task || task.userId !== user.id || task.type === 'VACACIONES') return
     const newStatus = !completed
     await db.tasks.update(id, { completed: newStatus })
@@ -88,7 +92,6 @@ export default function DailyTasks() {
   const deleteTask = async (id: number) => {
     if (!user) return
     const task = await db.tasks.get(id)
-    // ✅ Defensivo: solo eliminar si es del usuario
     if (!task || task.userId !== user.id) return
     await db.tasks.delete(id)
     toast({
@@ -352,10 +355,14 @@ export default function DailyTasks() {
     const jiraUrl = jiraKey ? `${JIRA_BASE}${jiraKey}` : null
     const repo = repositories.find((r) => r.id === Number(t.repositoryId))
     const repoName = repo?.name
-    const branchUrl =
-      repoName && t.branch
-        ? `https://bitbucket.org/wigos-dev/${repoName}/branch/${t.branch}`
-        : null
+
+    // 👇 Buscar PR asociado a esta tarea
+    const associatedPr = prs.find(
+      (pr) =>
+        String(pr.taskId) === String(t.id) ||
+        (typeof pr.taskId === 'string' && pr.taskId.includes(String(t.id)))
+    )
+
     const isVacation = t.type === 'VACACIONES'
     const isOther = t.type === 'OTROS'
 
@@ -432,11 +439,21 @@ export default function DailyTasks() {
             <>
               {t.mergeIn && (
                 <div className="flex flex-col gap-1 mt-1">
-                  <div className="flex items-center gap-2">
+                  <div className="flex items-center gap-2 flex-wrap">
                     <GitBranch size={14} className="text-blue-500" />
                     <p className="text-md text-blue-500 font-mono truncate">
                       {repoName} {"-->"} {t.mergeIn}
                     </p>
+                    {/* 👇 Badge del PR (clickeable) */}
+                    {associatedPr && (
+                      <button
+                        onClick={() => navigate('/prs')}
+                        className="cursor-pointer"
+                        title={`Ver PR: ${associatedPr.title}`}
+                      >
+                        <PrStatusBadge status={associatedPr.status} />
+                      </button>
+                    )}
                   </div>
 
                   {t.branch && (

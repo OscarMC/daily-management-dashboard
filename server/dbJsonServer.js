@@ -34,7 +34,7 @@ function errorLog(msg, err) {
 // DB.json — Shared utility for user/tasks
 // ========================
 async function loadDB() {
-  log('Loading DB.json');
+  //log('Loading DB.json');
   const exists = await fs.pathExists(dbPath);
   if (!exists) {
     log('DB.json not found, creating default');
@@ -74,7 +74,7 @@ app.post('/db', async (req, res) => {
 // PULL REQUESTS — ✨ NUEVO SISTEMA
 // ========================
 async function loadPullRequests() {
-  log('Loading pullrequests.json');
+  //log('Loading pullrequests.json');
   const exists = await fs.pathExists(pullRequestsPath);
   if (!exists) {
     log('pullrequests.json not found, creating empty array');
@@ -250,7 +250,7 @@ app.post('/user', async (req, res) => {
 // REPOSITORIES
 // ========================
 async function loadRepositories() {
-  log('Loading repositories.json');
+  //log('Loading repositories.json');
   const exists = await fs.pathExists(repositoriesPath);
   if (!exists) {
     log('repositories.json not found, creating empty array');

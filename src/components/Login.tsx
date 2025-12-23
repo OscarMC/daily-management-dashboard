@@ -9,10 +9,10 @@ export default function Login() {
  const [error, setError] = useState<string | null>(null);
 
  const handleFetch = async () => {
-  if (!email.trim() || !password.trim()) {
-   alert('Por favor, ingresa email y contraseña');
-   return;
-  }
+  //if (!email.trim() || !password.trim()) {
+  // alert('Por favor, ingresa email y contraseña');
+  // return;
+  //}
 
   setLoading(true);
   setResult(null);
@@ -20,8 +20,6 @@ export default function Login() {
 
   try {
    const response = await fetchMarcajes(email, password);
-
-
 
    if (response.success && Array.isArray(response.marcajes) && response.marcajes.length > 0) {
     // Mostrar el primer resultado (o todos si prefieres)

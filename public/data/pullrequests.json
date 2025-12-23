@@ -1,15 +1,13 @@
 [
   {
     "id": 1,
-    "taskId": "105",
-    "title": "WIGOS-119911 - [Ticket #119567] P1 - SALON ANDÚJAR SE COBRAN LOS TICKETS VARIAS VECES",
-    "repositoryId": "12",
-    "sourceBranch": "feature/sln2/wigos-119911_ticket_119567_p1_salon_andujar_se_cobran_los_tickets_varias_veces_master",
-    "targetBranch": "master",
+    "taskId": "119",
+    "title": "WIGOS-119562   Salones - Cajero - Recaudación de máquinas - la finalización de la recaudación queda congelada. No finaliza ni devuelve error en pantalla. - Error en el log: Error:Error in AOP aspect (OnExit): 'count' must be non-negative.",
+    "repositoryId": "3",
+    "sourceBranch": "feature/sln2/wigos-119562_salones_cajero_recaudacion_de_maquinas_la_finalizacion_de_la_recaudacion_queda_congelada",
+    "targetBranch": "hotfix/hotfix_37",
     "status": "merged",
-    "externalUrl": "https://bitbucket.org/wigos-dev/wigos.kernel.kioskredemptionwebapi/pull-requests/17",
-    "notes": "test",
-    "createdAt": "2025-12-17T09:49:16.183Z",
-    "updatedAt": "2025-12-17T10:17:31.789Z"
+    "createdAt": "2025-12-23T09:58:41.123Z",
+    "updatedAt": "2025-12-23T10:10:12.949Z"
   }
 ]

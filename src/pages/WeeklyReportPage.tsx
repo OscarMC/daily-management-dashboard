@@ -37,7 +37,7 @@ export default function WeeklyReportPage() {
     }
   }, [user])
 
-  const [range, setRange] = useState<'current-week' | 'last-week' | 'last-7-days' | 'current-month'>(
+  const [range, setRange] = useState<'today' | 'current-week' | 'last-week' | 'last-7-days' | 'current-month' | 'all'>(
     'current-week'
   )
 
@@ -57,6 +57,11 @@ export default function WeeklyReportPage() {
     today.setHours(0, 0, 0, 0)
 
     switch (range) {
+      case 'today': {
+        const start = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+        const end = new Date(today.getFullYear(), today.getMonth(), today.getDate() + 1, 0, 0, -1)
+        return { start, end }
+      }
       case 'current-week': {
         const { start, end } = getWeekRange(0)
         return { start, end }
@@ -73,6 +78,11 @@ export default function WeeklyReportPage() {
       case 'current-month': {
         const start = new Date(today.getFullYear(), today.getMonth(), 1)
         const end = new Date(today.getFullYear(), today.getMonth() + 1, 0)
+        return { start, end }
+      }
+      case 'all': {
+        const start = new Date(2023, 1, 1)
+        const end = new Date(2027, 12, 31)
         return { start, end }
       }
       default:
@@ -94,7 +104,7 @@ export default function WeeklyReportPage() {
   const dailyData = useMemo(() => {
     const map: Record<string, { date: string; dayName: string; hours: number; taskCount: number }> =
       {}
-    const dayNames = ['Dom', 'Lun', 'Mar', 'Mié', 'Jue', 'Vie', 'Sáb']
+    const dayNames = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr']
 
     let current = new Date(dateRange.start)
     while (current <= dateRange.end) {
@@ -168,14 +178,16 @@ export default function WeeklyReportPage() {
           <select
             value={range}
             onChange={(e) =>
-              setRange(e.target.value as 'current-week' | 'last-week' | 'last-7-days' | 'current-month')
+              setRange(e.target.value as 'today' | 'current-week' | 'last-week' | 'last-7-days' | 'current-month' | 'all')
             }
             className="p-2 border rounded bg-white dark:bg-gray-800"
           >
+            <option value="today">Hoy</option>
             <option value="current-week">Semana actual</option>
             <option value="last-week">Semana anterior</option>
             <option value="last-7-days">Últimos 7 días</option>
             <option value="current-month">Este mes</option>
+            <option value="all">Todas</option>
           </select>
           <Button onClick={handleCopySummary} variant="default">
             Copiar para Teams
