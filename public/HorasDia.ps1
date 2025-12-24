@@ -1,4 +1,4 @@
-# === Configuraci�n inicial ===
+# === Configuración inicial ===
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $entradaPath = Join-Path $scriptDir "HorasDia.txt"
 $resultDir = Join-Path $scriptDir "working-day-results"
@@ -13,21 +13,64 @@ if (-not (Test-Path $entradaPath)) {
 $linea = Get-Content $entradaPath | Select-Object -First 1
 $tokens = $linea -split "\|" | ForEach-Object { $_.Trim() } | Where-Object { $_ -match "^\d{2}:\d{2}:\d{2} [ES]" }
 
+# === SANEAR LOS TOKENS: eliminar duplicados consecutivos ===
+$cleanTokens = @()
+for ($i = 0; $i -lt $tokens.Count; $i++) {
+    $current = $tokens[$i]
+    if ($current -match "^(\d{2}:\d{2}:\d{2})\s+([ES])") {
+        $currentTipo = $matches[2]
+
+        # Si es el último token, siempre se añade
+        if ($i -eq $tokens.Count - 1) {
+            $cleanTokens += $current
+        }
+        else {
+            $next = $tokens[$i + 1]
+            if ($next -match "^(\d{2}:\d{2}:\d{2})\s+([ES])") {
+                $nextTipo = $matches[2]
+
+                # Si son del mismo tipo:
+                if ($currentTipo -eq $nextTipo) {
+                    if ($currentTipo -eq 'E') {
+                        # Dos entradas seguidas → mantener la primera (más antigua)
+                        $cleanTokens += $current
+                    }
+                    else {
+                        # Dos salidas seguidas → mantener la segunda (más reciente)
+                        # → no añadir ahora, se añadirá en la próxima iteración
+                    }
+                }
+                else {
+                    # Tipos distintos → añadir normalmente
+                    $cleanTokens += $current
+                }
+            }
+            else {
+                $cleanTokens += $current
+            }
+        }
+    }
+    else {
+        $cleanTokens += $current
+    }
+}
+
 # === Convertir a objetos de entrada/salida ===
 $registros = @()
-foreach ($t in $tokens) {
+foreach ($t in $cleanTokens) {
     if ($t -match "^(\d{2}):(\d{2}):\d{2} ([ES])") {
         $horaOriginal = [datetime]::ParseExact("$($matches[1]):$($matches[2])", "HH:mm", $null)
         $hora = if ($horaOriginal -lt [datetime]::ParseExact("08:00", "HH:mm", $null)) {
             [datetime]::ParseExact("08:00", "HH:mm", $null)
-        } else {
+        }
+        else {
             $horaOriginal
         }
         $registros += [PSCustomObject]@{
             HoraOriginal = $horaOriginal
-            Hora = $hora
-            Tipo = $matches[3]
-            Texto = $t
+            Hora         = $hora
+            Tipo         = $matches[3]
+            Texto        = $t
         }
     }
 }
@@ -79,7 +122,7 @@ while ($i -lt $registros.Count) {
             }
             $detalles += ('{0,-9} {1,-9} {2,-11} {3,-8}' -f $entrada.ToString("HH:mm:ss"), $salida.ToString("HH:mm:ss"), "Trabajo				", $duracion.ToString("hh\:mm"))
 
-            # Evitar duplicar �ltimo descanso si ya se a�adi�
+            # Evitar duplicar último descanso si ya se añadió
             $yaExiste = $detalles | Where-Object { $_ -match "$($registros[$i - 1].Hora.ToString("HH:mm:ss"))\s+$($entrada.ToString("HH:mm:ss"))\s+Descanso" }
 
             if ($i -gt 0 -and $registros[$i - 1].Tipo -eq 'S' -and -not $yaExiste) {
@@ -106,9 +149,11 @@ $esViernes = ($hoy.DayOfWeek -eq 'Friday')
 $esAgosto = ($hoy.Month -eq 8)
 $jornada = if ($esAgosto) {
     [TimeSpan]::FromHours(7)
-} elseif ($esViernes) {
+}
+elseif ($esViernes) {
     [TimeSpan]::FromHours(6)
-} else {
+}
+else {
     [TimeSpan]::FromHours(8.5)
 }
 $restante = $jornada - $worked

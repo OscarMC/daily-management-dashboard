@@ -3,6 +3,7 @@ import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/dexieDB'
 import { useAuth } from '../contexts/AuthContext'
 import { useEffect, useMemo, useState } from 'react'
+import { format } from 'date-fns';
 import {
   BarChart,
   Bar,
@@ -13,6 +14,7 @@ import {
   PieChart,
   Pie,
   Cell,
+  LabelList
 } from 'recharts'
 import { Button } from '../components/ui/Button'
 import { toast } from '../components/common/ToastStack'
@@ -92,12 +94,49 @@ export default function WeeklyReportPage() {
 
   const formatDate = (d: Date) => d.toISOString().split('T')[0]
 
+  const CustomTooltip = ({ active, payload, label }) => {
+    if (active && payload && payload.length) {
+      // payload[0].payload contiene el objeto de datos completo (d)
+      const data = payload[0].payload;
+      const formattedDate = data.date
+        ? format(new Date(data.date), 'dd/MM/yyyy')
+        : 'Fecha desconocida';
+
+      return (
+        <div className="bg-gray-800 p-3 rounded-lg shadow-lg border border-gray-700 text-white font-sans">
+          <p className="font-bold text-blue-400">{label}</p> {/* Muestra el día de la semana (Mo, Tu...) */}
+          <p className="text-sm mt-1">
+            <span className="font-semibold">Fecha:</span> {formattedDate}
+          </p>
+          <p className="text-sm">
+            <span className="font-semibold">Horas:</span> {data.hours.toFixed(1)}h
+          </p>
+        </div>
+      );
+    }
+
+    return null;
+  };
+
+  // Helper para determinar si usar 'dayName' o 'date' en el eje X
+  const xAxisDataKey = (range === 'current-month' || range === 'all') ? 'date' : 'dayName';
+
+  // Formateador para los ticks del eje X cuando mostramos fechas completas
+  const xAxisTickFormatter = (value: string) => {
+    // value será "DD/MM/YYYY" o el formato de formatDate(current)
+    if (!value) return '';
+
+    // Asumimos formato DD/MM/YYYY como en tu sort() anterior
+    const [day] = value.split('/');
+    return day; // Devuelve solo el día del mes (ej: "15")
+  };
+
   // Filtrar solo tareas del usuario en el rango
   const tasksInRange = useMemo(() => {
     if (!tasks) return []
     const startStr = formatDate(dateRange.start)
     const endStr = formatDate(dateRange.end)
-    return tasks.filter((t) => t.date >= startStr && t.date <= endStr)
+    return tasks.filter((t) => t.date >= startStr && t.date < endStr)
   }, [tasks, dateRange])
 
   // Datos diarios (solo días con tareas)
@@ -105,28 +144,43 @@ export default function WeeklyReportPage() {
     const map: Record<string, { date: string; dayName: string; hours: number; taskCount: number }> =
       {}
     const dayNames = ['Sa', 'Su', 'Mo', 'Tu', 'We', 'Th', 'Fr']
-
     let current = new Date(dateRange.start)
+
     while (current <= dateRange.end) {
-      const str = formatDate(current)
-      map[str] = {
-        date: str,
-        dayName: dayNames[current.getDay()],
-        hours: 0,
-        taskCount: 0,
+      const dayOfWeek = current.getDay()
+
+      // Filtramos aquí: solo incluimos Lunes (1) a Viernes (5)
+      if (dayOfWeek >= 1 && dayOfWeek <= 5) {
+        const str = formatDate(current)
+        map[str] = {
+          date: str,
+          dayName: dayNames[dayOfWeek],
+          hours: 0,
+          taskCount: 0,
+        }
       }
       current.setDate(current.getDate() + 1)
     }
-
+    // ... el resto del código para acumular horas ...
     tasksInRange.forEach((t) => {
       if (map[t.date]) {
         map[t.date].hours += t.hours || 0
         map[t.date].taskCount += 1
       }
     })
+    console.log(tasksInRange)
 
-    return Object.values(map).filter((d) => d.hours > 0)
-  }, [tasksInRange, dateRange])
+    // Ordenar la lista por fecha ascendente
+    return Object.values(map)
+      .filter((d) => d.hours > 0)
+      .sort((a, b) => {
+        const dateA = new Date(a.date.split('/').reverse().join('-'));
+        const dateB = new Date(b.date.split('/').reverse().join('-'));
+        return dateA.getTime() - dateB.getTime();
+      });
+  }, [tasksInRange, dateRange]);
+
+
 
   // Horas agrupadas por repositorio (solo del usuario)
   const repoData = useMemo(() => {
@@ -139,7 +193,6 @@ export default function WeeklyReportPage() {
     })
     return Array.from(map, ([name, hours]) => ({ name, hours }))
   }, [tasksInRange, repositories])
-
   // Generar resumen para copiar (solo del usuario)
   const generateSummaryText = () => {
     let text = `**Resumen de horas (${formatDate(dateRange.start)} → ${formatDate(
@@ -221,13 +274,34 @@ export default function WeeklyReportPage() {
         <div className="h-64">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={dailyData}>
-              <XAxis dataKey="dayName" />
+              {/* CAMBIADO: Usamos xAxisDataKey dinámico y tickFormatter */}
+              <XAxis
+                dataKey={xAxisDataKey}
+                tickFormatter={xAxisDataKey === 'date' ? xAxisTickFormatter : undefined}
+              />
               <YAxis />
               <Tooltip
-                formatter={(value) => [`${value}h`, 'Horas']}
-                labelFormatter={(label) => `Día: ${label}`}
+                content={<CustomTooltip />}
+                cursor={{ fill: 'rgba(255, 255, 255, 0.1)' }}
               />
-              <Bar dataKey="hours" fill="#4f46e5" name="Horas" />
+              <Bar dataKey="hours" fill="#4f46e5" name="Horas">
+                {/* Etiqueta vertical superpuesta dentro de la barra (como pediste antes) */}
+                <LabelList
+                  dataKey="date"
+                  position="center"
+                  angle={-90}
+                  offset={0}
+                  fill="#ffffff"
+                  fontSize={10}
+                  style={{ textAnchor: 'middle', fontWeight: 'light', pointerEvents: 'none', fontSize: '12px' }}
+                  formatter={(value) => {
+                    if (!value || typeof value === 'boolean') return '';
+                    // Devuelve la fecha completa en formato legible para la etiqueta interna
+                    const d = new Date(value.split('/').reverse().join('-'));
+                    return isNaN(d.getTime()) ? '' : format(d, 'dd/MM/yyyy');
+                  }}
+                />
+              </Bar>
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -278,19 +352,45 @@ export default function WeeklyReportPage() {
               </tr>
             </thead>
             <tbody>
-              {dailyData.map((d) => (
-                <tr key={d.date} className="border-b dark:border-gray-700">
-                  <td className="py-2 px-4">{d.dayName} {d.date}</td>
+              {dailyData.map((d, index) => (
+                <tr
+                  key={d.date}
+                  // 'odd:bg...' aplica el color alterno automáticamente
+                  className="border dark:border-gray-700 bg-white dark:bg-gray-800 odd:bg-gray-50 dark:odd:bg-gray-900/50"
+                >
+                  <td className="py-2 px-4 align-top font-medium">{d.dayName} {d.date}</td>
                   <td className="py-2 px-4">
-                    {tasksInRange
-                      .filter((t) => t.date === d.date)
-                      .map((t) => t.name)
-                      .join(', ')}
+                    <ul className="list-disc list-outside ml-5 space-y-2">
+                      {tasksInRange
+                        .filter((t) => t.date === d.date)
+                        .map((t, idx) => (
+                          <li
+                            key={idx}
+                            className="group relative text-gray-700 dark:text-gray-300 text-lg border border-gray-200 dark:border-gray-700 rounded p-1 px-2 hover:border-blue-400 dark:hover:border-blue-500 transition-colors cursor-help"
+                          >
+                            {t.name}
+
+                            {/* Tooltip Enriquecido (se muestra al hacer hover en el LI) */}
+                            {t.description && (
+                              <div className="absolute z-150 hidden group-hover:block w-64 p-3 bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-600 rounded-lg shadow-xl text-sm bottom-full mb-2 left-0 pointer-events-none">
+                                <div
+                                  className="prose prose-sm dark:prose-invert max-w-none overflow-hidden"
+                                  // Renderiza el HTML de la descripción incluyendo imágenes
+                                  dangerouslySetInnerHTML={{ __html: t.description }}
+                                />
+                                {/* Flecha del tooltip */}
+                                <div className="absolute -bottom-1 left-4 w-2 h-2 bg-white dark:bg-gray-900 border-b border-r border-gray-200 dark:border-gray-600 rotate-45"></div>
+                              </div>
+                            )}
+                          </li>
+                        ))}
+                    </ul>
                   </td>
-                  <td className="py-2 px-4 text-right font-mono">{d.hours.toFixed(1)}h</td>
+                  <td className="py-2 px-4 text-right font-mono align-top">{d.hours.toFixed(1)}h</td>
                 </tr>
               ))}
             </tbody>
+
           </table>
         </div>
       </div>

@@ -10,6 +10,7 @@ import {
   Coffee,
   Timer,
   FileText,
+  ReceiptPoundSterlingIcon,
 } from 'lucide-react'
 import { format, parseISO } from 'date-fns'
 import { es } from 'date-fns/locale'
@@ -76,11 +77,8 @@ export default function WorkingDaySummary() {
 
         for (const fecha of data) {
           const filename = `resumen_jornada_${fecha.replace(/-/g, '')}.txt`
-          //console.log('Cargando jornada para:', fecha, filename)
           try {
             const res = await fetch(`/working-day-results/${filename}`)
-            //console.log('Fetch jornada:', filename, res.ok)
-            //console.log('Response:', res)
             if (!res.ok) continue
             const text = await res.text()
             const match = text.match(/Total\s+trabajado:[\s\t]+(\d{1,2}:\d{2})/)
@@ -103,13 +101,11 @@ export default function WorkingDaySummary() {
 
   // === cargar fichero seleccionado ===
   useEffect(() => {
-    if (!selectedDate) return
-    //console.log('Cargando jornada para:', selectedDate)
+    if (!selectedDate) ReceiptPoundSterlingIcon
     const filename = `resumen_jornada_${selectedDate.replace(/-/g, '')}.txt`
     fetch(`/working-day-results/${filename}`)
       .then(r => {
         if (!r.ok) throw new Error('No encontrado')
-          //console.log('Fichero encontrado:', filename)
         return r.text()
       })
       .then(parsearJornada)
@@ -237,8 +233,8 @@ export default function WorkingDaySummary() {
                 </div>
               )}
 
-              {festivo?.tipo === 'local' && <PartyPopper size={25} className="mx-auto text-blue-400" />}
-              {festivo?.tipo === 'nacional' && <PartyPopper size={25} className="mx-auto text-red-400" />}
+              {festivo?.tipo === 'local' && <PartyPopper size="30" className="m-auto text-blue-500" />}
+              {festivo?.tipo === 'nacional' && <PartyPopper size="30" className="m-auto text-red-500" />}
               {festivo?.nombre}
             </motion.div>
           )
