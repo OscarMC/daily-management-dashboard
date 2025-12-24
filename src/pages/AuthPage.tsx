@@ -1,4 +1,5 @@
-import { useState } from 'react';
+// src/pages/AuthPage.tsx
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import { Button } from '../components/ui/Button';
@@ -6,6 +7,20 @@ import { Input } from '../components/ui/input';
 import { Label } from '../components/ui/label';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { LogIn, UserPlus, Mail, Lock, User } from 'lucide-react';
+
+// Imágenes de la web de WinSystems (extraídas de sus secciones)
+const backgroundImages = [
+  '../imgs/1.jpg',
+  '../imgs/2.jpg',
+  '../imgs/3.jpg',
+  '../imgs/4.jpg',
+  '../imgs/5.jpg',
+  '../imgs/6.jpg',
+  '../imgs/7.jpg',
+  '../imgs/8.jpg',
+  '../imgs/9.jpg',
+  '../imgs/10.jpg',
+];
 
 export default function AuthPage() {
   const [isLogin, setIsLogin] = useState(true);
@@ -15,9 +30,18 @@ export default function AuthPage() {
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
-  
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+
   const { login, register } = useAuth();
   const navigate = useNavigate();
+
+  // Carrusel automático (solo en desktop)
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prev) => (prev + 1) % backgroundImages.length);
+    }, 5000);
+    return () => clearInterval(interval);
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -26,6 +50,14 @@ export default function AuthPage() {
 
     if (!email.trim() || !password.trim()) {
       setError('Por favor, completa todos los campos');
+      setIsLoading(false);
+      return;
+    }
+
+    // ✅ Validación: solo emails corporativos @winsysgroup.com
+    const emailRegex = /^[^\s@]+@winsysgroup\.com$/;
+    if (!emailRegex.test(email.trim())) {
+      setError('El email debe ser corporativo (@winsysgroup.com)');
       setIsLoading(false);
       return;
     }
@@ -49,10 +81,10 @@ export default function AuthPage() {
     }
 
     try {
-      const result = isLogin 
+      const result = isLogin
         ? await login(email, password)
         : await register(name, email, password);
-      
+
       if (result.success) {
         navigate('/');
       } else {
@@ -75,17 +107,44 @@ export default function AuthPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900 p-4">
-      <Card className="w-full max-w-md">
-        <CardHeader className="space-y-1">
-          <CardTitle className="text-2xl font-bold text-center flex items-center justify-center gap-2">
+    <div className="min-h-screen flex items-center justify-center p-4 relative">
+      {/* Carrusel de fondo */}
+      <div className="absolute inset-0 overflow-hidden -z-10">
+        {backgroundImages.map((src, index) => (
+          <div
+            key={index}
+            className={`absolute inset-0 transition-opacity duration-1000 ${index === currentImageIndex ? 'opacity-100' : 'opacity-0'}`}
+            style={{
+              backgroundImage: `url(${src})`,
+              backgroundSize: 'cover',
+              backgroundPosition: 'center',
+            }}
+          />
+        ))}
+        {/* Overlay oscuro para legibilidad */}
+        <div className="absolute inset-0 bg-black/50" />
+      </div>
+
+      {/* Formulario central */}
+      <Card className="w-full max-w-md z-10 border border-gray-200 dark:border-gray-700 shadow-lg bg-white/80 backdrop-blur-sm">
+        <CardHeader className="space-y-3 text-center">
+          {/* Logo de WinSystems */}
+          <div className="flex justify-center">
+            <img
+              src="https://winsysgroup.com/en/wp-content/themes/winsystem/images/logo-icon.svg"
+              alt="WinSystems Logo"
+              className="h-12 w-auto"
+            />
+          </div>
+
+          <CardTitle className="text-2xl font-bold flex items-center justify-center gap-2">
             {isLogin ? <LogIn className="h-6 w-6" /> : <UserPlus className="h-6 w-6" />}
             {isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
           </CardTitle>
-          <CardDescription className="text-center">
-            {isLogin 
-              ? 'Ingresa tus credenciales para acceder' 
-              : 'Completa el formulario para registrarte'}
+          <CardDescription>
+            {isLogin
+              ? 'Accede a tu panel de gestión diaria'
+              : 'Únete al equipo de WinSystems'}
           </CardDescription>
         </CardHeader>
         <CardContent>
@@ -106,22 +165,22 @@ export default function AuthPage() {
                 />
               </div>
             )}
-            
+
             <div className="space-y-2">
               <Label htmlFor="email" className="flex items-center gap-2">
                 <Mail className="h-4 w-4" />
-                Email
+                Email corporativo
               </Label>
               <Input
                 id="email"
                 type="email"
-                placeholder="tu@email.com"
+                placeholder="your.email@winsysgroup.com"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 disabled={isLoading}
               />
             </div>
-            
+
             <div className="space-y-2">
               <Label htmlFor="password" className="flex items-center gap-2">
                 <Lock className="h-4 w-4" />
@@ -160,9 +219,13 @@ export default function AuthPage() {
               </div>
             )}
 
-            <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading 
-                ? 'Procesando...' 
+            <Button
+              type="submit"
+              className="w-full bg-[#0056b3] hover:bg-[#004494] dark:bg-[#0056b3] dark:hover:bg-[#004494]"
+              disabled={isLoading}
+            >
+              {isLoading
+                ? 'Procesando...'
                 : isLogin ? 'Iniciar Sesión' : 'Crear Cuenta'}
             </Button>
           </form>
@@ -174,7 +237,7 @@ export default function AuthPage() {
             <button
               type="button"
               onClick={toggleMode}
-              className="text-primary hover:underline font-medium"
+              className="text-[#0056b3] hover:underline font-medium dark:text-[#6ec1e4]"
               disabled={isLoading}
             >
               {isLogin ? 'Regístrate' : 'Inicia Sesión'}
