@@ -2,9 +2,18 @@
 import { useState, useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/dexieDB'
+import { useTranslation } from 'react-i18next'
+import { useRepositories } from '../db/repositoriesStore'
+import { useLocation, useNavigate } from 'react-router-dom'
+import { toast } from '../components/common/ToastStack'
+import { useAuth } from '../contexts/AuthContext'
+import { usePullRequests } from '../hooks/usePullRequests'
+import { useJiraIssue } from '../hooks/useJiraIssue' // 👈 necesario para obtener datos de Jira
 import AddTaskModal from '../components/common/AddTaskModal'
 import EditTaskModal from '../components/common/EditTaskModal'
 import CloneTaskModal from '../components/common/CloneTaskModal'
+import PrStatusBadge from '../components/PrStatusBadge'
+import JiraStatus from '../components/JiraStatus'
 import {
   Pencil,
   Trash2,
@@ -15,15 +24,8 @@ import {
   Copy,
   FileText,
   GitBranch,
+  BookOpen,
 } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { useRepositories } from '../db/repositoriesStore'
-import { useLocation, useNavigate } from 'react-router-dom'
-import { toast } from '../components/common/ToastStack'
-import { useAuth } from '../contexts/AuthContext'
-import { usePullRequests } from '../hooks/usePullRequests'
-import PrStatusBadge from '../components/PrStatusBadge'
-import JiraStatus from '../components/JiraStatus' // 👈 Importamos JiraStatus
 
 const JIRA_BASE = 'https://winsytemsintl.atlassian.net/browse/'
 
@@ -358,7 +360,6 @@ export default function DailyTasks() {
     const repo = repositories.find((r) => r.id === Number(t.repositoryId))
     const repoName = repo?.name
 
-    // 👇 Buscar PR asociado a esta tarea
     const associatedPr = prs.find(
       (pr) =>
         String(pr.taskId) === String(t.id) ||
@@ -368,10 +369,29 @@ export default function DailyTasks() {
     const isVacation = t.type === 'VACACIONES'
     const isOther = t.type === 'OTROS'
 
+    // Función para copiar texto con toast
+    const copyText = async (text: string, label: string) => {
+      try {
+        await navigator.clipboard.writeText(text)
+        toast({ message: `📋 Copiado: ${label}`, type: 'success' })
+      } catch {
+        toast({ message: '⚠️ Error al copiar.', type: 'warn' })
+      }
+    }
+
+    // 👇 Determinar qué descripción mostrar
+    const hasOwnDescription = t.description && t.description.trim() !== ''
+    let descriptionToRender: string | null = null
+    let isJiraDescription = false
+
+    if (hasOwnDescription) {
+      descriptionToRender = t.description
+    } 
+
     return (
       <div
         key={t.id}
-        className={`p-4 rounded-lg border shadow-sm flex justify-between items-center mb-2 ${isVacation
+        className={`p-4 rounded-lg border shadow-sm flex justify-between items-start mb-2 ${isVacation
           ? 'bg-teal-100 dark:bg-teal-900/40 border-teal-400'
           : t.completed
             ? 'bg-green-50 dark:bg-green-900/30 border-green-400'
@@ -380,7 +400,8 @@ export default function DailyTasks() {
               : 'bg-gray-100 dark:bg-gray-800 border-gray-600'
           }`}
       >
-        <div className="flex flex-col max-w-[1500px]">
+        {/* Contenido principal a la izquierda */}
+        <div className="flex flex-col max-w-[1500px] flex-1">
           <div className="flex items-center gap-2 flex-wrap">
             {isVacation ? (
               <span className="flex items-center text-teal-700 dark:text-teal-300 font-semibold text-lg">
@@ -395,7 +416,7 @@ export default function DailyTasks() {
             ) : (
               <>
                 <p
-                  className="font-medium text-md truncate max-w-[1000px]"
+                  className="font-black text-md truncate max-w-[1400px]"
                   title={t.name}
                 >
                   {t.name} {count && <span>(x{count})</span>}
@@ -430,109 +451,144 @@ export default function DailyTasks() {
             )}
           </div>
 
-          {/* 👇 Renderizamos JiraStatus SOLO si hay clave Jira válida */}
+          {/* JiraStatus */}
           {jiraKey && (
-            <div className="mt-1">
+            <div className="mt-2">
               <JiraStatus issueKey={jiraKey} />
             </div>
           )}
 
-          {t.description && (
-            <p
-              className="text-sm text-gray-600 dark:text-gray-300 mt-1"
-              dangerouslySetInnerHTML={{ __html: t.description }}>
-            </p>
-          )}
-
-          {!isVacation && (
-            <>
-              {t.mergeIn && (
-                <div className="flex flex-col gap-1 mt-1">
-                  <div className="flex items-center gap-2 flex-wrap">
-                    <GitBranch size={14} className="text-blue-500" />
-                    <p className="text-md text-blue-500 font-mono truncate">
-                      {repoName} {"-->"} {t.mergeIn}
-                    </p>
-                    {/* 👇 Badge del PR (clickeable) */}
-                    {associatedPr && (
-                      <button
-                        onClick={() => navigate('/prs')}
-                        className="cursor-pointer"
-                        title={`Ver PR: ${associatedPr.title}`}
-                      >
-                        <PrStatusBadge status={associatedPr.status} />
-                      </button>
-                    )}
-                  </div>
-
-                  {t.branch && (
-                    <div className="flex items-center gap-2 pl-5">
-                      <GitBranch
-                        size={12}
-                        className="text-gray-400 dark:text-gray-500"
-                      />
-                      <p className="text-sm text-gray-500 dark:text-gray-400 font-mono">
-                        ← {t.branch}
-                      </p>
-                    </div>
-                  )}
+          {/* Bloque de ramas */}
+          {!isVacation && t.mergeIn && (
+            <div className="mt-3 p-3 rounded-md bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800/50">
+              <div className='mb-4'>
+                <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-800/40 px-2 py-1 rounded mb-4">
+                  Bitbucket info
+                </span>
+              </div>
+              <div className="flex items-center gap-2 flex-wrap">
+                <GitBranch size={14} className="text-blue-600 dark:text-blue-400" />
+                <p className="text-md text-blue-700 dark:text-blue-300 font-mono truncate">
+                  {repoName} {"-->"} {t.mergeIn}
+                </p>
+                {associatedPr && (
+                  <button
+                    onClick={() => navigate('/prs')}
+                    className="cursor-pointer"
+                    title={`Ver PR: ${associatedPr.title}`}
+                  >
+                    <PrStatusBadge status={associatedPr.status} />
+                  </button>
+                )}
+              </div>
+              {t.branch && (
+                <div className="flex items-center gap-2 mt-1 pl-5">
+                  <GitBranch size={12} className="text-gray-500 dark:text-gray-400" />
+                  <p className="text-sm text-gray-600 dark:text-gray-400 font-mono">
+                    ← {t.branch}
+                  </p>
+                  {/* Botón para copiar nombre de rama */}
+                  <button
+                    onClick={() => copyText(t.branch, 'nombre de rama')}
+                    className="p-1 hover:bg-gray-200 dark:hover:bg-gray-700 rounded"
+                    title="Copiar nombre de rama"
+                  >
+                    <ClipboardCopy size={14} className="text-gray-400" />
+                  </button>                  
                 </div>
               )}
-
-              <p className="text-sm text-gray-500">{t.hours}h — {t.date}</p>
-            </>
-          )}
-        </div>
-
-        {/* === Botones de acción === */}
-        <div className="flex items-center text-xs font-medium min-w-fit">
-          {!isVacation && (
-            <div className="flex rounded-md overflow-hidden border border-gray-300 dark:border-gray-600">
-              <button
-                onClick={() => toggleComplete(t.id!, t.completed)}
-                className={`flex items-center gap-1 px-2 py-1.5 transition-colors ${t.completed
-                  ? 'bg-green-500 text-white hover:bg-green-600'
-                  : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
-                  }`}
-                title={
-                  t.completed ? 'Marcar como pendiente' : 'Marcar como completada'
-                }
-              >
-                <CheckCircle size={16} />
-                <span>{t.completed ? '✔' : 'X'}</span>
-              </button>
-
-              <button
-                onClick={() => setCloneId(t.id!)}
-                className="flex items-center gap-1 px-2 py-1.5 bg-indigo-500 text-white hover:bg-indigo-600 transition-colors border-l border-gray-300 dark:border-gray-600"
-                title="Clonar tarea"
-              >
-                <Copy size={16} />
-                <span>Clonar</span>
-              </button>
             </div>
           )}
 
-          <div
-            className={`flex ${!isVacation ? 'ml-1' : ''} rounded-md overflow-hidden border border-gray-300 dark:border-gray-600`}
-          >
-            <button
-              onClick={() => setEditId(t.id!)}
-              className="flex items-center gap-1 px-2 py-1.5 bg-yellow-400 text-gray-800 hover:bg-yellow-500 transition-colors"
-              title="Editar tarea"
-            >
-              <Pencil size={16} />
-              <span>Editar</span>
-            </button>
-            <button
-              onClick={() => deleteTask(t.id!)}
-              className="flex items-center gap-1 px-2 py-1.5 bg-red-500 text-white hover:bg-red-600 transition-colors border-l border-gray-300 dark:border-gray-600"
-              title="Eliminar tarea"
-            >
-              <Trash2 size={16} />
-              <span>Eliminar</span>
-            </button>
-          </div>
+          {/* Descripción: propia o de Jira */}
+          {(hasOwnDescription || (jiraKey && descriptionToRender)) && (
+            <div className={`mt-3 p-3 rounded-md border ${isJiraDescription
+                ? 'bg-indigo-50 dark:bg-indigo-900/20 border-indigo-300 dark:border-indigo-700'
+                : 'bg-gray-50 dark:bg-gray-700/50 border-gray-300 dark:border-gray-600'
+              }`}>
+              <div className='mb-4'>
+                <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-800/40 px-2 py-1 rounded mb-4">
+                  Task description
+                </span>
+              </div>
+              {isJiraDescription && (
+                <div className="flex items-center gap-1 mb-2">
+                  <BookOpen size={14} className="text-indigo-600 dark:text-indigo-400" />
+                  <span className="text-xs font-medium text-indigo-700 dark:text-indigo-300 bg-indigo-100 dark:bg-indigo-800/40 px-2 py-0.5 rounded">
+                    Descripción de Jira
+                  </span>
+                </div>
+              )}
+              {isJiraDescription ? (
+                <div
+                  className="text-sm text-gray-800 dark:text-gray-200"
+                  dangerouslySetInnerHTML={{ __html: descriptionToRender || '' }}
+                />
+              ) : (
+                <p
+                  className="text-sm text-gray-800 dark:text-gray-200"
+                  dangerouslySetInnerHTML={{ __html: t.description }}
+                />
+              )}
+            </div>
+          )}
+        </div>
+
+        {/* Columna derecha: botones + horas */}
+        <div className="flex flex-col items-end ml-4">
+          {!isVacation && (
+            <>
+              {/* Fila 1: Completar / Clonar */}
+              <div className="flex w-full">
+                <button
+                  onClick={() => toggleComplete(t.id!, t.completed)}
+                  className={`flex-1 flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-medium transition-colors rounded-l-md ${t.completed
+                      ? 'bg-green-500 text-white hover:bg-green-600'
+                      : 'bg-gray-200 text-gray-700 hover:bg-gray-300 dark:bg-gray-700 dark:text-gray-200 dark:hover:bg-gray-600'
+                    }`}
+                  title={t.completed ? 'Marcar como pendiente' : 'Marcar como completada'}
+                >
+                  <CheckCircle size={14} />
+                  <span>{t.completed ? '✔' : 'X'}</span>
+                </button>
+                <button
+                  onClick={() => setCloneId(t.id!)}
+                  className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-medium bg-indigo-500 text-white hover:bg-indigo-600 transition-colors rounded-r-md"
+                  title="Clonar tarea"
+                >
+                  <Copy size={14} />
+                  <span>Clonar</span>
+                </button>
+              </div>
+
+              {/* Fila 2: Editar / Eliminar */}
+              <div className="flex w-full mt-0">
+                <button
+                  onClick={() => setEditId(t.id!)}
+                  className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-medium bg-yellow-400 text-gray-800 hover:bg-yellow-500 transition-colors rounded-l-md"
+                  title="Editar tarea"
+                >
+                  <Pencil size={14} />
+                  <span>Editar</span>
+                </button>
+                <button
+                  onClick={() => deleteTask(t.id!)}
+                  className="flex-1 flex items-center justify-center gap-1 px-2 py-1.5 text-xs font-medium bg-red-500 text-white hover:bg-red-600 transition-colors rounded-r-md"
+                  title="Eliminar tarea"
+                >
+                  <Trash2 size={14} />
+                  <span>Eliminar</span>
+                </button>
+              </div>
+            </>
+          )}
+
+          {/* Horas centradas debajo */}
+          {!isVacation && (
+            <p className="mt-1 text-2xl font-mono font-bold text-gray-800 dark:text-gray-200 text-center">
+              {t.hours}h
+            </p>
+          )}
         </div>
       </div>
     )

@@ -1004,7 +1004,7 @@
       "description": "",
       "branch": "",
       "mergeIn": "",
-      "completed": false,
+      "completed": true,
       "createdAt": "2025-12-15T16:31:33.249Z",
       "date": "2025-12-08",
       "hours": 8.5,
@@ -1018,7 +1018,7 @@
       "description": "<p>Expedite cliente, se estan pagando TITOs varias veces por importes muy elevados.</p><p><br></p><p>En Wigos.LiveOperations.Application se modifica, LiveOperationsSessionsQueries para tener en cuenta los CountR para que el EnsureExistsLiveOperationsSession funcione para Kioscos.</p><p><br></p><p><span style=\"color: blue;\">public</span>&nbsp;<span style=\"color: blue;\">string</span>&nbsp;ReadVenueInfoFromDatabase()</p><p>{</p><p>&nbsp;&nbsp;<span style=\"color: blue;\">return</span>&nbsp;<span style=\"color: blue;\">new</span>&nbsp;StringBuilder()</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;SELECT&nbsp;&nbsp;&nbsp;VE_VENUE_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;FROM&nbsp;&nbsp;&nbsp;CASHIER_TERMINALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;LEFT&nbsp;JOIN&nbsp;&nbsp;&nbsp;TERMINALS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;&nbsp;&nbsp;CT_TERMINAL_ID=TE_TERMINAL_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;INNER&nbsp;JOIN&nbsp;&nbsp;&nbsp;BANKS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;&nbsp;&nbsp;BK_BANK_ID&nbsp;=&nbsp;CT_BANK_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OR&nbsp;&nbsp;&nbsp;BK_BANK_ID&nbsp;=&nbsp;TE_BANK_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;INNER&nbsp;JOIN&nbsp;&nbsp;&nbsp;AREAS&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;&nbsp;&nbsp;AR_AREA_ID&nbsp;=&nbsp;BK_AREA_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;INNER&nbsp;JOIN&nbsp;&nbsp;&nbsp;VENUES&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;ON&nbsp;&nbsp;&nbsp;VE_VENUE_ID&nbsp;=&nbsp;AR_VENUE_ID&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;WHERE&nbsp;&nbsp;&nbsp;CT_CASHIER_ID&nbsp;=&nbsp;@pCashierTerminalId&nbsp;&nbsp;&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.AppendLine(<span style=\"color: rgb(163, 21, 21);\">\"&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;OR&nbsp;&nbsp;&nbsp;CT_TERMINAL_ID&nbsp;=&nbsp;&nbsp;@pCashierTerminalId&nbsp;&nbsp;\"</span>)</p><p>&nbsp;&nbsp;&nbsp;&nbsp;.ToString();</p><p>}</p><p><br></p><p><strong>En Wigos.KioskRedemptionWebApi, hacer que cuando ocurra el error en el momento de pagar el TITO, tras validar que el estado no es el que se necesita para el ticket (PAID), que el flujo de petición se corte, para que no continue con el transaction de ese modo no se confirmará en base de datos el estado y así, no se podrá pagar el TITO de ninguna forma a menos que llegue al estado requerido.</strong></p><p><br></p>",
       "branch": "",
       "mergeIn": "hotfix/hotfix-36",
-      "completed": false,
+      "completed": true,
       "createdAt": "2025-12-15T10:08:06.184Z",
       "date": "2025-12-16",
       "hours": 0,
@@ -1249,6 +1249,21 @@
       "type": "WIGOS",
       "userId": 1,
       "id": 120
+    },
+    {
+      "name": "WIGOS-119740 - Salones - ERP Integration - SAPCode 229 -- el cierre de caja con sobrante / faltante no se está informando",
+      "description": "<p>Salones - ERP Integration - SAPCode 229 -- el cierre de caja con sobrante / faltante no se está informando</p><p><br></p><p>Se ha cambiado el filtro del SAP Code de las sesiones de caja de</p><p><br></p><p>cs_gaming_day --&gt; por cs_opening_date --&gt; no trae los datos correctos</p><p>cs_gaming_day --&gt; por cs_closing_date --&gt; no trae los datos correctos</p><p><br></p><p>Queda pendiente reunión para aclarar como funciona porque el unico caso que trae los datos correctos es con el cs_gaming_day pero no cubre los salones con horario de corte distinto a ClosingTime.</p><p><br></p><p>Se ha estado probando la validación de los montos del SAP Code contra el formulario incorrecto (Movimientos de Caja), cuando debería haberse probado contra el Reporte de sobrantes y faltantes.</p><p>Con este último filtrando por jornada, si esta inicia a las 08:00 cuadra el dato, sino es lo que hay que ver como solucionar.</p><p><br></p><p>Se realizan 2 cierres de caja en la misma jornada con distintos usuarios de caja para probar N-Lineas de SAPCode229 y los datos cuadran para salones que tengan su cierre a la misma hora que el closingTime.</p><p><br></p><p>Se valida con Javi y la consulta que le he pasado le funciona correctamente, lo único que haría falta agregar es una JOIN con cashier_sessions para filtrar los movimientos que pertenecen a sesiones en estado 1(Cerrada).</p><p><br></p><p><br></p><p>Juntarnos: Javi, Ferran, Dani y yo (a poder ser también Nestor) para tratar el tema.</p><p><br></p><p><br></p><p><br></p><p>El script ya está modificado en DbVersion, solo falta incorporarlo en el UpdateTo que corresponda de la última Hotfix-37 que toque. Y faltará si se aprueba el PR cuando se cree, incorporar los cambios para que entren en master.</p>",
+      "branch": "feature/sln2/wigos-119740_salones_erp_integration_sapcode_229_el_cierre_de_caja_con_sobrante_faltante_no_se_esta_informando",
+      "mergeIn": "hotfix/hotfix-37",
+      "completed": false,
+      "createdAt": "2025-12-18T09:03:31.193Z",
+      "date": "2025-12-24",
+      "hours": 1.5,
+      "itemId": "WIGOS-119740",
+      "repositoryId": 1,
+      "type": "WIGOS",
+      "userId": 1,
+      "id": 121
     }
   ],
   "user": [
