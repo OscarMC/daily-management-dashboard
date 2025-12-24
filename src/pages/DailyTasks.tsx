@@ -1,3 +1,4 @@
+// src/pages/DailyTasks.tsx
 import { useState, useEffect } from 'react'
 import { useLiveQuery } from 'dexie-react-hooks'
 import { db } from '../db/dexieDB'
@@ -17,11 +18,12 @@ import {
 } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
 import { useRepositories } from '../db/repositoriesStore'
-import { useLocation, useNavigate } from 'react-router-dom' // 👈 añadido useNavigate
+import { useLocation, useNavigate } from 'react-router-dom'
 import { toast } from '../components/common/ToastStack'
 import { useAuth } from '../contexts/AuthContext'
-import { usePullRequests } from '../hooks/usePullRequests' // 👈 nuevo
-import PrStatusBadge from '../components/PrStatusBadge' // 👈 nuevo
+import { usePullRequests } from '../hooks/usePullRequests'
+import PrStatusBadge from '../components/PrStatusBadge'
+import JiraStatus from '../components/JiraStatus' // 👈 Importamos JiraStatus
 
 const JIRA_BASE = 'https://winsytemsintl.atlassian.net/browse/'
 
@@ -38,7 +40,7 @@ const getTodayLocalISO = () => {
 export default function DailyTasks() {
   const { t } = useTranslation()
   const { user } = useAuth()
-  const navigate = useNavigate() // 👈 para navegación programática
+  const navigate = useNavigate()
 
   // ✅ Filtramos SOLO las tareas del userId actual
   const tasks = useLiveQuery(() => {
@@ -50,7 +52,7 @@ export default function DailyTasks() {
   }, [user?.id])
 
   const { repositories } = useRepositories()
-  const { prs } = usePullRequests() // 👈 cargamos los PRs
+  const { prs } = usePullRequests()
 
   const [showAdd, setShowAdd] = useState(false)
   const [editId, setEditId] = useState<number | null>(null)
@@ -378,7 +380,7 @@ export default function DailyTasks() {
               : 'bg-gray-100 dark:bg-gray-800 border-gray-600'
           }`}
       >
-        <div className="flex flex-col">
+        <div className="flex flex-col max-w-[1500px]">
           <div className="flex items-center gap-2 flex-wrap">
             {isVacation ? (
               <span className="flex items-center text-teal-700 dark:text-teal-300 font-semibold text-lg">
@@ -428,6 +430,13 @@ export default function DailyTasks() {
             )}
           </div>
 
+          {/* 👇 Renderizamos JiraStatus SOLO si hay clave Jira válida */}
+          {jiraKey && (
+            <div className="mt-1">
+              <JiraStatus issueKey={jiraKey} />
+            </div>
+          )}
+
           {t.description && (
             <p
               className="text-sm text-gray-600 dark:text-gray-300 mt-1"
@@ -476,7 +485,7 @@ export default function DailyTasks() {
         </div>
 
         {/* === Botones de acción === */}
-        <div className="flex items-center text-xs font-medium">
+        <div className="flex items-center text-xs font-medium min-w-fit">
           {!isVacation && (
             <div className="flex rounded-md overflow-hidden border border-gray-300 dark:border-gray-600">
               <button
