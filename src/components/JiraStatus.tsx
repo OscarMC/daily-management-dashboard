@@ -21,7 +21,7 @@ import {
 
 interface JiraStatusProps {
   issueKey: string;
-  onJiraData?: (JiraIssue) => void;
+  onJiraData?: (arg0: JiraIssue) => void;
 }
 
 export default function JiraStatus({ issueKey, onJiraData }: JiraStatusProps) {
