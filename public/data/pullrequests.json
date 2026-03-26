@@ -9,5 +9,54 @@
     "status": "merged",
     "createdAt": "2025-12-23T09:58:41.123Z",
     "updatedAt": "2025-12-23T10:10:12.949Z"
+  },
+  {
+    "id": 2,
+    "taskId": "122",
+    "title": "WIGOS-119740 - Salones - ERP Integration - SAPCode 229 -- el cierre de caja con sobrante / faltante no se está informando",
+    "repositoryId": "1",
+    "sourceBranch": "feature/sln2/wigos-119740_salones_erp_integration_sapcode_229_el_cierre_de_caja_con_sobrante_faltante_no_se_esta_informando",
+    "targetBranch": "development",
+    "status": "merged",
+    "externalUrl": "https://bitbucket.org/wigos-dev/dbversion/pull-requests/29",
+    "createdAt": "2026-01-07T09:44:03.452Z",
+    "updatedAt": "2026-01-07T09:48:13.672Z"
+  },
+  {
+    "id": 3,
+    "taskId": "153",
+    "title": "WIGOS-123578 - (GUI) Gorge Integration - Actualizar el campo external_request_id cuando un terminal cambie de isla",
+    "repositoryId": "1",
+    "sourceBranch": "feature/sln2/wigos-123578_gui_gorge_integration_actualizar_el_campo_external_request_id_cuando_un_terminal_cambie_de_isla",
+    "targetBranch": "development",
+    "status": "pending",
+    "externalUrl": "https://bitbucket.org/wigos-dev/dbversion/pull-requests/39",
+    "notes": "Todavía no está creada la rama, cuando se cree hay que poner el ID correcto en en enlace a BitBucket de los PRs",
+    "createdAt": "2026-03-11T09:35:21.266Z",
+    "updatedAt": "2026-03-11T09:35:21.266Z"
+  },
+  {
+    "id": 4,
+    "taskId": "166",
+    "title": "WIGOS-123928 - Salones - GORGE - Creación salón -- No deja crear salón a través del mensaje enviado. Da siempre el mismo error - ERROR|[ES999] - Error inserting venue KO.",
+    "repositoryId": "1",
+    "sourceBranch": "feature/sln2/wigos-123928_salones_gorge_creacion_salon_no_deja_crear_salon_a_traves_del_mensaje_enviado_da_siempre_el_mismo_error_error_es999_error_inserting_venue_ko_to_hotfix37",
+    "targetBranch": "master",
+    "status": "pending",
+    "externalUrl": "https://bitbucket.org/wigos-dev/dbversion/pull-requests/7",
+    "createdAt": "2026-03-17T16:33:18.423Z",
+    "updatedAt": "2026-03-17T16:33:18.423Z"
+  },
+  {
+    "id": 5,
+    "taskId": "166",
+    "title": "WIGOS-123928 - Salones - GORGE - Creación salón -- No deja crear salón a través del mensaje enviado. Da siempre el mismo error - ERROR|[ES999] - Error inserting venue KO.",
+    "repositoryId": "12",
+    "sourceBranch": "feature/sln2/wigos-123928_salones_gorge_creacion_salon_no_deja_crear_salon_a_traves_del_mensaje_enviado_da_siempre_el_mismo_error_error_es999_error_inserting_venue_ko_to_hotfix38",
+    "targetBranch": "master",
+    "status": "pending",
+    "externalUrl": "https://bitbucket.org/wigos-dev/wigos.components.genericbrokerprocessor/pull-requests/12312",
+    "createdAt": "2026-03-18T10:09:28.654Z",
+    "updatedAt": "2026-03-18T10:09:28.654Z"
   }
 ]

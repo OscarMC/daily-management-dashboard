@@ -43,6 +43,18 @@
     {
       "id": 11,
       "name": "Wigos.LiveOperations"
+    },
+    {
+      "id": 12,
+      "name": "Wigos.Components.GenericBrokerProcessor"
+    },
+    {
+      "id": 13,
+      "name": "Wigos.Terminals"
+    },
+    {
+      "id": 14,
+      "name": "Wigos.GamingHall"
     }
   ]
 }

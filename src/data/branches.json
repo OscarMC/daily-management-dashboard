@@ -27,6 +27,13 @@
       "base": "development",
       "description": "Development",
       "repositoryId": 6
+    },
+    {
+      "id": 12,
+      "name": "hotfix/hotfix-38",
+      "base": "hotfix/hotfix-38",
+      "description": "Hotfix-38",
+      "repositoryId": 1
     }
   ]
 }

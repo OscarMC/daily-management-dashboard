@@ -1,0 +1,23 @@
+﻿===== REGISTRO DETALLADO [20260226] =====
+ENTRADA   SALIDA    CONCEPTO     DURACION
+--------  --------  -----------  --------
+08:34:00  09:23:00  Trabajo				 00:49   
+09:23:00  09:35:00  Descanso			 00:12   
+09:35:00  12:18:00  Trabajo				 02:43   
+12:18:00  12:28:00  Descanso			 00:10   
+12:28:00  13:14:00  Trabajo				 00:46   
+13:14:00  13:37:00  Descanso			 00:23   
+13:37:00  13:40:00  Trabajo				 00:03   
+13:40:00  13:47:00  Descanso			 00:07   
+13:47:00  15:55:00  Trabajo				 02:08   
+15:55:00  16:02:00  Descanso			 00:07   
+16:02:00  18:26:00  Trabajo				 02:24   
+18:26:00  18:29:00  Descanso			 00:03   
+18:29:00  18:59:18  Trabajo				 00:30   
+-------------------------------
+Total preinicio:		               00:00
+Total trabajado:		               09:23
+Tiempo restante para jornada:		   00:00
+Total descansos:		               01:02
+Hora estimada de salida:		       18:59
+-------------------------------
