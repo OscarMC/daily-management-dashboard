@@ -14,6 +14,7 @@ import AuthPage from './pages/AuthPage'
 import ProtectedRoute from './components/ProtectedRoute'
 import WeeklyReportPage from './pages/WeeklyReportPage'
 import PrsPage from './pages/PrsPage'
+import MyJiraIssues from './pages/MyJiraIssues'
 import { useToastStack } from './components/common/ToastStack'
 
 export default function App() {
@@ -41,6 +42,7 @@ export default function App() {
          <Route path="/holidays" element={<Holidays />} />
          <Route path="/weekly-report-page" element={<WeeklyReportPage />} />
          <Route path="/prs" element={<PrsPage />} />
+         <Route path="/my-jira" element={<MyJiraIssues />} />
         </Routes>
        </main>
       </div>

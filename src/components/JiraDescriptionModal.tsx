@@ -1,383 +1,160 @@
 // src/components/JiraDescriptionModal.tsx
 import React from 'react';
-import { X } from 'lucide-react';
+import { X, ExternalLink, User } from 'lucide-react';
+import { JiraAttachment } from '../hooks/useJiraIssue';
 
-// Tipos para el Atlassian Document Format (ADF)
-interface JiraText {
-  type: 'text';
-  text: string;
-  marks?: JiraMark[];
-}
+// --- TIPOS ADF (Atlassian Document Format) ---
+interface JiraText { type: 'text'; text: string; marks?: JiraMark[]; }
+interface JiraMark { type: 'strong' | 'em' | 'underline' | 'strike' | 'link' | 'code'; attrs?: { href?: string }; }
+interface JiraParagraph { type: 'paragraph'; content?: JiraNode[]; }
+interface JiraHeading { type: 'heading'; attrs?: { level?: number }; content?: JiraNode[]; }
+interface JiraMedia { type: 'media'; attrs: { id: string; alt?: string; }; }
+interface JiraMediaSingle { type: 'mediaSingle'; content?: JiraMedia[]; }
+interface JiraListItem { type: 'listItem'; content?: JiraNode[]; }
+interface JiraList { type: 'orderedList' | 'bulletList'; content?: JiraListItem[]; }
+interface JiraCodeBlock { type: 'codeBlock'; content?: { type: 'text'; text: string }[]; }
+interface JiraBlockquote { type: 'blockquote'; content?: JiraNode[]; }
+interface JiraTable { type: 'table'; content?: { type: 'tableRow'; content: { type: 'tableCell' | 'tableHeader'; content: JiraNode[] }[] }[]; }
+interface JiraMention { type: 'mention'; attrs: { text: string }; }
+interface JiraStatus { type: 'status'; attrs: { text: string; color: string }; }
 
-interface JiraMark {
-  type: 'strong' | 'em' | 'underline' | 'strike' | 'link' | 'code';
-  attrs?: {
-    href?: string;
-    color?: string;
-  };
-}
-
-interface JiraParagraph {
-  type: 'paragraph';
-  content?: JiraNode[];
-}
-
-interface JiraHeading {
-  type: 'heading';
-  attrs?: { level?: number };
-  content?: JiraNode[];
-}
-
-interface JiraMedia {
-  type: 'media';
-  attrs: {
-    type: 'file' | 'link';
-    id?: string;
-    url?: string;
-    alt?: string;
-    collection?: string;
-    width?: number;
-    height?: number;
-  };
-}
-
-interface JiraMediaSingle {
-  type: 'mediaSingle';
-  attrs?: { layout?: string; width?: number; widthType?: string };
-  content?: JiraMedia[];
-}
-
-interface JiraMediaGroup {
-  type: 'mediaGroup';
-  content?: JiraMedia[];
-}
-
-interface JiraListItem {
-  type: 'listItem';
-  content?: JiraNode[];
-}
-
-interface JiraList {
-  type: 'orderedList' | 'bulletList';
-  attrs?: { order?: number };
-  content?: JiraListItem[];
-}
-
-interface JiraCodeBlock {
-  type: 'codeBlock';
-  attrs?: { language?: string };
-  content?: { type: 'text'; text: string }[];
-}
-
-interface JiraBlockquote {
-  type: 'blockquote';
-  content?: JiraNode[];
-}
-
-interface JiraTableCell {
-  type: 'tableCell' | 'tableHeader';
-  attrs?: { colspan?: number; rowspan?: number };
-  content?: JiraNode[];
-}
-
-interface JiraTableRow {
-  type: 'tableRow';
-  content?: JiraTableCell[];
-}
-
-interface JiraTable {
-  type: 'table';
-  content?: JiraTableRow[];
-}
-
-interface JiraRule {
-  type: 'rule';
-}
-
-interface JiraInlineCard {
-  type: 'inlineCard';
-  attrs: {
-    url: string;
-    title?: string;
-  };
-}
-
-interface JiraHardBreak {
-  type: 'hardBreak';
-}
-
-interface JiraMention {
-  type: 'mention';
-  attrs: { id: string; text: string; accessLevel?: string; localId?: string };
-}
-
-interface JiraStatus {
-  type: 'status';
-  attrs: { text: string; color: string; localId: string; style?: string };
-}
-
-// Unión de todos los nodos
-type JiraNode =
-  | JiraText
-  | JiraParagraph
-  | JiraHeading
-  | JiraMediaSingle
-  | JiraMediaGroup
-  | JiraList
-  | JiraCodeBlock
-  | JiraBlockquote
-  | JiraTable
-  | JiraRule
-  | JiraInlineCard
-  | JiraHardBreak
-  | JiraMention
-  | JiraStatus;
+type JiraNode = JiraText | JiraParagraph | JiraHeading | JiraMediaSingle | JiraList | JiraCodeBlock | JiraBlockquote | JiraTable | JiraMention | JiraStatus | { type: 'rule' | 'hardBreak' | 'inlineCard'; attrs?: any };
 
 interface JiraDescriptionModalProps {
   description: any;
+  attachments?: JiraAttachment[]; // Opcional: para cruzar IDs de media con URLs reales
   onClose: () => void;
 }
 
-// Componente recursivo para renderizar nodos ADF
-const renderNode = (node: JiraNode, index: number): React.ReactNode => {
+// ✅ Función de renderizado recursivo para ADF
+const renderNode = (node: any, index: number): React.ReactNode => {
   if (!node || !node.type) return null;
 
-  // ✅ Texto con marcas
-  if (node.type === 'text') {
-    let textElement = <>{node.text || ''}</>;
-    if (Array.isArray(node.marks)) {
-      node.marks.forEach((mark) => {
-        if (mark.type === 'strong') textElement = <strong>{textElement}</strong>;
-        else if (mark.type === 'em') textElement = <em>{textElement}</em>;
-        else if (mark.type === 'underline') textElement = <u>{textElement}</u>;
-        else if (mark.type === 'strike') textElement = <del>{textElement}</del>;
-        else if (mark.type === 'code') textElement = <code className="bg-gray-200 dark:bg-gray-700 px-1 rounded">{textElement}</code>;
-        else if (mark.type === 'link' && mark.attrs?.href) {
-          textElement = (
-            <a href={mark.attrs.href} target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
-              {textElement}
-            </a>
-          );
-        }
+  switch (node.type) {
+    case 'text':
+      let element = <>{node.text || ''}</>;
+      node.marks?.forEach((mark: JiraMark) => {
+        if (mark.type === 'strong') element = <strong className="font-bold text-gray-900 dark:text-white">{element}</strong>;
+        if (mark.type === 'em') element = <em className="italic">{element}</em>;
+        if (mark.type === 'underline') element = <u className="underline">{element}</u>;
+        if (mark.type === 'strike') element = <del className="line-through text-gray-400">{element}</del>;
+        if (mark.type === 'code') element = <code className="bg-gray-100 dark:bg-gray-700 px-1.5 py-0.5 rounded text-pink-600 dark:text-pink-400 font-mono text-xs">{element}</code>;
+        if (mark.type === 'link') element = <a href={mark.attrs?.href} target="_blank" rel="noopener" className="text-blue-600 dark:text-blue-400 hover:underline inline-flex items-center gap-0.5">{element}<ExternalLink size={10} /></a>;
       });
-    }
-    return <React.Fragment key={index}>{textElement}</React.Fragment>;
-  }
+      return <React.Fragment key={index}>{element}</React.Fragment>;
 
-  // ✅ Párrafo
-  if (node.type === 'paragraph') {
-    return (
-      <p key={index} className="mb-2 text-gray-700 dark:text-gray-300">
-        {node.content?.map((child, i) => renderNode(child, i))}
-      </p>
-    );
-  }
+    case 'paragraph':
+      return <p key={index} className="mb-4 leading-relaxed">{node.content?.map((child: any, i: number) => renderNode(child, i))}</p>;
 
-  // ✅ Encabezado
-  if (node.type === 'heading') {
-    const level = node.attrs?.level || 2;
-    const Tag = `h${Math.min(Math.max(level, 1), 6)}` as keyof JSX.IntrinsicElements;
-    return (
-      <Tag key={index} className="font-bold text-gray-800 dark:text-white mt-4 mb-2">
-        {node.content?.map((child, i) => renderNode(child, i))}
-      </Tag>
-    );
-  }
+    case 'heading':
+      const Level = `h${node.attrs?.level || 2}` as keyof JSX.IntrinsicElements;
+      const sizes: any = { h1: 'text-2xl', h2: 'text-xl', h3: 'text-lg', h4: 'text-base' };
+      return <Level key={index} className={`${sizes[Level] || 'text-lg'} font-bold text-gray-900 dark:text-white mt-6 mb-3 border-b border-gray-100 dark:border-gray-800 pb-1`}>{node.content?.map((child: any, i: number) => renderNode(child, i))}</Level>;
 
-  // ✅ Imagen (mediaSingle)
-  if (node.type === 'mediaSingle') {
-    const media = node.content?.[0];
-    if (media?.type === 'media' && media.attrs?.id) {
-      const src = `http://localhost:4000/jira/image/${media.attrs.id}`;
+    case 'bulletList':
+      return <ul key={index} className="list-disc list-outside mb-4 ml-6 space-y-1 text-gray-700 dark:text-gray-300">{node.content?.map((item: any, i: number) => <li key={i}>{item.content?.map((c: any, j: number) => renderNode(c, j))}</li>)}</ul>;
+
+    case 'orderedList':
+      return <ol key={index} className="list-decimal list-outside mb-4 ml-6 space-y-1 text-gray-700 dark:text-gray-300">{node.content?.map((item: any, i: number) => <li key={i}>{item.content?.map((c: any, j: number) => renderNode(c, j))}</li>)}</ol>;
+
+    case 'codeBlock':
+      return <pre key={index} className="bg-gray-900 text-gray-100 p-4 rounded-lg my-4 overflow-x-auto font-mono text-xs border border-gray-800 shadow-inner"><code>{node.content?.map((c: any) => c.text).join('')}</code></pre>;
+
+    case 'blockquote':
+      return <blockquote key={index} className="border-l-4 border-blue-500 bg-blue-50/30 dark:bg-blue-900/10 pl-4 py-2 italic my-4 text-gray-600 dark:text-gray-400">{node.content?.map((c: any, i: number) => renderNode(c, i))}</blockquote>;
+
+    case 'table':
       return (
-        <div key={index} className="my-3 text-center">
-          <img
-            src={src}
-            alt={media.attrs.alt || 'Jira image'}
-            className="max-w-full h-auto rounded border border-gray-300 dark:border-gray-600"
-            onError={(e) => (e.currentTarget.style.display = 'none')}
-          />
+        <div key={index} className="overflow-x-auto my-6 border border-gray-200 dark:border-gray-700 rounded-lg">
+          <table className="min-w-full divide-y divide-gray-200 dark:divide-gray-700">
+            <tbody className="divide-y divide-gray-200 dark:divide-gray-700 bg-white dark:bg-gray-900/20">
+              {node.content?.map((row: any, i: number) => (
+                <tr key={i}>
+                  {row.content?.map((cell: any, j: number) => (
+                    <td key={j} className={`p-3 text-sm border-r border-gray-100 dark:border-gray-800 last:border-0 ${cell.type === 'tableHeader' ? 'bg-gray-50 dark:bg-gray-800 font-bold' : ''}`}>
+                      {cell.content?.map((c: any, k: number) => renderNode(c, k))}
+                    </td>
+                  ))}
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       );
-    }
-    return null;
-  }
 
-  // ✅ Grupo de imágenes (mediaGroup)
-  if (node.type === 'mediaGroup') {
-    return (
-      <div key={index} className="my-3 flex flex-wrap justify-center gap-2">
-        {node.content?.map((media, i) => {
-          if (media.type === 'media' && media.attrs?.id) {
-            const src = `http://localhost:4000/jira/image/${media.attrs.id}`;
-            return (
-              <img
-                key={i}
-                src={src}
-                alt={media.attrs.alt || 'Jira image'}
-                className="max-w-full h-auto rounded border border-gray-300 dark:border-gray-600"
-                onError={(e) => (e.currentTarget.style.display = 'none')}
-              />
-            );
-          }
-          return null;
-        })}
-      </div>
-    );
-  }
+    case 'mention':
+      return <span key={index} className="inline-flex items-center gap-1 bg-blue-100 dark:bg-blue-900/40 text-blue-700 dark:text-blue-300 px-1.5 py-0.5 rounded font-medium text-xs"><User size={12} />{node.attrs.text}</span>;
 
-  // ✅ Lista ordenada
-  if (node.type === 'orderedList') {
-    return (
-      <ol key={index} className="list-decimal list-inside mb-3 ml-5 space-y-1">
-        {node.content?.map((item, i) => (
-          <li key={i} className="text-gray-700 dark:text-gray-300">
-            {item.content?.[0]?.type === 'paragraph'
-              ? item.content[0].content?.map((child, j) => renderNode(child, j))
-              : item.content?.map((child, j) => renderNode(child, j))}
-          </li>
-        ))}
-      </ol>
-    );
-  }
+    case 'status':
+      const colors: any = { green: 'bg-emerald-100 text-emerald-800', red: 'bg-red-100 text-red-800', blue: 'bg-blue-100 text-blue-800', yellow: 'bg-amber-100 text-amber-800' };
+      return <span key={index} className={`inline-block px-2 py-0.5 rounded uppercase text-[10px] font-bold tracking-wider border border-current/20 ${colors[node.attrs.color] || 'bg-gray-100 text-gray-800'}`}>{node.attrs.text}</span>;
 
-  // ✅ Lista con viñetas
-  if (node.type === 'bulletList') {
-    return (
-      <ul key={index} className="list-disc list-inside mb-3 ml-5 space-y-1">
-        {node.content?.map((item, i) => (
-          <li key={i} className="text-gray-700 dark:text-gray-300">
-            {item.content?.[0]?.type === 'paragraph'
-              ? item.content[0].content?.map((child, j) => renderNode(child, j))
-              : item.content?.map((child, j) => renderNode(child, j))}
-          </li>
-        ))}
-      </ul>
-    );
-  }
+    case 'mediaSingle':
+      const media = node.content?.[0];
+      if (media?.attrs?.id) {
+        return (
+          <div key={index} className="my-6 group relative">
+            <img
+              src={`http://localhost:4000/jira/image/${media.attrs.id}`}
+              alt={media.attrs.alt || 'Jira attachment'}
+              className="max-w-full h-auto rounded-lg border border-gray-200 dark:border-gray-700 shadow-sm mx-auto"
+              onError={(e) => (e.currentTarget.parentElement!.style.display = 'none')}
+            />
+          </div>
+        );
+      }
+      return null;
 
-  // ✅ Bloque de código
-  if (node.type === 'codeBlock') {
-    return (
-      <pre key={index} className="bg-gray-100 dark:bg-gray-800 p-3 rounded my-3 overflow-x-auto">
-        <code className="text-sm text-gray-800 dark:text-gray-200">
-          {node.content?.[0]?.text || ''}
-        </code>
-      </pre>
-    );
+    case 'rule': return <hr key={index} className="my-6 border-t border-gray-200 dark:border-gray-700" />;
+    case 'hardBreak': return <br key={index} />;
+    default: return null;
   }
-
-  // ✅ Cita
-  if (node.type === 'blockquote') {
-    return (
-      <blockquote key={index} className="border-l-4 border-gray-300 dark:border-gray-600 pl-4 italic my-3 text-gray-700 dark:text-gray-400">
-        {node.content?.map((child, i) => renderNode(child, i))}
-      </blockquote>
-    );
-  }
-
-  // ✅ Tabla
-  if (node.type === 'table') {
-    return (
-      <table key={index} className="min-w-full my-3 border-collapse border border-gray-300 dark:border-gray-600">
-        <tbody>
-          {node.content?.map((row, i) => (
-            <tr key={i} className="border border-gray-300 dark:border-gray-600">
-              {row.content?.map((cell, j) => (
-                <td key={j} className="p-2 border border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300">
-                  {cell.content?.map((child, k) => renderNode(child, k))}
-                </td>
-              ))}
-            </tr>
-          ))}
-        </tbody>
-      </table>
-    );
-  }
-
-  // ✅ Mención
-  if (node.type === 'mention') {
-    return (
-      <span key={index} className="bg-blue-100 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-1 rounded">
-        @{node.attrs.text}
-      </span>
-    );
-  }
-
-  // ✅ Status
-  if (node.type === 'status') {
-    const colorMap: Record<string, string> = {
-      green: 'bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300',
-      red: 'bg-red-100 text-red-800 dark:bg-red-900/30 dark:text-red-300',
-      blue: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-300',
-      yellow: 'bg-yellow-100 text-yellow-800 dark:bg-yellow-900/30 dark:text-yellow-300',
-      purple: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-300',
-    };
-    const colorClass = colorMap[node.attrs.color] || 'bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-300';
-    return (
-      <span key={index} className={`inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium ${colorClass}`}>
-        {node.attrs.text}
-      </span>
-    );
-  }
-
-  // ✅ Tarjeta inline
-  if (node.type === 'inlineCard') {
-    return (
-      <a
-        key={index}
-        href={node.attrs.url}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="inline-block bg-blue-50 dark:bg-blue-900/30 text-blue-600 dark:text-blue-300 px-2 py-1 rounded text-sm hover:underline"
-      >
-        {node.attrs.title || node.attrs.url}
-      </a>
-    );
-  }
-
-  // ✅ Regla horizontal
-  if (node.type === 'rule') {
-    return <hr key={index} className="my-3 border-t border-gray-300 dark:border-gray-600" />;
-  }
-
-  // ✅ Salto de línea
-  if (node.type === 'hardBreak') {
-    return <br key={index} />;
-  }
-
-  // ✅ Nodo desconocido
-  console.warn(' Nodo ADF no soportado:', node.type);
-  return null;
 };
 
 export default function JiraDescriptionModal({ description, onClose }: JiraDescriptionModalProps) {
   return (
-    <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
-      <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-4xl max-h-[85vh] flex flex-col">
-        <div className="p-4 border-b border-gray-200 dark:border-gray-700 flex justify-between items-center">
-          <h3 className="text-lg font-semibold text-gray-800 dark:text-white">Descripción del ticket</h3>
+    <div className="fixed inset-0 bg-gray-900/60 backdrop-blur-sm flex items-center justify-center z-[100] p-4 animate-in fade-in duration-200">
+      <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-2xl w-full max-w-5xl max-h-[90vh] flex flex-col border border-gray-200 dark:border-gray-700 overflow-hidden">
+
+        {/* Header con estilo Jira */}
+        <div className="px-6 py-4 border-b border-gray-100 dark:border-gray-700 flex justify-between items-center bg-gray-50/50 dark:bg-gray-800/50">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-6 bg-blue-500 rounded-full" />
+            <h3 className="text-xl font-bold text-gray-800 dark:text-white">Descripción</h3>
+          </div>
           <button
             onClick={onClose}
-            className="p-1.5 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 rounded-full hover:bg-gray-100 dark:hover:bg-gray-700"
+            className="p-2 text-gray-400 hover:text-gray-600 dark:hover:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-700 rounded-xl transition-all"
           >
-            <X size={20} />
+            <X size={24} />
           </button>
         </div>
 
-        <div className="p-4 overflow-y-auto flex-1">
+        {/* Cuerpo del Modal */}
+        <div className="p-8 overflow-y-auto flex-1 custom-scrollbar">
           {description && typeof description === 'object' && description.type === 'doc' ? (
-            <div className="prose prose-sm dark:prose-invert max-w-none">
-              {description.content?.map((node: JiraNode, index: number) => renderNode(node, index))}
-            </div>
+            <article className="prose prose-slate dark:prose-invert max-w-none text-gray-700 dark:text-gray-300">
+              {description.content?.map((node: any, index: number) => renderNode(node, index))}
+            </article>
           ) : typeof description === 'string' ? (
-            <div
-              className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap"
-              dangerouslySetInnerHTML={{ __html: description.replace(/\n/g, '<br />') }}
-            />
+            <div className="text-gray-700 dark:text-gray-300 whitespace-pre-wrap leading-relaxed">
+              {description}
+            </div>
           ) : (
-            <p className="text-gray-500 dark:text-gray-400">Sin descripción disponible.</p>
+            <div className="flex flex-col items-center justify-center py-20 text-gray-400 italic">
+              <p>No hay contenido adicional para mostrar en este ticket.</p>
+            </div>
           )}
+        </div>
+
+        {/* Footer opcional para cerrar */}
+        <div className="px-6 py-4 border-t border-gray-100 dark:border-gray-700 flex justify-end">
+          <button
+            onClick={onClose}
+            className="px-6 py-2 bg-gray-900 dark:bg-gray-100 text-white dark:text-gray-900 rounded-xl font-bold text-sm hover:opacity-90 transition-opacity"
+          >
+            Cerrar
+          </button>
         </div>
       </div>
     </div>

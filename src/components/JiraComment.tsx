@@ -1,75 +1,130 @@
 // src/components/JiraComment.tsx
-import { format } from 'date-fns';
-import { es } from 'date-fns/locale';
+import React, { useState } from 'react';
+import { JiraAttachment } from '../hooks/useJiraIssue';
+import { X, ZoomIn, ArrowLeft } from 'lucide-react';
 
 interface JiraCommentProps {
- comment: {
-  author?: { displayName?: string; avatarUrls?: { '48x48'?: string } };
-  created: string; // ISO string
-  body: string;
- };
+  comment: any;
+  allAttachments?: JiraAttachment[];
 }
 
-export default function JiraComment({ comment }: JiraCommentProps) {
- const authorName = comment.author?.displayName || 'Usuario desconocido';
- const avatarUrl = comment.author?.avatarUrls?.['48x48'] || null;
- const createdAt = comment.created ? format(new Date(comment.created), 'dd/MM/yyyy HH:mm', { locale: es }) : 'Fecha desconocida';
+export default function JiraComment({ comment, allAttachments }: JiraCommentProps) {
+  const { author, created, body } = comment;
+  // Estado para la imagen o archivo ampliado
+  const [expandedMedia, setExpandedMedia] = useState<JiraAttachment | null>(null);
 
- // Intentar extraer texto plano de body (a veces es objeto)
- let bodyText = '';
- try {
-  if (typeof comment.body === 'string') {
-   bodyText = comment.body;
-  } else if (comment.body && typeof comment.body === 'object') {
-   // Si es el formato de Jira (objeto tipo 'doc')
-   const content = (comment.body as any).content || [];
-   bodyText = content
-    .map((block: any) => {
-     if (block.type === 'paragraph' && Array.isArray(block.content)) {
-      return block.content
-       .map((text: any) => text.text || '')
-       .join('');
-     }
-     return '';
-    })
-    .join('\n')
-    .trim();
-  } else {
-   bodyText = JSON.stringify(comment.body);
-  }
- } catch (e) {
-  bodyText = 'Contenido no disponible';
- }
+  const renderContent = (contentObj: any): React.ReactNode => {
+    if (!contentObj || !contentObj.content) return null;
 
- return (
-  <div className="p-3 border-l-4 border-gray-200 dark:border-gray-700 bg-gray-50 dark:bg-gray-800/50 rounded-r">
-   <div className="flex items-start gap-3">
-    {avatarUrl ? (
-     <img
-      src={avatarUrl}
-      alt={authorName}
-      className="w-8 h-8 rounded-full flex-shrink-0"
-      onError={(e) => (e.currentTarget.style.display = 'none')}
-     />
-    ) : (
-     <div className="w-8 h-8 rounded-full bg-gray-300 dark:bg-gray-600 flex items-center justify-center flex-shrink-0">
-      <span className="text-xs font-medium text-gray-700 dark:text-gray-300">
-       {authorName.charAt(0).toUpperCase()}
-      </span>
-     </div>
-    )}
+    return contentObj.content.map((node: any, idx: number) => {
+      if (node.type === 'paragraph') {
+        return <p key={idx} className="mb-2">{renderContent(node)}</p>;
+      }
 
-    <div className="flex-1 min-w-0">
-     <div className="flex justify-between items-start">
-      <h4 className="font-medium text-gray-800 dark:text-white">{authorName}</h4>
-      <span className="text-xs text-gray-500 dark:text-gray-400">{createdAt}</span>
-     </div>
-     <div
-      className="mt-2 text-gray-700 dark:text-gray-300 text-sm whitespace-pre-wrap"
-      dangerouslySetInnerHTML={{ __html: bodyText.replace(/\n/g, '<br />') }}
-     />
+      if (node.type === 'text') {
+        let text: React.ReactNode = node.text;
+        if (node.marks) {
+          node.marks.forEach((mark: any) => {
+            if (mark.type === 'strong') text = <strong key={idx}>{text}</strong>;
+            if (mark.type === 'em') text = <em key={idx}>{text}</em>;
+          });
+        }
+        return text;
+      }
+
+      if (node.type === 'media' || node.type === 'mediaSingle') {
+        const mediaNode = node.type === 'mediaSingle' ? node.content[0] : node;
+        // Jira a veces usa 'alt' o 'id' para el nombre del archivo en el ADF
+        const fileName = mediaNode.attrs?.alt || mediaNode.attrs?.id;
+
+        const attachment = allAttachments?.find(a => a.filename === fileName || a.id === fileName);
+
+        if (attachment && attachment.mimeType.startsWith('image/')) {
+          return (
+            <div key={idx} className="group relative my-3 rounded-lg overflow-hidden border border-gray-200 dark:border-gray-700 inline-block cursor-zoom-in"
+              onClick={() => setExpandedMedia(attachment)}>
+              <img
+                src={attachment.content}
+                alt={attachment.filename}
+                className="max-w-full h-auto block transition-opacity group-hover:opacity-90"
+                style={{ maxHeight: '200px' }}
+              />
+              {/* Overlay de ayuda visual */}
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/10">
+                <ZoomIn className="text-white drop-shadow-md" size={32} />
+              </div>
+              <span className="text-[10px] bg-gray-100 dark:bg-gray-800 p-1 text-gray-500 block">
+                {attachment.filename} (Click para ampliar)
+              </span>
+            </div>
+          );
+        }
+
+        return (
+          <div key={idx} className="flex items-center gap-2 p-2 my-2 bg-gray-50 dark:bg-gray-900/50 rounded border border-dashed border-gray-300">
+            <span className="text-xs italic text-gray-500">[Archivo adjunto: {attachment?.filename || 'No disponible'}]</span>
+          </div>
+        );
+      }
+
+      return null;
+    });
+  };
+
+  return (
+    <div className="flex gap-3 relative">
+      {/* MODAL DE AMPLIACIÓN (Solo se ve si hay media seleccionado) */}
+      {expandedMedia && (
+        <div className="fixed inset-0 z-[60] bg-black/90 flex flex-col items-center justify-center p-4">
+          <div className="absolute top-4 left-4 flex gap-4">
+            <button
+              onClick={() => setExpandedMedia(null)}
+              className="flex items-center gap-2 px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg backdrop-blur-md transition-colors"
+            >
+              <ArrowLeft size={20} /> Volver al comentario
+            </button>
+          </div>
+
+          <button
+            onClick={() => setExpandedMedia(null)}
+            className="absolute top-4 right-4 p-2 bg-white/10 hover:bg-white/20 text-white rounded-full transition-colors"
+          >
+            <X size={24} />
+          </button>
+
+          <img
+            src={expandedMedia.content}
+            alt={expandedMedia.filename}
+            className="max-w-full max-h-[85vh] object-contain shadow-2xl"
+          />
+
+          <p className="mt-4 text-white font-medium bg-black/50 px-4 py-2 rounded-full">
+            {expandedMedia.filename}
+          </p>
+        </div>
+      )}
+
+      {/* Renderizado Normal del Comentario */}
+      <img
+        src={author?.avatarUrls?.['48x48']}
+        alt={author?.displayName}
+        className="w-8 h-8 rounded-full bg-gray-200 flex-shrink-0"
+      />
+
+      <div className="flex-1 min-w-0">
+        <div className="flex items-center gap-2 mb-1">
+          <span className="font-semibold text-sm text-gray-900 dark:text-gray-100">
+            {author?.displayName}
+          </span>
+          <span className="text-xs text-gray-500">
+            {new Date(created).toLocaleString('es-ES')}
+          </span>
+        </div>
+
+        <div className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
+          {typeof body === 'string' ? body : renderContent(body)}
+        </div>
+      </div>
     </div>
-   </div>
-  </div>
- );
+  );
 }

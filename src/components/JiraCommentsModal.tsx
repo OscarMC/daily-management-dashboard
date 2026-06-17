@@ -1,17 +1,15 @@
 // src/components/JiraCommentsModal.tsx
 import { X } from 'lucide-react';
-import JiraComment from './JiraComment'
+import JiraComment from './JiraComment';
+import { JiraAttachment } from '../hooks/useJiraIssue';
 
 interface JiraCommentsModalProps {
- comments: {
-  author?: { displayName?: string; avatarUrls?: { '48x48'?: string } };
-  created: string;
-  body: string;
- }[];
+ comments: any[]; // Cambiamos a any porque el body es un objeto ADF en v3
+ attachments?: JiraAttachment[]; // Opcional: para cruzar IDs de media con URLs reales
  onClose: () => void;
 }
 
-export default function JiraCommentsModal({ comments, onClose }: JiraCommentsModalProps) {
+export default function JiraCommentsModal({ comments, attachments, onClose }: JiraCommentsModalProps) {
  return (
   <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
    <div className="bg-white dark:bg-gray-800 rounded-xl shadow-xl w-full max-w-2xl max-h-[80vh] overflow-hidden flex flex-col">
@@ -36,8 +34,8 @@ export default function JiraCommentsModal({ comments, onClose }: JiraCommentsMod
       <div className="space-y-4">
        {comments.map((comment, index) => (
         <div key={index} className="border-b border-gray-100 dark:border-gray-700 pb-4 last:border-0 last:pb-0">
-         {/* 👇 Reutilizamos el componente */}
-         <JiraComment comment={comment} />
+         {/* Pasamos también los adjuntos del issue para que el comment pueda buscar la imagen */}
+         <JiraComment comment={comment} allAttachments={attachments} />
         </div>
        ))}
       </div>

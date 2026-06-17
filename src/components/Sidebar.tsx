@@ -14,7 +14,8 @@ import {
   Caravan,
   LayoutDashboard,
   PieChart,
-  GitPullRequest
+  GitPullRequest,
+  Trello
 } from 'lucide-react'
 import { Link, useLocation } from 'react-router-dom'
 import { useTranslation } from 'react-i18next'
@@ -23,6 +24,7 @@ import { useAuth } from '../contexts/AuthContext'
 const mainMenuBase = [
   { path: '/', label: 'dashboard', icon: Home },
   { path: '/daily-tasks', label: 'dailyTasks', icon: ClipboardList },
+  { path: '/my-jira', label: 'myJira', icon: Trello },
   { path: '/weekly-report-page', label: 'weeklyReportPage', icon: PieChart },
   { path: '/overview', label: 'overview', icon: CalendarCheck },
 ]

@@ -1,0 +1,10 @@
+﻿===== REGISTRO DETALLADO [20260610] =====
+ENTRADA   SALIDA    CONCEPTO     DURACION
+--------  --------  -----------  --------
+-------------------------------
+Total preinicio:		               00:00
+Total trabajado:		               00:00
+Tiempo restante para jornada:		   08:30
+Total descansos:		               00:00
+Hora estimada de salida:		       08:29
+-------------------------------

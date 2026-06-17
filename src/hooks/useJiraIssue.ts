@@ -2,32 +2,66 @@
 import { useState, useEffect } from 'react';
 
 export interface JiraIssue {
- // ✅ Campos existentes (mantenidos)
  key: string;
  summary: string;
  status: string;
  assignee: string;
- updated: string; // ISO string
-
- // 👇 Nuevos campos útiles (todos opcionales)
+ updated: string;
+ affectedVersions?: string[];
+ fixVersions?: JiraFixVersion[];
+ toFix?: JiraToFixVersion[];
  priority?: string;
  issueType?: string;
  created: string;
- description?: JiraDescription; // Puede ser string u objeto 'doc'
+ description?: JiraDescription;
  labels: string[];
  reporter?: string;
- project?: string;
+ project?: string; // Nota: En tu JSON es un objeto, mira JiraProject abajo
  resolution?: string | null;
  duedate?: string | null;
  timeestimate?: number | null;
  timespent?: number | null;
  statusCategory?: string;
  statusDescription?: string;
- attachments?: number;
+ attachments?: number; // Nota: En tu JSON es un array de objetos, mira JiraAttachment abajo
  comments?: number;
  commentList?: JiraComment[];
  epicLink?: string;
- url: string; // Enlace directo en Jira
+ url: string;
+ // Propiedades detectadas en tu JSON de ejemplo:
+ self?: string;
+ id?: string;
+ expand?: string;
+ resolutiondate?: string | null;
+ votes?: number;
+ watches?: number;
+ issuetype?: JiraIssueType;
+ projectDetails?: JiraProject; // Para mapear el objeto "project" del JSON
+ reporterDetails?: JiraUserDetails;
+ assigneeDetails?: JiraUserDetails;
+ components?: JiraComponent[];
+ attachmentList?: JiraAttachment[];
+ subtasks?: any[];
+ issuelinks?: JiraIssueLink[];
+ timetracking?: JiraTimeTracking;
+ customFields?: Record<string, any>;
+}
+
+export interface JiraToFixVersion
+{
+ self: string;
+ value: string;
+ id: string;
+}
+
+export interface JiraFixVersion
+{
+ self: string;
+ id: string;
+ description: string;
+ name: string;
+ archived: boolean;
+ released: boolean;
 }
 
 export interface JiraComment {
@@ -54,7 +88,6 @@ interface JiraMark {
   href?: string;          // para 'link'
   name?: string;          // para 'mention'
   color?: string;         // para 'textColor'
-  // ... otros atributos según el tipo
  };
 }
 
@@ -84,12 +117,12 @@ interface JiraBlockquote {
 // Listas
 interface JiraListItem {
  type: 'listItem';
- content?: JiraNode[]; // usualmente contiene un 'paragraph'
+ content?: JiraNode[];
 }
 
 interface JiraList {
  type: 'orderedList' | 'bulletList';
- attrs?: { order?: number }; // solo orderedList
+ attrs?: { order?: number };
  content?: JiraListItem[];
 }
 
@@ -115,8 +148,8 @@ interface JiraMedia {
  type: 'media';
  attrs: {
   type: 'file' | 'link';
-  id?: string;        // fileId (UUID)
-  url?: string;       // URL directa (menos común en attachments)
+  id?: string;
+  url?: string;
   alt?: string;
   collection?: string;
   width?: number;
@@ -172,11 +205,9 @@ interface JiraInlineCard {
  type: 'inlineCard';
  attrs: {
   url: string;
-  // Jira puede incluir más attrs en contextos específicos
  };
 }
 
-// Unión de todos los nodos posibles
 type JiraNode =
  | JiraText
  | JiraParagraph
@@ -191,13 +222,91 @@ type JiraNode =
  | JiraHardBreak
  | JiraMention
  | JiraStatus
- | JiraInlineCard;
+ | JiraInlineCard
+ | JiraToFixVersion
+ | JiraComment
+ | JiraAttachment;
 
-// Documento raíz
 export interface JiraDescription {
  type: 'doc';
- version: number; // usualmente 1
+ version: number;
  content: JiraNode[];
+}
+
+// ---------------------------------------------------------
+// NUEVAS INTERFACES PARA COMPLETAR LA RESPUESTA DE LA API
+// ---------------------------------------------------------
+
+export interface JiraAvatarUrls {
+ "16x16": string;
+ "24x24": string;
+ "32x32": string;
+ "48x48": string;
+}
+
+export interface JiraProject {
+ id: string;
+ key: string;
+ name: string;
+ projectTypeKey: string;
+ avatarUrls: JiraAvatarUrls;
+}
+
+export interface JiraIssueType {
+ id: string;
+ name: string;
+ description: string;
+ iconUrl: string;
+ subtask: boolean;
+ avatarId?: number;
+}
+
+export interface JiraUserDetails {
+ accountId: string;
+ displayName: string;
+ emailAddress?: string;
+ avatarUrls: JiraAvatarUrls;
+ active: boolean;
+ timeZone: string;
+}
+
+export interface JiraComponent {
+ id: string;
+ name: string;
+ description?: string;
+ self?: string;
+}
+
+export interface JiraAttachment {
+ id: string;
+ filename: string;
+ author: JiraUserDetails | string; // El JSON de ejemplo trae string, pero la API oficial suele traer el objeto
+ created: string;
+ size: number;
+ mimeType: string;
+ content: string; // URL de descarga
+ thumbnail?: string;
+}
+
+export interface JiraIssueLink {
+ id: string;
+ type: {
+  id?: string;
+  name?: string;
+  inward?: string;
+  outward?: string;
+ } | string;
+ inwardIssue?: any;
+ outwardIssue?: any;
+}
+
+export interface JiraTimeTracking {
+ originalEstimate?: string;
+ remainingEstimate?: string;
+ timeSpent?: string;
+ originalEstimateSeconds?: number;
+ remainingEstimateSeconds?: number;
+ timeSpentSeconds?: number;
 }
 
 const API_BASE = import.meta.env.VITE_JIRA_API_BASE_URL || 'http://localhost:4000';
@@ -218,6 +327,7 @@ export const useJiraIssue = (issueKey: string | null) => {
    setLoading(true);
    setError(null);
    try {
+    console.log(API_BASE);
     const res = await fetch(`${API_BASE}/jira/${issueKey}`);
     
     if (!res.ok) {
